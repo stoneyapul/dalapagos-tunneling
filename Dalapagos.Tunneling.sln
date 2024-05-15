@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{37234D29-7EC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Core", "src\Dalapagos.Tunneling.Core\Dalapagos.Tunneling.Core.csproj", "{9F69F5D9-7DF7-4E1E-853F-485FFC677E59}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Api", "src\Dalapagos.Tunneling.Api\Dalapagos.Tunneling.Api.csproj", "{C22D01A3-999F-4F0B-855E-4F75821013AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,8 +22,13 @@ Global
 		{9F69F5D9-7DF7-4E1E-853F-485FFC677E59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F69F5D9-7DF7-4E1E-853F-485FFC677E59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F69F5D9-7DF7-4E1E-853F-485FFC677E59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C22D01A3-999F-4F0B-855E-4F75821013AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C22D01A3-999F-4F0B-855E-4F75821013AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C22D01A3-999F-4F0B-855E-4F75821013AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C22D01A3-999F-4F0B-855E-4F75821013AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9F69F5D9-7DF7-4E1E-853F-485FFC677E59} = {37234D29-7EC4-4D82-8321-1920EB3F7497}
+		{C22D01A3-999F-4F0B-855E-4F75821013AB} = {37234D29-7EC4-4D82-8321-1920EB3F7497}
 	EndGlobalSection
 EndGlobal
