@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dalapagos.Tunneling.Core\Dalapagos.Tunneling.Core.csproj" />
+    <ProjectReference Include="..\Infrastructure\Dalapagos.Tunneling.Repository.EF\Dalapagos.Tunneling.Repository.EF.csproj" />
   </ItemGroup>
 
 </Project>

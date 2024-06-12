@@ -9,13 +9,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Core", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Api", "src\Dalapagos.Tunneling.Api\Dalapagos.Tunneling.Api.csproj", "{C22D01A3-999F-4F0B-855E-4F75821013AB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{06D17307-7FB2-4E12-BF2B-59DBC5D3006A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{DF2755DB-9E1A-41E1-B30F-1164B2B50805}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{84B5101B-040B-4171-AA19-B54EA6E4474B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Repository.EF", "src\Infrastructure\Dalapagos.Tunneling.Repository.EF\Dalapagos.Tunneling.Repository.EF.csproj", "{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9F69F5D9-7DF7-4E1E-853F-485FFC677E59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -26,9 +31,20 @@ Global
 		{C22D01A3-999F-4F0B-855E-4F75821013AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C22D01A3-999F-4F0B-855E-4F75821013AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C22D01A3-999F-4F0B-855E-4F75821013AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9F69F5D9-7DF7-4E1E-853F-485FFC677E59} = {37234D29-7EC4-4D82-8321-1920EB3F7497}
-		{C22D01A3-999F-4F0B-855E-4F75821013AB} = {37234D29-7EC4-4D82-8321-1920EB3F7497}
+		{9F69F5D9-7DF7-4E1E-853F-485FFC677E59} = {06D17307-7FB2-4E12-BF2B-59DBC5D3006A}
+		{C22D01A3-999F-4F0B-855E-4F75821013AB} = {DF2755DB-9E1A-41E1-B30F-1164B2B50805}
+		{06D17307-7FB2-4E12-BF2B-59DBC5D3006A} = {37234D29-7EC4-4D82-8321-1920EB3F7497}
+		{DF2755DB-9E1A-41E1-B30F-1164B2B50805} = {37234D29-7EC4-4D82-8321-1920EB3F7497}
+		{84B5101B-040B-4171-AA19-B54EA6E4474B} = {37234D29-7EC4-4D82-8321-1920EB3F7497}
+		{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE} = {84B5101B-040B-4171-AA19-B54EA6E4474B}
 	EndGlobalSection
 EndGlobal
