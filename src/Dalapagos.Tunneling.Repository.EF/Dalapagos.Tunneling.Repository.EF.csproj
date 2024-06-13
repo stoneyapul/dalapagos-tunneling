@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Dalapagos.Tunneling.Core\Dalapagos.Tunneling.Core.csproj" />
+    <ProjectReference Include="..\Dalapagos.Tunneling.Core\Dalapagos.Tunneling.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

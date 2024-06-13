@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{84B5101B-040B-4171-AA19-B54EA6E4474B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Repository.EF", "src\Infrastructure\Dalapagos.Tunneling.Repository.EF\Dalapagos.Tunneling.Repository.EF.csproj", "{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Repository.EF", "src\Dalapagos.Tunneling.Repository.EF\Dalapagos.Tunneling.Repository.EF.csproj", "{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
