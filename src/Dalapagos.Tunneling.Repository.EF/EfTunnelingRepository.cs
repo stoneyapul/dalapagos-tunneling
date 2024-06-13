@@ -2,30 +2,29 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Exceptions;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.Infrastructure.ITunnelingRepository
 {
-    public async Task<Core.Model.Device> UpsertDeviceAsync(Guid? deviceId, Guid deviceGroupId, string deviceName, CancellationToken cancellationToken)
+    public async Task<Core.Model.Device> UpsertDeviceAsync(Guid? deviceId, Guid? deviceGroupId, string deviceName, CancellationToken cancellationToken)
     {
         if (!deviceId.HasValue)
         {
             deviceId = Guid.NewGuid();
         }
 
-        var deviceIdParam = new SqlParameter("@DeviceUuid", deviceId);
-        var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", deviceGroupId);
-        var deviceNameParam = new SqlParameter("@DeviceName", deviceName);
+        var deviceIdParam = new SqlParameter("@DeviceUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceId };
+        var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceGroupId ?? (object)DBNull.Value, IsNullable = true };
+        var deviceNameParam = new SqlParameter("@DeviceName", System.Data.SqlDbType.NVarChar, 64) { Value = deviceName };
+        var parms = new List<object> { deviceIdParam, deviceGroupIdParam, deviceNameParam };
 
         await dbContext.Database.ExecuteSqlRawAsync(
             "EXECUTE UpsertDevice @DeviceUuid, @DeviceGroupUuid, @DeviceName", 
-            deviceIdParam, 
-            deviceGroupIdParam, 
-            deviceNameParam, 
+            parms, 
             cancellationToken);
 
         return new Core.Model.Device(deviceId.Value, deviceGroupId, deviceName);
@@ -47,25 +46,19 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
             deviceGroupId = Guid.NewGuid();
         }
 
-        var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", deviceGroupId);
-        var organizationIdParam = new SqlParameter("@OrganizationUuid", organizationId);
-        var deviceGroupNameParam = new SqlParameter("@DeviceGroupName", deviceGroupName);
-        var adminGroupIdParam = new SqlParameter("@EntraAdminGroupId", adminGroupId);
-        var userGroupIdParam = new SqlParameter("@EntraUserGroupId", userGroupId);
-        var serverNameParam = new SqlParameter("@ServerName", serverName);
-        var serverLocationParam = new SqlParameter("@ServerLocation", serverLocation);
-        var serverStatusParam = new SqlParameter("@ServerStatus", (int)serverStatus);
+        var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceGroupId };
+        var organizationIdParam = new SqlParameter("@OrganizationUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = organizationId };
+        var deviceGroupNameParam = new SqlParameter("@DeviceGroupName", System.Data.SqlDbType.NVarChar, 64) { Value = deviceGroupName };
+        var adminGroupIdParam = new SqlParameter("@EntraAdminGroupId", System.Data.SqlDbType.UniqueIdentifier) { Value = adminGroupId ?? (object)DBNull.Value, IsNullable = true };
+        var userGroupIdParam = new SqlParameter("@EntraUserGroupId", System.Data.SqlDbType.UniqueIdentifier) { Value = userGroupId ?? (object)DBNull.Value, IsNullable = true };
+        var serverNameParam = new SqlParameter("@ServerName", System.Data.SqlDbType.NVarChar, 100) { Value = serverName };
+        var serverLocationParam = new SqlParameter("@ServerLocation", System.Data.SqlDbType.NVarChar, 50) { Value = serverLocation };
+        var serverStatusParam = new SqlParameter("@ServerStatus", System.Data.SqlDbType.Int) { Value = (int)serverStatus };
+        var parms = new List<object> { deviceGroupIdParam, organizationIdParam, deviceGroupNameParam, adminGroupIdParam, userGroupIdParam, serverNameParam, serverLocationParam, serverStatusParam };
 
         await dbContext.Database.ExecuteSqlRawAsync(
             "EXECUTE UpsertDeviceGroup @DeviceGroupUuid, @OrganizationUuid, @DeviceGroupName, @EntraAdminGroupId, @EntraUserGroupId, @ServerName, @ServerLocation, @ServerStatus", 
-            deviceGroupIdParam, 
-            organizationIdParam,
-            deviceGroupNameParam, 
-            adminGroupIdParam,
-            userGroupIdParam,
-            serverNameParam,
-            serverLocationParam,
-            serverStatusParam,
+            parms,
             cancellationToken);
 
         return new Core.Model.DeviceGroup(deviceGroupId, organizationId, deviceGroupName, serverName, serverLocation, serverStatus, adminGroupId, userGroupId);
@@ -78,13 +71,13 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
             organizationId = Guid.NewGuid();
         }
 
-        var organizationIdParam = new SqlParameter("@OrganizationUuid", organizationId);
-        var organizationNameParam = new SqlParameter("@OrganizationName", organizationName);
+        var organizationIdParam = new SqlParameter("@OrganizationUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = organizationId };
+        var organizationNameParam = new SqlParameter("@OrganizationName", System.Data.SqlDbType.NVarChar, 64) { Value = organizationName };
+        var parms = new List<object> { organizationIdParam, organizationNameParam };
 
         await dbContext.Database.ExecuteSqlRawAsync(
             "EXECUTE UpsertOrganization @OrganizationUuid, @OrganizationName", 
-            organizationIdParam, 
-            organizationNameParam, 
+            parms, 
             cancellationToken);
 
         return new Core.Model.Organization(organizationId, organizationName);
@@ -92,31 +85,34 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
 
     public async Task DeleteDeviceAsync(Guid deviceId, CancellationToken cancellationToken)
     {
-        var deviceIdParam = new SqlParameter("@DeviceUuid", deviceId);
+        var deviceIdParam = new SqlParameter("@DeviceUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceId };
+        var parms = new List<object> { deviceIdParam };
 
         await dbContext.Database.ExecuteSqlRawAsync(
             "EXECUTE DeleteDevice @DeviceUuid", 
-            deviceIdParam,
+            parms,
             cancellationToken);
     }
 
     public async Task DeleteDeviceGroupAsync(Guid deviceGroupId, CancellationToken cancellationToken)
     {
-        var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", deviceGroupId);
+        var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceGroupId };
+        var parms = new List<object> { deviceGroupIdParam };
 
-         await dbContext.Database.ExecuteSqlRawAsync(
+        await dbContext.Database.ExecuteSqlRawAsync(
             "EXECUTE DeleteDeviceGroup @DeviceGroupUuid", 
-            deviceGroupIdParam, 
+            parms, 
             cancellationToken);
     }
 
     public async Task DeleteOrganizationAsync(Guid organizationId, CancellationToken cancellationToken)
     {
-        var organizationIdParam = new SqlParameter("@OrganizationUuid", organizationId);
- 
+        var organizationIdParam = new SqlParameter("@OrganizationUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = organizationId };
+        var parms = new List<object> { organizationIdParam };
+
         await dbContext.Database.ExecuteSqlRawAsync(
             "EXECUTE DeleteOrganization @OrganizationUuid", 
-            organizationIdParam, 
+            parms, 
             cancellationToken);
     }
 

@@ -34,6 +34,7 @@ public partial class DalapagosTunnelsDbContext : DbContext
 
             entity.HasOne(d => d.DeviceGroup).WithMany(p => p.Devices)
                 .HasForeignKey(d => d.DeviceGroupId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Device_DeviceGroupId");
         });
 

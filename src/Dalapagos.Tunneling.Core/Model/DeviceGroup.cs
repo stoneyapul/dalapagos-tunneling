@@ -1,9 +1,9 @@
 ﻿namespace Dalapagos.Tunneling.Core.Model;
 
 public record class DeviceGroup(
-    Guid? DeviceGroupId, 
+    Guid? Id, 
     Guid OrganizationId, 
-    string DeviceGroupName, 
+    string Name, 
     string ServerName, 
     string ServerLocation, 
     ServerStatus ServerStatus, 

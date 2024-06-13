@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Repository.EF", "src\Dalapagos.Tunneling.Repository.EF\Dalapagos.Tunneling.Repository.EF.csproj", "{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BEE30165-7AAF-414F-919F-2C4E3DF3043F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Repository.EF.Integrationtests", "src\Tests\Dalapagos.Tunneling.Repository.EF.Integrationtests\Dalapagos.Tunneling.Repository.EF.Integrationtests.csproj", "{4E3FBE59-5A81-42C1-963D-49EA5E4D4355}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +39,10 @@ Global
 		{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E3FBE59-5A81-42C1-963D-49EA5E4D4355}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E3FBE59-5A81-42C1-963D-49EA5E4D4355}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E3FBE59-5A81-42C1-963D-49EA5E4D4355}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E3FBE59-5A81-42C1-963D-49EA5E4D4355}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,5 +54,7 @@ Global
 		{DF2755DB-9E1A-41E1-B30F-1164B2B50805} = {37234D29-7EC4-4D82-8321-1920EB3F7497}
 		{84B5101B-040B-4171-AA19-B54EA6E4474B} = {37234D29-7EC4-4D82-8321-1920EB3F7497}
 		{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE} = {84B5101B-040B-4171-AA19-B54EA6E4474B}
+		{BEE30165-7AAF-414F-919F-2C4E3DF3043F} = {37234D29-7EC4-4D82-8321-1920EB3F7497}
+		{4E3FBE59-5A81-42C1-963D-49EA5E4D4355} = {BEE30165-7AAF-414F-919F-2C4E3DF3043F}
 	EndGlobalSection
 EndGlobal
