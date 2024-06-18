@@ -1,6 +1,7 @@
 ﻿namespace Dalapagos.Tunneling.Repository.EF.Integrationtests;
 
 using Core.Infrastructure;
+using Core.Model;
 using Shouldly;
 using Xunit.Abstractions;
 using Xunit.Microsoft.DependencyInjection.Abstracts;
@@ -9,17 +10,18 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
 [TestCaseOrderer(
     "Xunit.Microsoft.DependencyInjection.TestsOrder.TestPriorityOrderer",
     "Xunit.Microsoft.DependencyInjection"
-)]public class CrudCascadeTests(ITestOutputHelper testOutputHelper, RepositoryTestFixture fixture) 
+)]
+public class DeviceCascadeTests(ITestOutputHelper testOutputHelper, RepositoryTestFixture fixture) 
     : TestBed<RepositoryTestFixture>(testOutputHelper, fixture)
 {
-    private readonly Guid _organizationId = new("1d80cca7-2591-43c5-a721-442a710d814b");
-    private readonly string _organizationName1 = "Acme Rockets";
-    private readonly Guid _deviceGroupId = new("ad80cca7-2591-43c5-a721-442a710d814b");
-    private readonly string _deviceGroupName1 = "Eastern Region";
+    private readonly Guid _organizationId = new("ed80cca7-2591-43c5-a721-442a710d814b");
+    private readonly string _organizationName = "Acme Rockets";
+    private readonly Guid _deviceGroupId = new("ad80cca7-2591-43c5-a721-442a710d813b");
+    private readonly string _deviceGroupName = "Eastern Region";
     private readonly string _serverName = "Server 1";
-    private readonly string _serverLocation = "EastUS";
-    private readonly Guid _deviceId = new("dd80cca7-2591-43c5-a721-442a710d814c");
-    private readonly string _deviceName1 = "Acme Controller 1";
+    private readonly ServerLocation _serverLocation = ServerLocation.West;
+    private readonly Guid _deviceId = new("bd80cca7-2591-43c5-a721-442a710d813c");
+    private readonly string _deviceName = "Acme Controller 1";
  
 
     [Fact, TestOrder(1)]
@@ -29,10 +31,10 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
         var cts = new CancellationTokenSource();
         var tunnelingRepository = GetNonNullService<ITunnelingRepository>();
 
-        var organization = await tunnelingRepository.UpsertOrganizationAsync(_organizationId, _organizationName1, cts.Token);
+        var organization = await tunnelingRepository.UpsertOrganizationAsync(_organizationId, _organizationName, cts.Token);
         organization.ShouldNotBeNull();
         organization.Id.ShouldBe(_organizationId);
-        organization.Name.ShouldBe(_organizationName1);   
+        organization.Name.ShouldBe(_organizationName);   
     }
 
     [Fact, TestOrder(2)]
@@ -45,7 +47,7 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
         var deviceGroup = await tunnelingRepository.UpsertDeviceGroupAsync(
             _deviceGroupId, 
             _organizationId, 
-            _deviceGroupName1, 
+            _deviceGroupName, 
             _serverName, 
             _serverLocation, 
             Core.Model.ServerStatus.Unknown, 
@@ -55,12 +57,30 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
 
         deviceGroup.ShouldNotBeNull();
         deviceGroup.Id.ShouldBe(_deviceGroupId);
-        deviceGroup.Name.ShouldBe(_deviceGroupName1);   
+        deviceGroup.Name.ShouldBe(_deviceGroupName);   
     }
 
     [Fact, TestOrder(3)]
     [Trait("Category", "Integration")]    
-    public async Task AddDevicePassAsync()
+    public async Task AddDeviceWithNoDeviceGroupPassAsync()
+    {
+        var cts = new CancellationTokenSource();
+        var tunnelingRepository = GetNonNullService<ITunnelingRepository>();
+
+        var device = await tunnelingRepository.UpsertDeviceAsync(
+            _deviceId,
+            null, 
+            _deviceName, 
+            cts.Token);
+
+        device.ShouldNotBeNull();
+        device.Id.ShouldBe(_deviceId);
+        device.Name.ShouldBe(_deviceName);   
+    }
+
+     [Fact, TestOrder(4)]
+    [Trait("Category", "Integration")]    
+    public async Task UpdateDeviceWithDeviceGroupPassAsync()
     {
         var cts = new CancellationTokenSource();
         var tunnelingRepository = GetNonNullService<ITunnelingRepository>();
@@ -68,15 +88,15 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
         var device = await tunnelingRepository.UpsertDeviceAsync(
             _deviceId,
             _deviceGroupId, 
-            _deviceName1, 
+            _deviceName, 
             cts.Token);
 
         device.ShouldNotBeNull();
         device.Id.ShouldBe(_deviceId);
-        device.Name.ShouldBe(_deviceName1);   
+        device.Name.ShouldBe(_deviceName);   
     }
 
-    [Fact, TestOrder(4)]
+   [Fact, TestOrder(5)]
     [Trait("Category", "Integration")]    
     public async Task DeleteOrganizationPassAsync()
     {

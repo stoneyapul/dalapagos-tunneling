@@ -35,7 +35,7 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
         Guid organizationId, 
         string deviceGroupName, 
         string serverName, 
-        string serverLocation, 
+        Core.Model.ServerLocation serverLocation, 
         Core.Model.ServerStatus serverStatus, 
         Guid? adminGroupId, 
         Guid? userGroupId, 
@@ -46,13 +46,24 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
             deviceGroupId = Guid.NewGuid();
         }
 
+        string serverLocationAzure = "westus3";
+        switch (serverLocation)
+        {
+            case Core.Model.ServerLocation.Central:
+                serverLocationAzure = "centralus";
+                break;
+            case Core.Model.ServerLocation.East:
+                serverLocationAzure = "eastus2";
+                break;
+        }
+
         var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceGroupId };
         var organizationIdParam = new SqlParameter("@OrganizationUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = organizationId };
         var deviceGroupNameParam = new SqlParameter("@DeviceGroupName", System.Data.SqlDbType.NVarChar, 64) { Value = deviceGroupName };
         var adminGroupIdParam = new SqlParameter("@EntraAdminGroupId", System.Data.SqlDbType.UniqueIdentifier) { Value = adminGroupId ?? (object)DBNull.Value, IsNullable = true };
         var userGroupIdParam = new SqlParameter("@EntraUserGroupId", System.Data.SqlDbType.UniqueIdentifier) { Value = userGroupId ?? (object)DBNull.Value, IsNullable = true };
         var serverNameParam = new SqlParameter("@ServerName", System.Data.SqlDbType.NVarChar, 100) { Value = serverName };
-        var serverLocationParam = new SqlParameter("@ServerLocation", System.Data.SqlDbType.NVarChar, 50) { Value = serverLocation };
+        var serverLocationParam = new SqlParameter("@ServerLocation", System.Data.SqlDbType.NVarChar, 50) { Value = serverLocationAzure };
         var serverStatusParam = new SqlParameter("@ServerStatus", System.Data.SqlDbType.Int) { Value = (int)serverStatus };
         var parms = new List<object> { deviceGroupIdParam, organizationIdParam, deviceGroupNameParam, adminGroupIdParam, userGroupIdParam, serverNameParam, serverLocationParam, serverStatusParam };
 
@@ -177,12 +188,23 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
             devices.Add(MapToDevice(deviceGroupEntity.DeviceGroupUuid, deviceEntity));
         }
 
+        var serverLocationEnum = Core.Model.ServerLocation.West;
+        switch (deviceGroupEntity.ServerLocation)
+        {
+            case "centralus":
+                serverLocationEnum = Core.Model.ServerLocation.Central;
+                break;
+            case "eastus2":
+                serverLocationEnum = Core.Model.ServerLocation.East;
+                break;
+        }
+
         return new Core.Model.DeviceGroup(
                 deviceGroupEntity.DeviceGroupUuid, 
                 organizationId, 
                 deviceGroupEntity.DeviceGroupName, 
                 deviceGroupEntity.ServerName, 
-                deviceGroupEntity.ServerLocation, 
+                serverLocationEnum, 
                 (Core.Model.ServerStatus)deviceGroupEntity.ServerStatus, 
                 deviceGroupEntity.EntraAdminGroupId, 
                 deviceGroupEntity.EntraUserGroupId,

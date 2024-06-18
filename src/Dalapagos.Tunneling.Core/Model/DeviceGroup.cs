@@ -5,7 +5,7 @@ public record class DeviceGroup(
     Guid OrganizationId, 
     string Name, 
     string ServerName, 
-    string ServerLocation, 
+    ServerLocation ServerLocation, 
     ServerStatus ServerStatus, 
     Guid? AdminGroupId = null, 
     Guid? UserGroupId = null,

@@ -1,6 +1,7 @@
 namespace Dalapagos.Tunneling.Repository.EF.Integrationtests;
 
 using Core.Infrastructure;
+using Core.Model;
 using Shouldly;
 using Xunit.Abstractions;
 using Xunit.Microsoft.DependencyInjection.Abstracts;
@@ -19,7 +20,7 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
     private readonly string _deviceGroupName1 = "Eastern Region";
     private readonly string _deviceGroupName2 = "Florida Region";
     private readonly string _serverName = "Server 1";
-    private readonly string _serverLocation = "EastUS";
+    private readonly ServerLocation _serverLocation = ServerLocation.West;
     private readonly Guid _deviceId = new("5d80cca7-2591-43c5-a721-442a710d814c");
     private readonly string _deviceName1 = "Acme Controller 1";
     private readonly string _deviceName2 = "Acme Controller 2";

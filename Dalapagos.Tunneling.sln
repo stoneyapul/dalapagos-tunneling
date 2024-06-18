@@ -19,7 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Reposit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BEE30165-7AAF-414F-919F-2C4E3DF3043F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Repository.EF.Integrationtests", "src\Tests\Dalapagos.Tunneling.Repository.EF.Integrationtests\Dalapagos.Tunneling.Repository.EF.Integrationtests.csproj", "{4E3FBE59-5A81-42C1-963D-49EA5E4D4355}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Repository.EF.IntegrationTests", "src\Tests\Dalapagos.Tunneling.Repository.EF.Integrationtests\Dalapagos.Tunneling.Repository.EF.IntegrationTests.csproj", "{4E3FBE59-5A81-42C1-963D-49EA5E4D4355}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Core.IntegrationTests", "src\Tests\Dalapagos.Tunneling.Core.IntegrationTests\Dalapagos.Tunneling.Core.IntegrationTests.csproj", "{D7845453-EF2E-444F-9B77-EFC341E3CDA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{4E3FBE59-5A81-42C1-963D-49EA5E4D4355}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E3FBE59-5A81-42C1-963D-49EA5E4D4355}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E3FBE59-5A81-42C1-963D-49EA5E4D4355}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7845453-EF2E-444F-9B77-EFC341E3CDA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7845453-EF2E-444F-9B77-EFC341E3CDA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7845453-EF2E-444F-9B77-EFC341E3CDA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7845453-EF2E-444F-9B77-EFC341E3CDA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,5 +62,6 @@ Global
 		{F6B09A3F-1FB8-485F-B4AD-860A41EBEFFE} = {84B5101B-040B-4171-AA19-B54EA6E4474B}
 		{BEE30165-7AAF-414F-919F-2C4E3DF3043F} = {37234D29-7EC4-4D82-8321-1920EB3F7497}
 		{4E3FBE59-5A81-42C1-963D-49EA5E4D4355} = {BEE30165-7AAF-414F-919F-2C4E3DF3043F}
+		{D7845453-EF2E-444F-9B77-EFC341E3CDA3} = {BEE30165-7AAF-414F-919F-2C4E3DF3043F}
 	EndGlobalSection
 EndGlobal

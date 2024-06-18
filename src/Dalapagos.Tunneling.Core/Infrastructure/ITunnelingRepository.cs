@@ -23,7 +23,7 @@ public interface ITunnelingRepository
         Guid organizationId, 
         string deviceGroupName, 
         string serverName, 
-        string serverLocation, 
+        ServerLocation serverLocation, 
         ServerStatus serverStatus, 
         Guid? adminGroupId, 
         Guid? userGroupId, 
