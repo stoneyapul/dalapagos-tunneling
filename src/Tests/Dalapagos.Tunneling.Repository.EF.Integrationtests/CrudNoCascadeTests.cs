@@ -19,7 +19,6 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
     private readonly Guid _deviceGroupId = new("4d80cca7-2591-43c5-a721-442a710d814b");
     private readonly string _deviceGroupName1 = "Eastern Region";
     private readonly string _deviceGroupName2 = "Florida Region";
-    private readonly string _serverName = "Server 1";
     private readonly ServerLocation _serverLocation = ServerLocation.West;
     private readonly Guid _deviceId = new("5d80cca7-2591-43c5-a721-442a710d814c");
     private readonly string _deviceName1 = "Acme Controller 1";
@@ -63,7 +62,6 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
             _deviceGroupId, 
             _organizationId, 
             _deviceGroupName1, 
-            _serverName, 
             _serverLocation, 
             Core.Model.ServerStatus.Unknown, 
             null, 
@@ -86,7 +84,6 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
             _deviceGroupId, 
             _organizationId, 
             _deviceGroupName2, 
-            _serverName, 
             _serverLocation, 
             Core.Model.ServerStatus.Unknown, 
             null, 

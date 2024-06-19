@@ -17,8 +17,6 @@ public partial class DeviceGroup
 
     public Guid? EntraUserGroupId { get; set; }
 
-    public string ServerName { get; set; } = null!;
-
     public string ServerLocation { get; set; } = null!;
 
     public int ServerStatus { get; set; }

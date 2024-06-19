@@ -32,15 +32,16 @@ public class AddDeviceGroupHandler(
         var branch = config["DevOpsBranch"];
         var personalAccessToken = config["DevOpsPersonalAccessToken"]!;
 
+        // TODO: Add VM password secret to key vault.
+
         var deviceGroup = await tunnelingRepository.UpsertDeviceGroupAsync(
             request.Id.HasValue ? request.Id : Guid.NewGuid(), 
             request.OrganizationId,
             request.Name,
-            "tst",
             request.Location,
             ServerStatus.Unknown,
-            null, //TODO
-            null, //TODO
+            null, // TODO: security group
+            null, // TODO: user group
             cancellationToken);
             
         logger.LogInformation("Creating RPort server for {Organization}.", request.OrganizationId);
@@ -60,6 +61,15 @@ public class AddDeviceGroupHandler(
                 { "adminVmPasswordSecretName", $"{shortOrgId}-Tnls-VmPass" }
             }
         };
+
+       if (!string.IsNullOrWhiteSpace(branch))
+        {
+            var resources = new RunResourcesParameters();
+            resources.Repositories.Add("self", new RepositoryResourceParameters { RefName = branch});
+            pipelineParameters.Resources = resources;
+        }
+
+        var pipelineRun = await pipelineClient.RunPipelineAsync(pipelineParameters, projectId, pipeline.Id, cancellationToken: cancellationToken);
 
         return new OperationResult<DeviceGroup>(deviceGroup, true, []);
     }

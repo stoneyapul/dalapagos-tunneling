@@ -50,8 +50,6 @@ public class CreateServerHandler(ILogger<CreateServerHandler> logger, IConfigura
 
         var pipelineRun = await pipelineClient.RunPipelineAsync(pipelineParameters, projectId, pipeline.Id, cancellationToken: cancellationToken);
 
-        logger.LogInformation("RPort server created for {Org}.", request.OrgId);
-
         return new OperationResult<string>(pipelineRun.Url, true, []);
     }
 }
