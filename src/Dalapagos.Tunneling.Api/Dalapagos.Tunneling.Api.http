@@ -9,3 +9,5 @@ Content-Type: application/json
 }
 
 ###
+GET https://dlpg-openrport-332a710d814b.westus3.cloudapp.azure.com/api/v1/clients-auth
+Authorization: Basic YWRtaW46R2VlbmFlOWll

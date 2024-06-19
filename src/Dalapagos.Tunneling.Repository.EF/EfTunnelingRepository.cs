@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Exceptions;
+using Core.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,24 +47,13 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
             deviceGroupId = Guid.NewGuid();
         }
 
-        string serverLocationAzure = "westus3";
-        switch (serverLocation)
-        {
-            case Core.Model.ServerLocation.Central:
-                serverLocationAzure = "centralus";
-                break;
-            case Core.Model.ServerLocation.East:
-                serverLocationAzure = "eastus2";
-                break;
-        }
-
         var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceGroupId };
         var organizationIdParam = new SqlParameter("@OrganizationUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = organizationId };
         var deviceGroupNameParam = new SqlParameter("@DeviceGroupName", System.Data.SqlDbType.NVarChar, 64) { Value = deviceGroupName };
         var adminGroupIdParam = new SqlParameter("@EntraAdminGroupId", System.Data.SqlDbType.UniqueIdentifier) { Value = adminGroupId ?? (object)DBNull.Value, IsNullable = true };
         var userGroupIdParam = new SqlParameter("@EntraUserGroupId", System.Data.SqlDbType.UniqueIdentifier) { Value = userGroupId ?? (object)DBNull.Value, IsNullable = true };
         var serverNameParam = new SqlParameter("@ServerName", System.Data.SqlDbType.NVarChar, 100) { Value = serverName };
-        var serverLocationParam = new SqlParameter("@ServerLocation", System.Data.SqlDbType.NVarChar, 50) { Value = serverLocationAzure };
+        var serverLocationParam = new SqlParameter("@ServerLocation", System.Data.SqlDbType.NVarChar, 50) { Value = serverLocation.ToAzureLocation() };
         var serverStatusParam = new SqlParameter("@ServerStatus", System.Data.SqlDbType.Int) { Value = (int)serverStatus };
         var parms = new List<object> { deviceGroupIdParam, organizationIdParam, deviceGroupNameParam, adminGroupIdParam, userGroupIdParam, serverNameParam, serverLocationParam, serverStatusParam };
 

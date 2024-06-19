@@ -14,7 +14,8 @@ public class AddOrganizationHandler(ITunnelingRepository tunnelingRepository) : 
     {
         var organization = await tunnelingRepository.UpsertOrganizationAsync(
             request.Id.HasValue ? request.Id : Guid.NewGuid(), 
-            request.Name, cancellationToken);
+            request.Name, 
+            cancellationToken);
             
         return new OperationResult<Organization>(organization, true, []);
     }
