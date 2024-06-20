@@ -91,6 +91,8 @@ public class AddDeviceGroupHandler(
             null, // TODO: user group
             cancellationToken);
 
+        // TODO: Queue pipeline run info for monitoring.
+        
         return new OperationResult<DeviceGroup>(deviceGroup, true, []);
     }
 
