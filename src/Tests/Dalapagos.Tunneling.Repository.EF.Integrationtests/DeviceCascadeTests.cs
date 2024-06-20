@@ -17,7 +17,7 @@ public class DeviceCascadeTests(ITestOutputHelper testOutputHelper, RepositoryTe
     private readonly Guid _organizationId = new("ed80cca7-2591-43c5-a721-442a710d814b");
     private readonly string _organizationName = "Acme Rockets";
     private readonly Guid _deviceGroupId = new("ad80cca7-2591-43c5-a721-442a710d813b");
-    private readonly string _deviceGroupName = "Eastern Region";
+    private readonly string _deviceGroupName = "Western Region";
     private readonly ServerLocation _serverLocation = ServerLocation.West;
     private readonly Guid _deviceId = new("bd80cca7-2591-43c5-a721-442a710d813c");
     private readonly string _deviceName = "Acme Controller 1";

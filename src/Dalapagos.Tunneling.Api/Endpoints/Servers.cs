@@ -13,8 +13,8 @@ public static class Servers
 
         endpoints.MapPost("", async (string orgId, CreateServerRequest request, IMediator mediator, CancellationToken cancellationToken) =>
         {
-            var result = await mediator.Send(new CreateServerCommand(orgId, request.Location), cancellationToken);
-            return TypedResults.Accepted(result.Data, result);
+            //var result = await mediator.Send(new CreateServerCommand(orgId, request.Location), cancellationToken);
+            //return TypedResults.Accepted(result.Data, result);
         })
         .WithName("CreateServer");
     }
