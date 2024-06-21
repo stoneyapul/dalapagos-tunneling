@@ -7,11 +7,13 @@ using Azure.Security.KeyVault.Secrets;
 using Infrastructure;
 using Mediator;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Model;
 
 public record DeleteDeviceGroupCommand(Guid Id, Guid OganizationId) : IRequest<OperationResult>;
 
-public class DeleteDeviceGroupHandler(IConfiguration config, ITunnelingRepository tunnelingRepository) : CommandBase, IRequestHandler<DeleteDeviceGroupCommand, OperationResult>
+public class DeleteDeviceGroupHandler(ILogger<DeleteDeviceGroupCommand> logger, IConfiguration config, ITunnelingRepository tunnelingRepository) 
+    : CommandBase, IRequestHandler<DeleteDeviceGroupCommand, OperationResult>
 {
     public async ValueTask<OperationResult> Handle(DeleteDeviceGroupCommand request, CancellationToken cancellationToken)
     {
@@ -21,12 +23,14 @@ public class DeleteDeviceGroupHandler(IConfiguration config, ITunnelingRepositor
 
         // Delete the resource group that has the VM. This takes awhile, so we will continue on without waiting for it to finish.
         var resourceGroupName = $"dlpg-{shortDeviceGrpId}";
+        logger.LogInformation("Deleting resource group {ResourceGroup}.", resourceGroupName);
         var armClient = new ArmClient(GetTokenCredential(config));
         var subscription = await armClient.GetDefaultSubscriptionAsync(cancellationToken);
         var resourceGroup = await subscription.GetResourceGroupAsync(resourceGroupName, cancellationToken);
         await resourceGroup.Value.DeleteAsync(Azure.WaitUntil.Started, cancellationToken: cancellationToken);
 
         // Delete key vault secrets.
+        logger.LogInformation("Deleting secrets for {DeviceGrpId}.", shortDeviceGrpId);
         var credential = GetTokenCredential(config);
         var keyVaultUrl = "https://" + keyVaultName + ".vault.azure.net";
         var keyVaultClient = new SecretClient(new Uri(keyVaultUrl), credential);

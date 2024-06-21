@@ -14,8 +14,6 @@ public interface ITunnelingRepository
 
     Task<Device> UpsertDeviceAsync(Guid? deviceId, Guid? deviceGroupId, string deviceName, CancellationToken cancellationToken);
 
-    Task<Device> RetrieveDeviceAsync(Guid deviceGroupId, Guid deviceId, CancellationToken cancellationToken);
-
     Task DeleteDeviceAsync(Guid deviceId, CancellationToken cancellationToken);
     
     Task<DeviceGroup> UpsertDeviceGroupAsync(
