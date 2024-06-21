@@ -3,8 +3,6 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure.Core;
-using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Extensions;
 using Infrastructure;
@@ -21,7 +19,7 @@ public class AddDeviceGroupHandler(
     ILogger<AddDeviceGroupCommand> logger, 
     IConfiguration config, 
     ITunnelingRepository tunnelingRepository) 
-        : IRequestHandler<AddDeviceGroupCommand, OperationResult<DeviceGroup>>
+        : CommandBase, IRequestHandler<AddDeviceGroupCommand, OperationResult<DeviceGroup>>
 {
     private const string BaseUrl = "https://dev.azure.com/dalapagos";
     private const string PipelineName = "dalapagos-tunneling-server-scripts";
@@ -94,20 +92,6 @@ public class AddDeviceGroupHandler(
         // TODO: Queue pipeline run info for monitoring.
         
         return new OperationResult<DeviceGroup>(deviceGroup, true, []);
-    }
-
-    private static TokenCredential GetTokenCredential(IConfiguration config)
-    {
-        var adConfigSection = config.GetSection("AzureAd");
-        var tenantId = adConfigSection.GetValue<string>("TenantId");
-        var clientId = adConfigSection.GetValue<string>("ClientId");
-        var clientSecret = adConfigSection.GetValue<string>("ClientSecret");
-        return
-            string.IsNullOrWhiteSpace(tenantId)
-            || string.IsNullOrWhiteSpace(clientId)
-            || string.IsNullOrWhiteSpace(clientSecret)
-            ? new DefaultAzureCredential()
-            : new ClientSecretCredential(tenantId, clientId, clientSecret);
     }
         
     private static string CreateVmPassword()
