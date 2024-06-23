@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Reposit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Core.IntegrationTests", "src\Tests\Dalapagos.Tunneling.Core.IntegrationTests\Dalapagos.Tunneling.Core.IntegrationTests.csproj", "{D7845453-EF2E-444F-9B77-EFC341E3CDA3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{28B2EB13-935E-49B9-AA4F-111EB18D5116}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
