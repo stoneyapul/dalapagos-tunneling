@@ -69,14 +69,16 @@ public class DeviceCascadeTests(ITestOutputHelper testOutputHelper, RepositoryTe
             _deviceId,
             null, 
             _deviceName, 
+            Os.Linux,
             cts.Token);
 
         device.ShouldNotBeNull();
         device.Id.ShouldBe(_deviceId);
-        device.Name.ShouldBe(_deviceName);   
+        device.Name.ShouldBe(_deviceName); 
+        device.Os.ShouldBe(Os.Linux);  
     }
 
-     [Fact, TestOrder(4)]
+    [Fact, TestOrder(4)]
     [Trait("Category", "Integration")]    
     public async Task UpdateDeviceWithDeviceGroupPassAsync()
     {
@@ -86,15 +88,17 @@ public class DeviceCascadeTests(ITestOutputHelper testOutputHelper, RepositoryTe
         var device = await tunnelingRepository.UpsertDeviceAsync(
             _deviceId,
             _deviceGroupId, 
-            _deviceName, 
+            _deviceName,
+            Os.Windows, 
             cts.Token);
 
         device.ShouldNotBeNull();
         device.Id.ShouldBe(_deviceId);
-        device.Name.ShouldBe(_deviceName);   
+        device.Name.ShouldBe(_deviceName);  
+        device.Os.ShouldBe(Os.Windows); 
     }
 
-   [Fact, TestOrder(5)]
+    [Fact, TestOrder(5)]
     [Trait("Category", "Integration")]    
     public async Task DeleteOrganizationPassAsync()
     {

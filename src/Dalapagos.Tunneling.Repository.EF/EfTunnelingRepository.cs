@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.Infrastructure.ITunnelingRepository
 {
-    public async Task<Core.Model.Device> UpsertDeviceAsync(Guid? deviceId, Guid? deviceGroupId, string deviceName, CancellationToken cancellationToken)
+    public async Task<Core.Model.Device> UpsertDeviceAsync(Guid? deviceId, Guid? deviceGroupId, string deviceName, Core.Model.Os os, CancellationToken cancellationToken)
     {
         if (!deviceId.HasValue)
         {
@@ -21,14 +21,15 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
         var deviceIdParam = new SqlParameter("@DeviceUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceId };
         var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceGroupId ?? (object)DBNull.Value, IsNullable = true };
         var deviceNameParam = new SqlParameter("@DeviceName", System.Data.SqlDbType.NVarChar, 64) { Value = deviceName };
-        var parms = new List<object> { deviceIdParam, deviceGroupIdParam, deviceNameParam };
+        var osParam = new SqlParameter("@Os", System.Data.SqlDbType.Int) { Value = (int)os };
+        var parms = new List<object> { deviceIdParam, deviceGroupIdParam, deviceNameParam, osParam };
 
         await dbContext.Database.ExecuteSqlRawAsync(
-            "EXECUTE UpsertDevice @DeviceUuid, @DeviceGroupUuid, @DeviceName", 
+            "EXECUTE UpsertDevice @DeviceUuid, @DeviceGroupUuid, @DeviceName, @Os", 
             parms, 
             cancellationToken);
 
-        return new Core.Model.Device(deviceId.Value, deviceGroupId, deviceName);
+        return new Core.Model.Device(deviceId.Value, deviceGroupId, deviceName, os);
     }
 
     public async Task<Core.Model.DeviceGroup> UpsertDeviceGroupAsync(
@@ -193,6 +194,7 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
         return new Core.Model.Device(
                 deviceEntity.DeviceUuid, 
                 deviceGroupId, 
-                deviceEntity.DeviceName);
+                deviceEntity.DeviceName,
+                (Core.Model.Os)deviceEntity.Os);
     }
 }

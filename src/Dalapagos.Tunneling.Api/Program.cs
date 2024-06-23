@@ -9,7 +9,7 @@ builder.Services.AddEfTunnelingRepository(builder.Configuration);
 
 var app = builder.Build();
 
-app.RegisterServerEndpoints();
+app.RegisterDeviceEndpoints();
 
 if (app.Environment.IsDevelopment())
 {

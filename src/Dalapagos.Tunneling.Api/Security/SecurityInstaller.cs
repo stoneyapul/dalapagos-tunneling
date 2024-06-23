@@ -10,7 +10,7 @@ public static class SecurityInstaller
 {
     public static void AddEndpointSecurity(this IServiceCollection services, IConfiguration config)
     {
-        var adConfigSection = config.GetSection("Dalapagos-AzureAd");
+        var adConfigSection = config.GetSection("AzureAd");
 
         services.AddScoped<GraphServiceClient>();
 
@@ -22,10 +22,10 @@ public static class SecurityInstaller
 
         services.AddAuthorization(opt =>
         {
-            var rportAdminGroup = adConfigSection.GetValue<string>($"Groups:{Groups.RportAdmin}");
-            if (rportAdminGroup != null)
+            var adminGroup = adConfigSection.GetValue<string>($"Groups:{Groups.TunnelingAdmin}");
+            if (adminGroup != null)
             {
-                opt.AddPolicy(Policies.RportAdminPolicy, policy => policy.AddRequirements(new GroupAuthorizationRequirement([rportAdminGroup])));
+                opt.AddPolicy(Policies.TunnelingAdminPolicy, policy => policy.AddRequirements(new GroupAuthorizationRequirement([adminGroup])));
             }
         });
 

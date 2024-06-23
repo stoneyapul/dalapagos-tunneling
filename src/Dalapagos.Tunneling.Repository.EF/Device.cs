@@ -13,5 +13,7 @@ public partial class Device
 
     public string DeviceName { get; set; } = null!;
 
+    public int Os { get; set; }
+
     public virtual DeviceGroup? DeviceGroup { get; set; }
 }

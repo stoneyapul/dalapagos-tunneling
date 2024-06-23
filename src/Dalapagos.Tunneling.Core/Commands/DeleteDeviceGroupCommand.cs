@@ -43,7 +43,7 @@ public class DeleteDeviceGroupHandler(ILogger<DeleteDeviceGroupCommand> logger, 
         {
             foreach (var device in deviceGroup.Devices)
             {
-                await tunnelingRepository.UpsertDeviceAsync(device.Id, null, device.Name, cancellationToken);
+                await tunnelingRepository.UpsertDeviceAsync(device.Id, null, device.Name, device.Os, cancellationToken);
             }
         }
 

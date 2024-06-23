@@ -63,7 +63,7 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
             _organizationId, 
             _deviceGroupName1, 
             _serverLocation, 
-            Core.Model.ServerStatus.Unknown, 
+            ServerStatus.Unknown, 
             null, 
             null, 
             cts.Token);
@@ -85,7 +85,7 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
             _organizationId, 
             _deviceGroupName2, 
             _serverLocation, 
-            Core.Model.ServerStatus.Unknown, 
+            ServerStatus.Unknown, 
             null, 
             null, 
             cts.Token);
@@ -106,11 +106,13 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
             _deviceId,
             _deviceGroupId, 
             _deviceName1, 
+            Os.Linux,
             cts.Token);
 
         device.ShouldNotBeNull();
         device.Id.ShouldBe(_deviceId);
-        device.Name.ShouldBe(_deviceName1);   
+        device.Name.ShouldBe(_deviceName1); 
+        device.Os.ShouldBe(Os.Linux);  
     }
 
     [Fact, TestOrder(6)]
@@ -124,11 +126,13 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
             _deviceId,
             _deviceGroupId, 
             _deviceName2, 
+            Os.Windows,
             cts.Token);
 
         device.ShouldNotBeNull();
         device.Id.ShouldBe(_deviceId);
-        device.Name.ShouldBe(_deviceName2);   
+        device.Name.ShouldBe(_deviceName2);  
+        device.Os.ShouldBe(Os.Windows); 
     }
 
     [Fact, TestOrder(7)]

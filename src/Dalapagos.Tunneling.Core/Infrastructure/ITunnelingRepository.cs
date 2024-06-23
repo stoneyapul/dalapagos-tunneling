@@ -12,7 +12,7 @@ public interface ITunnelingRepository
 
     Task DeleteOrganizationAsync(Guid organizationId, CancellationToken cancellationToken);
 
-    Task<Device> UpsertDeviceAsync(Guid? deviceId, Guid? deviceGroupId, string deviceName, CancellationToken cancellationToken);
+    Task<Device> UpsertDeviceAsync(Guid? deviceId, Guid? deviceGroupId, string deviceName, Os os, CancellationToken cancellationToken);
 
     Task DeleteDeviceAsync(Guid deviceId, CancellationToken cancellationToken);
     
