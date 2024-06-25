@@ -1,12 +1,28 @@
-@Api_HostAddress = http://localhost:7247
+@client_id = dd8855b7-943b-4182-8fac-a7b70aca2c2f
+@client_secret = miH8Q~zF_VK38vCqxDbqMMTGVWprMYISXXd-obZH
+@scope = api://dalapagos-tunneling-api/.default
+
+@hostAddress = http://localhost:5001
 @orgId = acme
 
-POST {{Api_HostAddress}}/v1/{{orgId}}/servers/
+###
+# Get a JWT to access the API.
+POST https://login.microsoftonline.com/13cfba4f-9203-4496-a424-b19fe4f06252/oauth2/v2.0/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{client_id}}&client_secret={{client_secret}}&scope={{scope}}&grant_type=client_credentials
+
+
+###
+# Add a device.
+POST {{hostAddress}}/v1/devices/
 Content-Type: application/json
 
 {
-    "location": "CentralUS"
+    "name": "device 1",
+    "os": "Linux"
 }
+
 
 ###
 GET https://dlpg-openrport-332a710d814b.westus3.cloudapp.azure.com/api/v1/clients-auth

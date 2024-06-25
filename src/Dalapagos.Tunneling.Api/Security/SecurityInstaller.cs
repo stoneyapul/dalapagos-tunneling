@@ -27,6 +27,12 @@ public static class SecurityInstaller
             {
                 opt.AddPolicy(Policies.TunnelingAdminPolicy, policy => policy.AddRequirements(new GroupAuthorizationRequirement([adminGroup])));
             }
+
+            var userGroup = adConfigSection.GetValue<string>($"Groups:{Groups.TunnelingUser}");
+            if (userGroup != null)
+            {
+                opt.AddPolicy(Policies.TunnelingUserPolicy, policy => policy.AddRequirements(new GroupAuthorizationRequirement([userGroup])));
+            }
         });
 
         services.AddTransient<IAuthorizationHandler, GroupAuthorizationHandler>();
