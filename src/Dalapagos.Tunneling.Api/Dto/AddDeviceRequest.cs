@@ -10,7 +10,7 @@ public class AddDeviceRequest
     public Guid? DeviceGroupId { get; set; }
 
     [Required(AllowEmptyStrings = false)]
-    [StringLength(64)]    
+    [StringLength(64, MinimumLength = 1)]    
     public string Name { get; set; } = default!;
 
     [ValidOs]  

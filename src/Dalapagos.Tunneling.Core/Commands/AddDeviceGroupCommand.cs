@@ -31,6 +31,18 @@ public class AddDeviceGroupHandler(
         var branch = config["DevOpsBranch"];
         var personalAccessToken = config["DevOpsPersonalAccessToken"]!;
         
+        // See if a request with the same Name and Location is already running.
+        var organization = await tunnelingRepository.RetrieveOrganizationAsync(request.OrganizationId, cancellationToken);
+        if (organization.DeviceGroups != null 
+            && organization.DeviceGroups.Any(dg => 
+                dg.ServerLocation == request.Location 
+                && dg.Name.Equals(request.Name) 
+                && dg.ServerStatus != ServerStatus.Online 
+                && dg.ServerStatus != ServerStatus.Deployed))
+        {
+            throw new Exception($"Device group {request.Name} is already deploying to {request.Location}.");
+        }
+
         var deviceGroup = await tunnelingRepository.UpsertDeviceGroupAsync(
             request.Id.HasValue ? request.Id : Guid.NewGuid(), 
             request.OrganizationId,

@@ -1,7 +1,10 @@
 using Dalapagos.Tunneling.Api.Endpoints;
 using Dalapagos.Tunneling.Api.Security;
 using Dalapagos.Tunneling.Core.DependencyInjection;
+using Dalapagos.Tunneling.Monitor.HF;
 using Dalapagos.Tunneling.Repository.EF;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,8 +23,9 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddMediation();
 builder.Services.AddEfTunnelingRepository(builder.Configuration);
+builder.Services.AddHfMonitor(builder.Configuration);
 builder.Services.AddEndpointSecurity(builder.Configuration);
-
+ 
 var app = builder.Build();
 
 app.UseAuthentication();
@@ -31,9 +35,14 @@ app.RegisterDeviceEndpoints();
 
 app.UseSwagger();
 app.UseReDoc(c =>
-  {
-    c.DocumentTitle = "Dalapagos Tunnels API Documentation";
-    c.SpecUrl = "/swagger/v1/swagger.json";
-  });   
+{
+  c.DocumentTitle = "Dalapagos Tunnels API Documentation";
+  c.SpecUrl = "/swagger/v1/swagger.json";
+});   
+
+if (app.Environment.IsDevelopment())
+{
+  app.UseHangfireDashboard("/monitor");
+}
 
 app.Run();
