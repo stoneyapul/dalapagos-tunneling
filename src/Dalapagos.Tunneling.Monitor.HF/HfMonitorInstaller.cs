@@ -29,5 +29,4 @@ public static class HfMonitorInstaller
         services.AddHangfireServer();
         services.AddScoped<IDeviceGroupDeploymentMonitor, HfDeviceGroupDeploymentMonitor>();
     }
-
 }

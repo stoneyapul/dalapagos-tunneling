@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Security/" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Dalapagos.Tunneling.Core\Dalapagos.Tunneling.Core.csproj" />
     <ProjectReference Include="..\Dalapagos.Tunneling.Repository.EF\Dalapagos.Tunneling.Repository.EF.csproj" />
     <ProjectReference Include="..\Dalapagos.Tunneling.Monitor.HF\Dalapagos.Tunneling.Monitor.HF.csproj" />

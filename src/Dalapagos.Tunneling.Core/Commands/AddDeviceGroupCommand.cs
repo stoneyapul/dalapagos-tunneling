@@ -1,9 +1,12 @@
-﻿namespace Dalapagos.Tunneling.Core.Commands;
+﻿// Device groups are a collection of devices. Each device group has an RPort tunneling server associated with it. 
+// This command creates a device group in the database and kicks off provisioning for an RPort server.
+namespace Dalapagos.Tunneling.Core.Commands;
 
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Security.KeyVault.Secrets;
+using Exceptions;
 using Extensions;
 using Infrastructure;
 using Mediator;
@@ -18,18 +21,17 @@ public record AddDeviceGroupCommand(Guid? Id, Guid OrganizationId, string Name, 
 public class AddDeviceGroupHandler(
     ILogger<AddDeviceGroupCommand> logger, 
     IConfiguration config, 
-    ITunnelingRepository tunnelingRepository) 
+    ITunnelingRepository tunnelingRepository,
+    IDeviceGroupDeploymentMonitor deploymentMonitor) 
         : CommandBase, IRequestHandler<AddDeviceGroupCommand, OperationResult<DeviceGroup>>
 {
-    private const string BaseUrl = "https://dev.azure.com/dalapagos";
-    private const string PipelineName = "dalapagos-tunneling-server-scripts";
 
     public async ValueTask<OperationResult<DeviceGroup>> Handle(AddDeviceGroupCommand request, CancellationToken cancellationToken)
     {
-        var keyVaultName = config["KeyVaultName"]!;
-        var projectId = new Guid(config["DevOpsProjectId"]!);
-        var branch = config["DevOpsBranch"];
-        var personalAccessToken = config["DevOpsPersonalAccessToken"]!;
+        var keyVaultName = config["KeyVaultName"] ?? throw new ConfigurationException("KeyVaultName");
+        var projectIdAsString = config["DevOpsProjectId"] ?? throw new ConfigurationException("DevOpsProjectId");
+        var branch = config["DevOpsBranch"] ?? throw new ConfigurationException("DevOpsBranch");
+        var personalAccessToken = config["DevOpsPersonalAccessToken"] ?? throw new ConfigurationException("DevOpsPersonalAccessToken");
         
         // See if a request with the same Name and Location is already running.
         var organization = await tunnelingRepository.RetrieveOrganizationAsync(request.OrganizationId, cancellationToken);
@@ -53,7 +55,8 @@ public class AddDeviceGroupHandler(
             null, // TODO: user group
             cancellationToken);
 
-        var shortDeviceGrpId = deviceGroup.Id.ToString()!.Substring(24, 12).ToLowerInvariant();
+        var deviceGroupId = deviceGroup.Id ?? throw new Exception("Device group id is null.");
+        var shortDeviceGrpId = deviceGroupId.ToString().Substring(24, 12).ToLowerInvariant();
         var resourceGroupName = $"dlpg-{shortDeviceGrpId}";
         var adminVmPasswordSecretName = $"{shortDeviceGrpId}-Tnls-VmPass";
 
@@ -66,9 +69,10 @@ public class AddDeviceGroupHandler(
 
         logger.LogInformation("Creating RPort server for organization {OrganizationId} device group {ShortDeviceGrpId}.", request.OrganizationId, shortDeviceGrpId);
  
-        var pipelineClient = new PipelinesHttpClient(new Uri(BaseUrl), new VssBasicCredential(string.Empty, personalAccessToken));
+        var projectId = new Guid(projectIdAsString);
+        var pipelineClient = new PipelinesHttpClient(new Uri(Constants.DevOpsBaseUrl), new VssBasicCredential(string.Empty, personalAccessToken));
         var pipelines = await pipelineClient.ListPipelinesAsync(projectId, cancellationToken: cancellationToken);
-        var pipeline = pipelines.First(p => p.Name.Equals(PipelineName));
+        var pipeline = pipelines.First(p => p.Name.Equals(Constants.PipelineName));
 
         var pipelineParameters = new RunPipelineParameters
         {       
@@ -92,7 +96,7 @@ public class AddDeviceGroupHandler(
         var pipelineRun = await pipelineClient.RunPipelineAsync(pipelineParameters, projectId, pipeline.Id, cancellationToken: cancellationToken);
 
         deviceGroup = await tunnelingRepository.UpsertDeviceGroupAsync(
-            deviceGroup.Id, 
+            deviceGroupId, 
             deviceGroup.OrganizationId,
             deviceGroup.Name,
             deviceGroup.ServerLocation,
@@ -101,7 +105,8 @@ public class AddDeviceGroupHandler(
             null, // TODO: user group
             cancellationToken);
 
-        // TODO: Queue pipeline run info for monitoring.
+        // Monitor the deploment pipeline.
+        await deploymentMonitor.MonitorAsync(deviceGroupId, projectId, pipelineRun.Pipeline.Id, pipelineRun.Id, personalAccessToken, cancellationToken);
         
         return new OperationResult<DeviceGroup>(deviceGroup, true, []);
     }

@@ -4,7 +4,6 @@ using Dalapagos.Tunneling.Core.DependencyInjection;
 using Dalapagos.Tunneling.Monitor.HF;
 using Dalapagos.Tunneling.Repository.EF;
 using Hangfire;
-using Hangfire.SqlServer;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,7 +41,10 @@ app.UseReDoc(c =>
 
 if (app.Environment.IsDevelopment())
 {
-  app.UseHangfireDashboard("/monitor");
-}
+  app.UseHangfireDashboard("/monitor", new DashboardOptions
+  {
+      Authorization = [new HangfireAuthorizationFilter()]
+  });
+ }
 
 app.Run();

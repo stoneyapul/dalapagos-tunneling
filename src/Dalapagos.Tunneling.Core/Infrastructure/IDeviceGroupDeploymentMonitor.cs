@@ -2,5 +2,5 @@
 
 public interface IDeviceGroupDeploymentMonitor
 {
-    Task MonitorAsync(Guid deviceGroupId, CancellationToken cancellationToken);
+    Task MonitorAsync(Guid deviceGroupId, Guid projectId, int pipelineId, int runId, string personalAccessToken, CancellationToken cancellationToken);
 }
