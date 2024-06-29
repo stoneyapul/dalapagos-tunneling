@@ -26,6 +26,8 @@ public interface ITunnelingRepository
         Guid? userGroupId, 
         CancellationToken cancellationToken);
 
+    Task UpdateDeviceGroupServerStatusAsync(Guid deviceGroupId, ServerStatus serverStatus, CancellationToken cancellationToken);
+
     Task<DeviceGroup> RetrieveDeviceGroupAsync(Guid organizationId, Guid deviceGroupId, CancellationToken cancellationToken);
 
     Task DeleteDeviceGroupAsync(Guid deviceGroupId, CancellationToken cancellationToken);

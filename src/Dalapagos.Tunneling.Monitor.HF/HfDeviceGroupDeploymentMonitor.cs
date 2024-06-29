@@ -1,4 +1,5 @@
-﻿namespace Dalapagos.Tunneling.Monitor.HF;
+﻿// TODO: Review whether injecting another infrastructure service into this infrastructure service is a good idea..
+namespace Dalapagos.Tunneling.Monitor.HF;
 
 using System;
 using System.Threading;
@@ -9,7 +10,7 @@ using Hangfire;
 using Microsoft.Azure.Pipelines.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 
-public class HfDeviceGroupDeploymentMonitor() : IDeviceGroupDeploymentMonitor
+public class HfDeviceGroupDeploymentMonitor(ITunnelingRepository tunnelingRepository) : IDeviceGroupDeploymentMonitor
 {
     public async Task MonitorAsync(Guid deviceGroupId, Guid projectId, int pipelineId, int runId, string personalAccessToken, CancellationToken cancellationToken)
     {
@@ -19,14 +20,16 @@ public class HfDeviceGroupDeploymentMonitor() : IDeviceGroupDeploymentMonitor
             TimeSpan.FromSeconds(90));
     }
 
-    private static async Task WatchAndUpdateStatusAsync(Guid deviceGroupId, Guid projectId, int pipelineId, int runId, string personalAccessToken, CancellationToken cancellationToken)
+    private async Task WatchAndUpdateStatusAsync(Guid deviceGroupId, Guid projectId, int pipelineId, int runId, string personalAccessToken, CancellationToken cancellationToken)
     {
         var pipelineClient = new PipelinesHttpClient(new Uri(Constants.DevOpsBaseUrl), new VssBasicCredential(string.Empty, personalAccessToken));
 
         while (!cancellationToken.IsCancellationRequested)
         {
+            // TODO: Finish this!
             var pipelineRun = await pipelineClient.GetRunAsync(projectId, pipelineId, runId, cancellationToken: cancellationToken);
-            // TODO: Update deploy status via ADo.net
+            await tunnelingRepository.UpdateDeviceGroupServerStatusAsync(deviceGroupId, Core.Model.ServerStatus.Deployed, cancellationToken);
+            break;
         }  
     }
 }

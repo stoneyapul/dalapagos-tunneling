@@ -64,6 +64,18 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
         return new Core.Model.DeviceGroup(deviceGroupId, organizationId, deviceGroupName, serverLocation, serverStatus, adminGroupId, userGroupId);
     }
 
+    public async Task UpdateDeviceGroupServerStatusAsync(Guid deviceGroupId, Core.Model.ServerStatus serverStatus, CancellationToken cancellationToken)
+    {
+        var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceGroupId };
+        var serverStatusParam = new SqlParameter("@ServerStatus", System.Data.SqlDbType.Int) { Value = (int)serverStatus };
+        var parms = new List<object> { deviceGroupIdParam, serverStatusParam };
+
+        await dbContext.Database.ExecuteSqlRawAsync(
+            "EXECUTE UpdateDeviceGroupServerStatus @DeviceGroupUuid, @ServerStatus", 
+            parms,
+            cancellationToken);
+    }
+
     public async Task<Core.Model.Organization> UpsertOrganizationAsync(Guid? organizationId, string organizationName, CancellationToken cancellationToken)
     {
         if (!organizationId.HasValue)
