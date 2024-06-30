@@ -6,6 +6,7 @@ using Dto;
 using Mappers;
 using Mediator;
 using Security;
+using Validation;
 
 public static class Devices
 {
@@ -27,6 +28,8 @@ public static class Devices
             var mapper = new DeviceMapper();
             return mapper.MapOperationResult(result);
         })
-        .WithName("AddDevice");
+        .WithName("AddDevice")
+        .Validate<AddDeviceRequest>()
+        .SetStatusCode();
     }
 }

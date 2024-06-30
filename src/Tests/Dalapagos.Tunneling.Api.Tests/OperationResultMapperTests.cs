@@ -17,7 +17,7 @@ public class OperationResultMapperTests
             Os.Windows
         );
 
-        var operationResult = new OperationResult<Device>(device, true, []);
+        var operationResult = new OperationResult<Device>(device, true, 200, []);
         var mapper = new DeviceMapper();
 
         var result = mapper.MapOperationResult(operationResult);
@@ -34,7 +34,7 @@ public class OperationResultMapperTests
     [Fact]
     public void MapDeviceResponseWithErrorPass()
     {
-        var operationResult = new OperationResult( false, ["Error Message"]);
+        var operationResult = new OperationResult(false, 500, ["Error Message"]);
         var mapper = new DeviceMapper();
 
         var result = mapper.MapOperationResult(operationResult);

@@ -24,10 +24,10 @@ public class GlobalExceptionHandler<TMessage, TResponse>(ILogger<GlobalException
 
             var responseType = typeof(TResponse);
             string[] errors = [ ex.Message ];
-
+            
             return responseType.IsGenericType
-                ? (Activator.CreateInstance(responseType, default, false, errors) as TResponse)!
-                : (Activator.CreateInstance(responseType, false, errors) as TResponse)!;
+                ? (Activator.CreateInstance(responseType, [default, false, 500, errors]) as TResponse)!
+                : (Activator.CreateInstance(responseType, [false, 500, errors]) as TResponse)!;
         }
     }
 }

@@ -13,6 +13,6 @@ public class DeleteOrganizationHandler(ITunnelingRepository tunnelingRepository)
     public async ValueTask<OperationResult> Handle(DeleteOrganizationCommand request, CancellationToken cancellationToken)
     {
         await tunnelingRepository.DeleteOrganizationAsync(request.Id, cancellationToken);           
-        return new OperationResult(true, []);
+        return new OperationResult(true, 200, []);
     }
 }

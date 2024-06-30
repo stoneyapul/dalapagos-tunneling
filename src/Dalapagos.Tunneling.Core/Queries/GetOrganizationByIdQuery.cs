@@ -13,6 +13,6 @@ public class GetOrganizationByIdHandler(ITunnelingRepository tunnelingRepository
    public async ValueTask<OperationResult<Organization>> Handle(GetOrganizationByIdQuery request, CancellationToken cancellationToken)
     {
         var organization = await tunnelingRepository.RetrieveOrganizationAsync(request.Id, cancellationToken);       
-        return new OperationResult<Organization>(organization, true, []);
+        return new OperationResult<Organization>(organization, true, 200, []);
     }
 }

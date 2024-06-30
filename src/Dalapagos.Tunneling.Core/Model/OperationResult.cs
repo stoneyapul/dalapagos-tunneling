@@ -4,6 +4,7 @@ public interface IOperationResult
 {
     bool IsSuccessful { get; set; }
     string[] Errors { get; set; }
+    int StatusCode { get; set; }
 }
 
 public class OperationResult : IOperationResult
@@ -12,19 +13,32 @@ public class OperationResult : IOperationResult
     {
         IsSuccessful = true;
         Errors = [];
+        StatusCode = 200;
     }
 
-    public OperationResult(bool isSuccessful, string[] errors)
+    public OperationResult(bool isSuccessful, int statusCode, string[] errors)
     {
         IsSuccessful = isSuccessful;
         Errors = errors;
+        StatusCode = statusCode;
     }
 
     public bool IsSuccessful { get; set; }
+
+    public int StatusCode { get; set; }
+
     public string[] Errors { get; set; }
 }
 
-public class OperationResult<TResponse>(TResponse? data, bool isSuccessful, string[] errors) : OperationResult(isSuccessful, errors)
+public class OperationResult<TResponse> : OperationResult
 {
-    public TResponse? Data { get; set; } = data;
+    public OperationResult(TResponse? data, bool isSuccessful, int statusCode, string[] errors)
+    {
+        IsSuccessful = isSuccessful;
+        Errors = errors;
+        StatusCode = statusCode;
+        Data = data;
+    }
+
+    public TResponse? Data { get; set; }
 }

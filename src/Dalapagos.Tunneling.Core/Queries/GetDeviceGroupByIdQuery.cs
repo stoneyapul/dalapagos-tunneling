@@ -13,6 +13,6 @@ public class GetDeviceGroupByIdHandler(ITunnelingRepository tunnelingRepository)
    public async ValueTask<OperationResult<DeviceGroup>> Handle(GetDeviceGroupByIdQuery request, CancellationToken cancellationToken)
     {
         var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(request.OganizationId, request.Id, cancellationToken);       
-        return new OperationResult<DeviceGroup>(deviceGroup, true, []);
+        return new OperationResult<DeviceGroup>(deviceGroup, true, 200, []);
     }
 }

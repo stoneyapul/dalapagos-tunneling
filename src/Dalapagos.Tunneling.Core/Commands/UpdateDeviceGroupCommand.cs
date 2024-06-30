@@ -24,6 +24,6 @@ public class UpdateDeviceGroupHandler(ITunnelingRepository tunnelingRepository) 
             deviceGroup.UserGroupId,
             cancellationToken);
             
-        return new OperationResult<DeviceGroup>(deviceGroup, true, []);
+        return new OperationResult<DeviceGroup>(deviceGroup, true, 200, []);
     }
 }

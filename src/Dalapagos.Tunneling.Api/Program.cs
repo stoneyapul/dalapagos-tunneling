@@ -31,6 +31,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.RegisterDeviceEndpoints();
+app.RegisterDeviceGroupEndpoints();
 
 app.UseSwagger();
 app.UseReDoc(c =>
