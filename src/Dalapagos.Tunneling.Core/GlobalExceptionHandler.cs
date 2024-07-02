@@ -26,8 +26,8 @@ public class GlobalExceptionHandler<TMessage, TResponse>(ILogger<GlobalException
             string[] errors = [ ex.Message ];
             
             return responseType.IsGenericType
-                ? (Activator.CreateInstance(responseType, [default, false, 500, errors]) as TResponse)!
-                : (Activator.CreateInstance(responseType, [false, 500, errors]) as TResponse)!;
+                ? (Activator.CreateInstance(responseType, [default, false, Constants.StatusFailServer, errors]) as TResponse)!
+                : (Activator.CreateInstance(responseType, [false, Constants.StatusFailServer, errors]) as TResponse)!;
         }
     }
 }

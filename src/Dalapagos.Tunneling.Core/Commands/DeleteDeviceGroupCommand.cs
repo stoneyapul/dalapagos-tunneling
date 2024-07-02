@@ -48,6 +48,6 @@ public class DeleteDeviceGroupHandler(ILogger<DeleteDeviceGroupCommand> logger, 
         }
 
         await tunnelingRepository.DeleteDeviceGroupAsync(request.Id, cancellationToken);           
-        return new OperationResult(true, 200, []);
+        return new OperationResult(true, Constants.StatusSuccess, []);
     }
 }

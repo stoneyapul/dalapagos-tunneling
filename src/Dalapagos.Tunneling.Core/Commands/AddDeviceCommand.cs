@@ -19,6 +19,6 @@ public class AddDeviceHandler(ITunnelingRepository tunnelingRepository) : IReque
             request.Os, 
             cancellationToken);
             
-        return new OperationResult<Device>(device, true, 200, []);
+        return new OperationResult<Device>(device, true, Constants.StatusSuccessCreated, []);
     }
 }

@@ -17,6 +17,6 @@ public class AddOrganizationHandler(ITunnelingRepository tunnelingRepository) : 
             request.Name, 
             cancellationToken);
             
-        return new OperationResult<Organization>(organization, true, 200, []);
+        return new OperationResult<Organization>(organization, true, Constants.StatusSuccessCreated, []);
     }
 }

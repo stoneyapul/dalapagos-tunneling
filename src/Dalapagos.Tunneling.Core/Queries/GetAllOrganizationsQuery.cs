@@ -13,6 +13,6 @@ public class GetAllOrganizationsHandler(ITunnelingRepository tunnelingRepository
     public async ValueTask<OperationResult<IList<Organization>>> Handle(GetAllOrganizationsQuery request, CancellationToken cancellationToken)
     {
         var organizations = await tunnelingRepository.GetOrganizationsAsync(cancellationToken);       
-        return new OperationResult<IList<Organization>>(organizations, true, 200, []);
+        return new OperationResult<IList<Organization>>(organizations, true, Constants.StatusSuccess, []);
     }
 }

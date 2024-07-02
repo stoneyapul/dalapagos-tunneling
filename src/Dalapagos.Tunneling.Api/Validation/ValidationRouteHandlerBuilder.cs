@@ -1,5 +1,6 @@
 ﻿namespace Dalapagos.Tunneling.Api.Validation;
 
+using Core;
 using Core.Model;
 
 public static class ValidationRouteHandlerBuilder
@@ -24,7 +25,7 @@ public static class ValidationRouteHandlerBuilder
                     .ToArray() 
                 ?? ["Validation error."];
 
-                return TypedResults.BadRequest(new OperationResult(false, 400, errors!));
+                return TypedResults.BadRequest(new OperationResult(false, Constants.StatusFailClient, errors!));
             }
 
             return await next(invocationContext);

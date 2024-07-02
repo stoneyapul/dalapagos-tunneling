@@ -104,7 +104,7 @@ public class AddDeviceGroupHandler(
         // Monitor the deploment pipeline.
         await deploymentMonitor.MonitorAsync(deviceGroupId, projectId, pipelineRun.Pipeline.Id, pipelineRun.Id, personalAccessToken, cancellationToken);
         
-        return new OperationResult<DeviceGroup>(deviceGroup, true, 200, []);
+        return new OperationResult<DeviceGroup>(deviceGroup, true, Constants.StatusSuccessCreated, []);
     }
         
     private static string CreateVmPassword()
