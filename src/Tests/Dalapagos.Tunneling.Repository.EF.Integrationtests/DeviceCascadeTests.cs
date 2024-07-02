@@ -49,8 +49,6 @@ public class DeviceCascadeTests(ITestOutputHelper testOutputHelper, RepositoryTe
             _deviceGroupName, 
             _serverLocation, 
             Core.Model.ServerStatus.Unknown, 
-            null, 
-            null, 
             cts.Token);
 
         deviceGroup.ShouldNotBeNull();

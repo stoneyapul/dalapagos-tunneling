@@ -13,10 +13,6 @@ public partial class DeviceGroup
 
     public string DeviceGroupName { get; set; } = null!;
 
-    public Guid? EntraAdminGroupId { get; set; }
-
-    public Guid? EntraUserGroupId { get; set; }
-
     public string ServerLocation { get; set; } = null!;
 
     public int ServerStatus { get; set; }

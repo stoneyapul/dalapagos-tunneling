@@ -1,4 +1,4 @@
-﻿namespace Dalapagos.Tunneling.Core;
+﻿namespace Dalapagos.Tunneling.Core.Commands;
 
 using Azure.Core;
 using Azure.Identity;

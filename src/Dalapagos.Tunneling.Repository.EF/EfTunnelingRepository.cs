@@ -38,8 +38,6 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
         string deviceGroupName, 
         Core.Model.ServerLocation serverLocation, 
         Core.Model.ServerStatus serverStatus, 
-        Guid? adminGroupId, 
-        Guid? userGroupId, 
         CancellationToken cancellationToken)
     {
         if (!deviceGroupId.HasValue)
@@ -50,18 +48,16 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
         var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceGroupId };
         var organizationIdParam = new SqlParameter("@OrganizationUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = organizationId };
         var deviceGroupNameParam = new SqlParameter("@DeviceGroupName", System.Data.SqlDbType.NVarChar, 64) { Value = deviceGroupName };
-        var adminGroupIdParam = new SqlParameter("@EntraAdminGroupId", System.Data.SqlDbType.UniqueIdentifier) { Value = adminGroupId ?? (object)DBNull.Value, IsNullable = true };
-        var userGroupIdParam = new SqlParameter("@EntraUserGroupId", System.Data.SqlDbType.UniqueIdentifier) { Value = userGroupId ?? (object)DBNull.Value, IsNullable = true };
         var serverLocationParam = new SqlParameter("@ServerLocation", System.Data.SqlDbType.NVarChar, 50) { Value = serverLocation.ToAzureLocation() };
         var serverStatusParam = new SqlParameter("@ServerStatus", System.Data.SqlDbType.Int) { Value = (int)serverStatus };
-        var parms = new List<object> { deviceGroupIdParam, organizationIdParam, deviceGroupNameParam, adminGroupIdParam, userGroupIdParam, serverLocationParam, serverStatusParam };
+        var parms = new List<object> { deviceGroupIdParam, organizationIdParam, deviceGroupNameParam, serverLocationParam, serverStatusParam };
 
         await dbContext.Database.ExecuteSqlRawAsync(
-            "EXECUTE UpsertDeviceGroup @DeviceGroupUuid, @OrganizationUuid, @DeviceGroupName, @EntraAdminGroupId, @EntraUserGroupId, @ServerLocation, @ServerStatus", 
+            "EXECUTE UpsertDeviceGroup @DeviceGroupUuid, @OrganizationUuid, @DeviceGroupName, @ServerLocation, @ServerStatus", 
             parms,
             cancellationToken);
 
-        return new Core.Model.DeviceGroup(deviceGroupId, organizationId, deviceGroupName, serverLocation, serverStatus, adminGroupId, userGroupId);
+        return new Core.Model.DeviceGroup(deviceGroupId, organizationId, deviceGroupName, serverLocation, serverStatus);
     }
 
     public async Task UpdateDeviceGroupServerStatusAsync(Guid deviceGroupId, Core.Model.ServerStatus serverStatus, CancellationToken cancellationToken)
@@ -196,8 +192,6 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
                 deviceGroupEntity.DeviceGroupName, 
                 serverLocationEnum, 
                 (Core.Model.ServerStatus)deviceGroupEntity.ServerStatus, 
-                deviceGroupEntity.EntraAdminGroupId, 
-                deviceGroupEntity.EntraUserGroupId,
                 devices);
     }
 

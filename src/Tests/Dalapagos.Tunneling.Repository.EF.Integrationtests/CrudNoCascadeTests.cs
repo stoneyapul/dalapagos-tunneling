@@ -64,8 +64,6 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
             _deviceGroupName1, 
             _serverLocation, 
             ServerStatus.Unknown, 
-            null, 
-            null, 
             cts.Token);
 
         deviceGroup.ShouldNotBeNull();
@@ -86,8 +84,6 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
             _deviceGroupName2, 
             _serverLocation, 
             ServerStatus.Unknown, 
-            null, 
-            null, 
             cts.Token);
 
         deviceGroup.ShouldNotBeNull();

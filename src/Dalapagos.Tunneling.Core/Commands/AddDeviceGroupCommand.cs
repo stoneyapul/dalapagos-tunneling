@@ -51,8 +51,6 @@ public class AddDeviceGroupHandler(
             request.Name,
             request.Location,
             ServerStatus.Unknown,
-            null, // TODO: security group
-            null, // TODO: user group
             cancellationToken);
 
         var deviceGroupId = deviceGroup.Id ?? throw new Exception("Device group id is null.");
@@ -101,8 +99,6 @@ public class AddDeviceGroupHandler(
             deviceGroup.Name,
             deviceGroup.ServerLocation,
             ServerStatus.Deploying,
-            null, // TODO: security group
-            null, // TODO: user group
             cancellationToken);
 
         // Monitor the deploment pipeline.

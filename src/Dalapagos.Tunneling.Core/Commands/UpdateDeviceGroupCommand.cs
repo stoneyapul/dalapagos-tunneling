@@ -20,8 +20,6 @@ public class UpdateDeviceGroupHandler(ITunnelingRepository tunnelingRepository) 
             request.Name, 
             deviceGroup.ServerLocation,
             request.ServerStatus,
-            deviceGroup.AdminGroupId,
-            deviceGroup.UserGroupId,
             cancellationToken);
             
         return new OperationResult<DeviceGroup>(deviceGroup, true, 200, []);
