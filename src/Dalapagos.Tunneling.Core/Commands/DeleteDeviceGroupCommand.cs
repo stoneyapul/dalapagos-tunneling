@@ -20,23 +20,75 @@ internal sealed class DeleteDeviceGroupHandler(ILogger<DeleteDeviceGroupCommand>
         var keyVaultName = config["KeyVaultName"]!;
         var shortDeviceGrpId = request.Id.ToString().Substring(24, 12).ToLowerInvariant();
         var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(request.OganizationId, request.Id, cancellationToken);
+        var warnings = new List<string>();   
 
         // Delete the resource group that has the VM. This takes awhile, so we will continue on without waiting for it to finish.
         var resourceGroupName = $"dlpg-{shortDeviceGrpId}";
         logger.LogInformation("Deleting resource group {ResourceGroup}.", resourceGroupName);
-        var armClient = new ArmClient(GetTokenCredential(config));
-        var subscription = await armClient.GetDefaultSubscriptionAsync(cancellationToken);
-        var resourceGroup = await subscription.GetResourceGroupAsync(resourceGroupName, cancellationToken);
-        await resourceGroup.Value.DeleteAsync(Azure.WaitUntil.Started, cancellationToken: cancellationToken);
+        try
+        {
+            var armClient = new ArmClient(GetTokenCredential(config));
+            var subscription = await armClient.GetDefaultSubscriptionAsync(cancellationToken);
+            var resourceGroup = await subscription.GetResourceGroupAsync(resourceGroupName, cancellationToken);
+            await resourceGroup.Value.DeleteAsync(Azure.WaitUntil.Started, cancellationToken: cancellationToken);
+        }
+        catch (Azure.RequestFailedException aex)
+        {
+            if (aex.ErrorCode == null || !aex.ErrorCode.Equals("ResourceGroupNotFound", StringComparison.OrdinalIgnoreCase))
+            {
+                throw;
+            }
+            warnings.Add("Failed to delete the resource group.");
+            logger.LogWarning(aex, "Failed to delete resource group for {DeviceGrpId}.", shortDeviceGrpId);
+        }
 
         // Delete key vault secrets.
         logger.LogInformation("Deleting secrets for {DeviceGrpId}.", shortDeviceGrpId);
         var credential = GetTokenCredential(config);
         var keyVaultUrl = "https://" + keyVaultName + ".vault.azure.net";
         var keyVaultClient = new SecretClient(new Uri(keyVaultUrl), credential);
-        await keyVaultClient.StartDeleteSecretAsync($"{shortDeviceGrpId}-Tnls-Finger", cancellationToken);
-        await keyVaultClient.StartDeleteSecretAsync($"{shortDeviceGrpId}-Tnls-RPortPass", cancellationToken);
-        await keyVaultClient.StartDeleteSecretAsync($"{shortDeviceGrpId}-Tnls-VmPass", cancellationToken);
+
+        try
+        {
+            await keyVaultClient.StartDeleteSecretAsync($"{shortDeviceGrpId}-Tnls-Finger", cancellationToken);
+        }
+        catch (Azure.RequestFailedException aex)
+        {
+            if (aex.ErrorCode == null || !aex.ErrorCode.Equals("SecretNotFound", StringComparison.OrdinalIgnoreCase))
+            {
+                throw;
+            }
+            warnings.Add("Failed to delete te tunneling server fingerprint.");
+            logger.LogWarning(aex, "Failed to delete secret {Secret} for {DeviceGrpId}.", $"{shortDeviceGrpId}-Tnls-Finger", shortDeviceGrpId);
+        }
+
+        try
+        {
+            await keyVaultClient.StartDeleteSecretAsync($"{shortDeviceGrpId}-Tnls-RPortPass", cancellationToken);
+        }
+        catch (Azure.RequestFailedException aex)
+        {
+            if (aex.ErrorCode == null || !aex.ErrorCode.Equals("SecretNotFound", StringComparison.OrdinalIgnoreCase))
+            {
+                throw;
+            }
+            warnings.Add("Failed to delete the tunneling server password.");
+            logger.LogWarning(aex, "Failed to delete secret {Secret} for {DeviceGrpId}.", $"{shortDeviceGrpId}-Tnls-RPortPass", shortDeviceGrpId);
+        }
+
+        try
+        {
+           await keyVaultClient.StartDeleteSecretAsync($"{shortDeviceGrpId}-Tnls-VmPass", cancellationToken);
+        }
+        catch (Azure.RequestFailedException aex)
+        {
+            if (aex.ErrorCode == null || !aex.ErrorCode.Equals("SecretNotFound", StringComparison.OrdinalIgnoreCase))
+            {
+                throw;
+            }
+            warnings.Add("Failed to delete the virtual machine password.");
+            logger.LogWarning(aex, "Failed to delete secret {Secret} for {DeviceGrpId}.", $"{shortDeviceGrpId}-Tnls-VmPass", shortDeviceGrpId);
+        }
 
         // Any devices in the group should be orphaned, ie no longer associated with a group.
         if (deviceGroup.Devices != null)
@@ -48,6 +100,6 @@ internal sealed class DeleteDeviceGroupHandler(ILogger<DeleteDeviceGroupCommand>
         }
 
         await tunnelingRepository.DeleteDeviceGroupAsync(request.Id, cancellationToken);           
-        return new OperationResult(true, Constants.StatusSuccess, []);
+        return new OperationResult(true, Constants.StatusSuccess, warnings.Count != 0 ? [.. warnings] : []);
     }
 }

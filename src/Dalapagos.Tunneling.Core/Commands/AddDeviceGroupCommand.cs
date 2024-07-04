@@ -98,13 +98,13 @@ internal sealed class AddDeviceGroupHandler(
             deviceGroup.OrganizationId,
             deviceGroup.Name,
             deviceGroup.ServerLocation,
-            ServerStatus.Deploying,
+            ServerStatus.Unknown,
             cancellationToken);
 
         // Monitor the deploment pipeline.
-        await deploymentMonitor.MonitorAsync(deviceGroupId, projectId, pipelineRun.Pipeline.Id, pipelineRun.Id, personalAccessToken, cancellationToken);
+        deploymentMonitor.MonitorDeployment(deviceGroupId, projectId, pipelineRun.Pipeline.Id, pipelineRun.Id, personalAccessToken, cancellationToken);
         
-        return new OperationResult<DeviceGroup>(deviceGroup, true, Constants.StatusSuccessCreated, []);
+        return new OperationResult<DeviceGroup>(deviceGroup, true, Constants.StatusSuccessAccepted, []);
     }
         
     private static string CreateVmPassword()
