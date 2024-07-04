@@ -50,9 +50,13 @@ public class HfDeviceGroupDeploymentMonitor(ITunnelingRepository tunnelingReposi
 
             if (pipelineRun.State != RunState.InProgress)
             {
-                if (pipelineRun.Result.HasValue && pipelineRun.Result.Value.Equals("Succeeded"))
+                if (pipelineRun.Result.HasValue && pipelineRun.Result.Value.ToString().Equals("Succeeded"))
                 {
                     await tunnelingRepository.UpdateDeviceGroupServerStatusAsync(deviceGroupId, ServerStatus.Online, cancellationToken);
+                }
+                else if (pipelineRun.Result.HasValue && pipelineRun.Result.Value.ToString().Equals("Failed"))
+                {
+                    await tunnelingRepository.UpdateDeviceGroupServerStatusAsync(deviceGroupId, ServerStatus.Error, cancellationToken);
                 }
 
                 break;

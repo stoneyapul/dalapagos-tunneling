@@ -58,7 +58,7 @@ internal sealed class DeleteDeviceGroupHandler(ILogger<DeleteDeviceGroupCommand>
             {
                 throw;
             }
-            warnings.Add("Failed to delete te tunneling server fingerprint.");
+            warnings.Add("Failed to delete the tunneling server fingerprint.");
             logger.LogWarning(aex, "Failed to delete secret {Secret} for {DeviceGrpId}.", $"{shortDeviceGrpId}-Tnls-Finger", shortDeviceGrpId);
         }
 

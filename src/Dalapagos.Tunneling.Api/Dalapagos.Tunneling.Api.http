@@ -39,7 +39,7 @@ Content-Type: application/json
 
 ###
 # Delete a device group.
-DELETE {{hostAddress}}/v1/devicegroups/be54ba13-d420-4e51-9374-a2850335d6dc
+DELETE {{hostAddress}}/v1/devicegroups/3b076c2f-698f-46b7-b97f-134976a71d9e
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
