@@ -8,7 +8,7 @@ using Model;
 
 public record class UpdateOrganizationCommand(Guid Id, string Name) : IRequest<OperationResult<Organization>>;
 
-public class UpdateOrganizationHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<UpdateOrganizationCommand, OperationResult<Organization>>
+internal sealed class UpdateOrganizationHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<UpdateOrganizationCommand, OperationResult<Organization>>
 {
     public async ValueTask<OperationResult<Organization>> Handle(UpdateOrganizationCommand request, CancellationToken cancellationToken)
     {

@@ -8,7 +8,7 @@ using Model;
 
 public record GetDeviceGroupByIdQuery(Guid Id, Guid OganizationId) : IRequest<OperationResult<DeviceGroup>>;
 
-public class GetDeviceGroupByIdHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<GetDeviceGroupByIdQuery, OperationResult<DeviceGroup>>
+internal sealed class GetDeviceGroupByIdHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<GetDeviceGroupByIdQuery, OperationResult<DeviceGroup>>
 {
    public async ValueTask<OperationResult<DeviceGroup>> Handle(GetDeviceGroupByIdQuery request, CancellationToken cancellationToken)
     {

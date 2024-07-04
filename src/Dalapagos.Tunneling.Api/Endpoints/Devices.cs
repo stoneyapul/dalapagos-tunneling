@@ -23,7 +23,7 @@ public static class Devices
                     request.DeviceGroupId, 
                     request.Name, 
                     Enum.Parse<Os>(request.Os, true)), 
-                    cancellationToken);
+                cancellationToken);
 
             var mapper = new DeviceMapper();
             return mapper.MapOperationResult(result);

@@ -6,11 +6,11 @@ using Mediator;
 using Microsoft.Extensions.Logging;
 using Model;
 
-public class GlobalExceptionHandler<TMessage, TResponse>(ILogger<GlobalExceptionHandler<TMessage, TResponse>> logger) : IPipelineBehavior<TMessage, TResponse>
+public sealed class GlobalExceptionHandler<TMessage, TResponse>(ILogger<GlobalExceptionHandler<TMessage, TResponse>> logger) : IPipelineBehavior<TMessage, TResponse>
     where TMessage : notnull, IMessage
     where TResponse : OperationResult
 {
-    protected readonly ILogger<GlobalExceptionHandler<TMessage, TResponse>> _logger = logger;
+    private readonly ILogger<GlobalExceptionHandler<TMessage, TResponse>> _logger = logger;
 
     public async ValueTask<TResponse> Handle(TMessage message, CancellationToken cancellationToken, MessageHandlerDelegate<TMessage, TResponse> next)
     {

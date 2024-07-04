@@ -8,7 +8,7 @@ using Model;
 
 public record GetOrganizationByIdQuery(Guid Id) : IRequest<OperationResult<Organization>>;
 
-public class GetOrganizationByIdHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<GetOrganizationByIdQuery, OperationResult<Organization>>
+internal sealed class GetOrganizationByIdHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<GetOrganizationByIdQuery, OperationResult<Organization>>
 {
    public async ValueTask<OperationResult<Organization>> Handle(GetOrganizationByIdQuery request, CancellationToken cancellationToken)
     {

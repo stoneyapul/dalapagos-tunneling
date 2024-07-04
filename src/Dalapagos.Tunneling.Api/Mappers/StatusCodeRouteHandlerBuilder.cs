@@ -1,8 +1,8 @@
-﻿namespace Dalapagos.Tunneling.Api;
+﻿namespace Dalapagos.Tunneling.Api.Mappers;
 
 using Core.Model;
 
-public static class StatusCodeRouteHandlerBuilder
+internal static class StatusCodeRouteHandlerBuilder
 {
     public static RouteHandlerBuilder SetStatusCode(this RouteHandlerBuilder builder)
     {

@@ -8,7 +8,7 @@ using Model;
 
 public record AddOrganizationCommand(Guid? Id, string Name) : IRequest<OperationResult<Organization>>;
 
-public class AddOrganizationHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<AddOrganizationCommand, OperationResult<Organization>>
+internal sealed class AddOrganizationHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<AddOrganizationCommand, OperationResult<Organization>>
 {
     public async ValueTask<OperationResult<Organization>> Handle(AddOrganizationCommand request, CancellationToken cancellationToken)
     {

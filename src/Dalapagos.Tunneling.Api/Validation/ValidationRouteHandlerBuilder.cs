@@ -3,7 +3,7 @@
 using Core;
 using Core.Model;
 
-public static class ValidationRouteHandlerBuilder
+internal static class ValidationRouteHandlerBuilder
 {
     public static RouteHandlerBuilder Validate<T>(this RouteHandlerBuilder builder)
     { 

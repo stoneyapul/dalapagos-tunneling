@@ -8,7 +8,7 @@ using Model;
 
 public record DeleteOrganizationCommand(Guid Id) : IRequest<OperationResult>;
 
-public class DeleteOrganizationHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<DeleteOrganizationCommand, OperationResult>
+internal sealed class DeleteOrganizationHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<DeleteOrganizationCommand, OperationResult>
 {
     public async ValueTask<OperationResult> Handle(DeleteOrganizationCommand request, CancellationToken cancellationToken)
     {

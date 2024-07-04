@@ -18,7 +18,7 @@ using Model;
 
 public record AddDeviceGroupCommand(Guid? Id, Guid OrganizationId, string Name, ServerLocation Location) : IRequest<OperationResult<DeviceGroup>>;
 
-public class AddDeviceGroupHandler(
+internal sealed class AddDeviceGroupHandler(
     ILogger<AddDeviceGroupCommand> logger, 
     IConfiguration config, 
     ITunnelingRepository tunnelingRepository,

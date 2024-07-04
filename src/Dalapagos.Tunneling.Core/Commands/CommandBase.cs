@@ -4,7 +4,7 @@ using Azure.Core;
 using Azure.Identity;
 using Microsoft.Extensions.Configuration;
 
-public class CommandBase
+public abstract class CommandBase
 {
     protected static TokenCredential GetTokenCredential(IConfiguration config)
     {

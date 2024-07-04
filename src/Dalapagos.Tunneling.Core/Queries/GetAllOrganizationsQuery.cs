@@ -8,7 +8,7 @@ using Model;
 
 public record GetAllOrganizationsQuery(): IRequest<OperationResult<IList<Organization>>>;
 
-public class GetAllOrganizationsHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<GetAllOrganizationsQuery, OperationResult<IList<Organization>>>
+internal sealed class GetAllOrganizationsHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<GetAllOrganizationsQuery, OperationResult<IList<Organization>>>
 {
     public async ValueTask<OperationResult<IList<Organization>>> Handle(GetAllOrganizationsQuery request, CancellationToken cancellationToken)
     {

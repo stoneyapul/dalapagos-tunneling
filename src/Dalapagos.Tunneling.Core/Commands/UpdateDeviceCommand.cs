@@ -8,7 +8,7 @@ using Model;
 
 public record UpdateDeviceCommand(Guid Id, Guid? DeviceGroupId, string Name, Os Os) : IRequest<OperationResult<Device>>;
 
-public class UpdateDeviceHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<UpdateDeviceCommand, OperationResult<Device>>
+internal sealed class UpdateDeviceHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<UpdateDeviceCommand, OperationResult<Device>>
 {
     public async ValueTask<OperationResult<Device>> Handle(UpdateDeviceCommand request, CancellationToken cancellationToken)
     {

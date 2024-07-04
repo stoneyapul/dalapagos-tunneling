@@ -12,7 +12,7 @@ using Model;
 
 public record DeleteDeviceGroupCommand(Guid Id, Guid OganizationId) : IRequest<OperationResult>;
 
-public class DeleteDeviceGroupHandler(ILogger<DeleteDeviceGroupCommand> logger, IConfiguration config, ITunnelingRepository tunnelingRepository) 
+internal sealed class DeleteDeviceGroupHandler(ILogger<DeleteDeviceGroupCommand> logger, IConfiguration config, ITunnelingRepository tunnelingRepository) 
     : CommandBase, IRequestHandler<DeleteDeviceGroupCommand, OperationResult>
 {
     public async ValueTask<OperationResult> Handle(DeleteDeviceGroupCommand request, CancellationToken cancellationToken)

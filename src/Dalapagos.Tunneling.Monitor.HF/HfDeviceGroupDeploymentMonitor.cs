@@ -17,10 +17,10 @@ public class HfDeviceGroupDeploymentMonitor(ITunnelingRepository tunnelingReposi
         BackgroundJob.Schedule(
             () =>
             WatchAndUpdateStatusAsync(deviceGroupId, projectId, pipelineId, runId, personalAccessToken, cancellationToken),
-            TimeSpan.FromSeconds(90));
+            TimeSpan.FromSeconds(60));
     }
 
-    private async Task WatchAndUpdateStatusAsync(Guid deviceGroupId, Guid projectId, int pipelineId, int runId, string personalAccessToken, CancellationToken cancellationToken)
+    public async Task WatchAndUpdateStatusAsync(Guid deviceGroupId, Guid projectId, int pipelineId, int runId, string personalAccessToken, CancellationToken cancellationToken)
     {
         var pipelineClient = new PipelinesHttpClient(new Uri(Constants.DevOpsBaseUrl), new VssBasicCredential(string.Empty, personalAccessToken));
 

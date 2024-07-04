@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-public static class DataValidator
+internal static class DataValidator
 {
     public static (List<ValidationResult> Results, bool IsValid) DataAnnotationsValidate(this object model)
     {
