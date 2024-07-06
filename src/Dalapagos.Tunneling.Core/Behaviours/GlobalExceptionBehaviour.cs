@@ -1,4 +1,4 @@
-﻿namespace Dalapagos.Tunneling.Core;
+﻿namespace Dalapagos.Tunneling.Core.Behaviours;
 
 using System;
 using System.Threading.Tasks;
@@ -6,11 +6,11 @@ using Mediator;
 using Microsoft.Extensions.Logging;
 using Model;
 
-public sealed class GlobalExceptionHandler<TMessage, TResponse>(ILogger<GlobalExceptionHandler<TMessage, TResponse>> logger) : IPipelineBehavior<TMessage, TResponse>
+public sealed class GlobalExceptionBehaviour<TMessage, TResponse>(ILogger<GlobalExceptionBehaviour<TMessage, TResponse>> logger) : IPipelineBehavior<TMessage, TResponse>
     where TMessage : notnull, IMessage
     where TResponse : OperationResult
 {
-    private readonly ILogger<GlobalExceptionHandler<TMessage, TResponse>> _logger = logger;
+    private readonly ILogger<GlobalExceptionBehaviour<TMessage, TResponse>> _logger = logger;
 
     public async ValueTask<TResponse> Handle(TMessage message, CancellationToken cancellationToken, MessageHandlerDelegate<TMessage, TResponse> next)
     {

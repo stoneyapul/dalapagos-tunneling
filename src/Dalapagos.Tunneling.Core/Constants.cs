@@ -11,6 +11,7 @@ public static class Constants
     public const int StatusSuccessAccepted = 202;
     public const int StatusSuccessNoResponse = 204;
     public const int StatusFailClient = 400;
+    public const int StatusPermissionDenied = 403;
     public const int StatusFailServer = 500;
 
 }

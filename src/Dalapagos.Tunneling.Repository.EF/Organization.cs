@@ -12,4 +12,6 @@ public partial class Organization
     public Guid OrganizationUuid { get; set; }
 
     public virtual ICollection<DeviceGroup> DeviceGroups { get; set; } = new List<DeviceGroup>();
+
+    public virtual ICollection<OrganizationUser> OrganizationUsers { get; set; } = new List<OrganizationUser>();
 }

@@ -139,6 +139,27 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
         return organizations;
     }
 
+    public async Task<IList<Core.Model.OrganizationUser>> GetOrganizationUsersByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var organizationUserEntities = await dbContext.OrganizationUsers
+            .AsNoTracking()
+            .Include(o => o.Organization)
+            .Where(o => o.UserUuid == userId)
+            .ToListAsync(cancellationToken);
+
+        var organizationUsers = new List<Core.Model.OrganizationUser>();
+        foreach (var organizationUserEntity in organizationUserEntities)
+        {
+            organizationUsers.Add(
+                new Core.Model.OrganizationUser(
+                    organizationUserEntity.Organization.OrganizationUuid, 
+                    userId, 
+                    organizationUserEntity.SecurityGroupUuid));
+        }
+
+        return organizationUsers;
+   }
+
     public async Task<Core.Model.DeviceGroup> RetrieveDeviceGroupAsync(Guid organizationId, Guid deviceGroupId, CancellationToken cancellationToken)
     {
         var deviceGroupEntity = await dbContext.DeviceGroups

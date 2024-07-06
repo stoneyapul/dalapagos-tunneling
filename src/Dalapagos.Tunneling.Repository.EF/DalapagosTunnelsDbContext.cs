@@ -21,6 +21,8 @@ public partial class DalapagosTunnelsDbContext : DbContext
 
     public virtual DbSet<Organization> Organizations { get; set; }
 
+    public virtual DbSet<OrganizationUser> OrganizationUsers { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Device>(entity =>
@@ -61,6 +63,17 @@ public partial class DalapagosTunnelsDbContext : DbContext
 
             entity.Property(e => e.OrganizationName).HasMaxLength(64);
             entity.Property(e => e.OrganizationUuid).HasDefaultValueSql("(newid())");
+        });
+
+        modelBuilder.Entity<OrganizationUser>(entity =>
+        {
+            entity.ToTable("OrganizationUser");
+
+            entity.HasIndex(e => e.UserUuid, "Index_UserUuid");
+
+            entity.HasOne(d => d.Organization).WithMany(p => p.OrganizationUsers)
+                .HasForeignKey(d => d.OrganizationId)
+                .HasConstraintName("FK_Organization_OrganizationUser");
         });
 
         OnModelCreatingPartial(modelBuilder);

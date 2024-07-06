@@ -10,6 +10,8 @@ public interface ITunnelingRepository
 
     Task<IList<Organization>> GetOrganizationsAsync(CancellationToken cancellationToken);
 
+    Task<IList<OrganizationUser>> GetOrganizationUsersByUserIdAsync(Guid userId, CancellationToken cancellationToken);
+
     Task DeleteOrganizationAsync(Guid organizationId, CancellationToken cancellationToken);
 
     Task<Device> UpsertDeviceAsync(Guid? deviceId, Guid? deviceGroupId, string deviceName, Os os, CancellationToken cancellationToken);

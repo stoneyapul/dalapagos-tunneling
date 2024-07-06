@@ -2,11 +2,14 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using Behaviours;
 using Infrastructure;
 using Mediator;
 using Model;
 
-public record AddDeviceCommand(Guid? Id, Guid? DeviceGroupId, string Name, Os Os) : IRequest<OperationResult<Device>>;
+[CommandAuthorization(AccessType.Admin)]
+public record AddDeviceCommand(Guid? Id, Guid? DeviceGroupId, string Name, Os Os, Guid OrganizationId, Guid UserId) 
+    : OperationRequest(OrganizationId, UserId), IRequest<OperationResult<Device>>;
 
 internal sealed class AddDeviceHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<AddDeviceCommand, OperationResult<Device>>
 {
