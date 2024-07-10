@@ -20,7 +20,8 @@ public static class DeviceGroups
             var result = await mediator.Send(
                 new AddDeviceGroupCommand(
                     request.DeviceGroupId, 
-                    new Guid("ce80cca7-2591-43c5-a721-442a610d814b"),
+                    request.OrganizationId,
+                    
                     request.Name,
                     Enum.Parse<ServerLocation>(request.Location, true)), 
                 cancellationToken);
@@ -37,14 +38,14 @@ public static class DeviceGroups
             var result = await mediator.Send(
                 new DeleteDeviceGroupCommand(
                     deviceGroupId,
-                    new Guid("ce80cca7-2591-43c5-a721-442a610d814b")), 
+                    request.OrganizationId,
+                    ), 
                 cancellationToken);
 
             var mapper = new DeviceMapper();
             return mapper.MapOperationResult(result);
         })
         .WithName("DeleteDeviceGroup")
-        .SetStatusCode();
-       
+        .SetStatusCode();      
     }
 }

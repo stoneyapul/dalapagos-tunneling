@@ -1,6 +1,7 @@
 ﻿namespace Dalapagos.Tunneling.Core.Behaviours;
 
 using System.Reflection;
+using Commands;
 using Exceptions;
 using Infrastructure;
 using Mediator;
@@ -13,7 +14,7 @@ public sealed class CommandAuthorizationBehaviour<TMessage, TResponse>(
     IConfiguration config, 
     ITunnelingRepository tunnelingRepository) 
     : IPipelineBehavior<TMessage, TResponse>
-    where TMessage : OperationRequest, IMessage
+    where TMessage : CommandBase<TResponse>, IMessage
     where TResponse : OperationResult
 {
     private const string AzureAdKey = "AzureAd";

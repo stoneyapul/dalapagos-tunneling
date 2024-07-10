@@ -1,27 +1,14 @@
 ﻿namespace Dalapagos.Tunneling.Core.Commands;
 
-using System.Threading;
-using System.Threading.Tasks;
 using Behaviours;
-using Infrastructure;
-using Mediator;
 using Model;
 
 [CommandAuthorization(AccessType.Admin)]
-public record AddDeviceCommand(Guid? Id, Guid? DeviceGroupId, string Name, Os Os, Guid OrganizationId, Guid UserId) 
-    : OperationRequest(OrganizationId, UserId), IRequest<OperationResult<Device>>;
-
-internal sealed class AddDeviceHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<AddDeviceCommand, OperationResult<Device>>
+public sealed class AddDeviceCommand(Guid? id, Guid? deviceGroupId, string name, Os os, Guid organizationId, Guid userId) 
+    : CommandBase<OperationResult<Device>>(organizationId, userId)
 {
-    public async ValueTask<OperationResult<Device>> Handle(AddDeviceCommand request, CancellationToken cancellationToken)
-    {
-        var device = await tunnelingRepository.UpsertDeviceAsync(
-            request.Id.HasValue ? request.Id : Guid.NewGuid(), 
-            request.DeviceGroupId,
-            request.Name,
-            request.Os, 
-            cancellationToken);
-            
-        return new OperationResult<Device>(device, true, Constants.StatusSuccessCreated, []);
-    }
+    public Guid? Id { get; init; } = id;
+    public Guid? DeviceGroupId { get; init; } = deviceGroupId;
+    public string Name { get; init; } = name;
+    public Os Os { get; init; } = os;
 }

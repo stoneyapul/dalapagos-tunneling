@@ -1,22 +1,12 @@
 ﻿namespace Dalapagos.Tunneling.Core.Commands;
 
-using System.Threading;
-using System.Threading.Tasks;
-using Infrastructure;
-using Mediator;
+using Behaviours;
 using Model;
 
-public record AddOrganizationCommand(Guid? Id, string Name) : IRequest<OperationResult<Organization>>;
-
-internal sealed class AddOrganizationHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<AddOrganizationCommand, OperationResult<Organization>>
+[CommandAuthorization(AccessType.Admin)]
+public sealed class AddOrganizationCommand(Guid? id, string name, Guid organizationId, Guid userId) 
+    : CommandBase<OperationResult<Organization>>(organizationId, userId)
 {
-    public async ValueTask<OperationResult<Organization>> Handle(AddOrganizationCommand request, CancellationToken cancellationToken)
-    {
-        var organization = await tunnelingRepository.UpsertOrganizationAsync(
-            request.Id.HasValue ? request.Id : Guid.NewGuid(), 
-            request.Name, 
-            cancellationToken);
-            
-        return new OperationResult<Organization>(organization, true, Constants.StatusSuccessCreated, []);
-    }
+    public Guid? Id { get; init; } = id;
+    public string Name { get; init; } = name;
 }
