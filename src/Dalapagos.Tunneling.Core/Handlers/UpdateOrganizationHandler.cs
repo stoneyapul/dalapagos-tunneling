@@ -7,10 +7,12 @@ using Infrastructure;
 using Model;
 
 internal sealed class UpdateOrganizationHandler(ITunnelingRepository tunnelingRepository) 
-    : HandlerBase<UpdateOrganizationCommand, OperationResult<Organization>>
+    : HandlerBase<UpdateOrganizationCommand, OperationResult<Organization>>(tunnelingRepository)
 {
     public override async ValueTask<OperationResult<Organization>> Handle(UpdateOrganizationCommand request, CancellationToken cancellationToken)
     {
+        await VerifyUserOrganizationAsync(request, cancellationToken);
+
         var organization = await tunnelingRepository.UpsertOrganizationAsync(
             request.Id, 
             request.Name, 

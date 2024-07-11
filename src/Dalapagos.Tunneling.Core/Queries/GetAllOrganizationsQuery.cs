@@ -1,18 +1,8 @@
 ﻿namespace Dalapagos.Tunneling.Core.Queries;
 
-using System.Threading;
-using System.Threading.Tasks;
-using Infrastructure;
-using Mediator;
+using Behaviours;
 using Model;
 
-public record GetAllOrganizationsQuery(): IRequest<OperationResult<IList<Organization>>>;
-
-internal sealed class GetAllOrganizationsHandler(ITunnelingRepository tunnelingRepository) : IRequestHandler<GetAllOrganizationsQuery, OperationResult<IList<Organization>>>
-{
-    public async ValueTask<OperationResult<IList<Organization>>> Handle(GetAllOrganizationsQuery request, CancellationToken cancellationToken)
-    {
-        var organizations = await tunnelingRepository.GetOrganizationsAsync(cancellationToken);       
-        return new OperationResult<IList<Organization>>(organizations, true, Constants.StatusSuccess, []);
-    }
-}
+[CommandAuthorization(AccessType.User)]
+public sealed class GetAllOrganizationsQuery(Guid organizationId, Guid userId)
+    : QueryBase<OperationResult<IList<Organization>>>(organizationId, userId){}

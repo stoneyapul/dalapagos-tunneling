@@ -22,10 +22,12 @@ internal sealed class AddDeviceGroupHandler(
     IConfiguration config, 
     ITunnelingRepository tunnelingRepository,
     IDeviceGroupDeploymentMonitor deploymentMonitor) 
-        : HandlerBase<AddDeviceGroupCommand, OperationResult<DeviceGroup>>
+        : HandlerBase<AddDeviceGroupCommand, OperationResult<DeviceGroup>>(tunnelingRepository)
 {
     public override async ValueTask<OperationResult<DeviceGroup>> Handle(AddDeviceGroupCommand request, CancellationToken cancellationToken)
     {
+        await VerifyUserOrganizationAsync(request, cancellationToken);
+ 
         var keyVaultName = config["KeyVaultName"] ?? throw new ConfigurationException("KeyVaultName");
         var projectIdAsString = config["DevOpsProjectId"] ?? throw new ConfigurationException("DevOpsProjectId");
         var branch = config["DevOpsBranch"] ?? throw new ConfigurationException("DevOpsBranch");

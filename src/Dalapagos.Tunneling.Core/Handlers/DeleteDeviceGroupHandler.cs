@@ -11,10 +11,12 @@ using Microsoft.Extensions.Logging;
 using Model;
 
 internal sealed  class DeleteDeviceGroupHandler(ILogger<DeleteDeviceGroupCommand> logger, IConfiguration config, ITunnelingRepository tunnelingRepository)
-    : HandlerBase<DeleteDeviceGroupCommand, OperationResult>
+    : HandlerBase<DeleteDeviceGroupCommand, OperationResult>(tunnelingRepository)
 {
    public override async ValueTask<OperationResult> Handle(DeleteDeviceGroupCommand request, CancellationToken cancellationToken)
     {
+        await VerifyUserOrganizationAsync(request, cancellationToken);
+        
         var keyVaultName = config["KeyVaultName"]!;
         var shortDeviceGrpId = request.Id.ToString().Substring(24, 12).ToLowerInvariant();
         var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(request.OrganizationId, request.Id, cancellationToken);

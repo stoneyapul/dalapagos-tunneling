@@ -7,10 +7,12 @@ using Infrastructure;
 using Model;
 
 internal sealed  class DeleteOrganizationHandler(ITunnelingRepository tunnelingRepository) 
-    : HandlerBase<DeleteOrganizationCommand, OperationResult>
+    : HandlerBase<DeleteOrganizationCommand, OperationResult>(tunnelingRepository)
 {
     public override async ValueTask<OperationResult> Handle(DeleteOrganizationCommand request, CancellationToken cancellationToken)
     {
+        await VerifyUserOrganizationAsync(request, cancellationToken);
+        
         await tunnelingRepository.DeleteOrganizationAsync(request.Id, cancellationToken);           
         return new OperationResult(true, Constants.StatusSuccess, []);
     }

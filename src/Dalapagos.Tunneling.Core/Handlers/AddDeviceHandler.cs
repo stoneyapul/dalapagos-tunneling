@@ -7,10 +7,12 @@ using Infrastructure;
 using Model;
 
 internal sealed class AddDeviceHandler(ITunnelingRepository tunnelingRepository) 
-    : HandlerBase<AddDeviceCommand, OperationResult<Device>>
+    : HandlerBase<AddDeviceCommand, OperationResult<Device>>(tunnelingRepository)
 {
     public override async ValueTask<OperationResult<Device>> Handle(AddDeviceCommand request, CancellationToken cancellationToken)
     {
+        await VerifyUserOrganizationAsync(request, cancellationToken);
+ 
         var device = await tunnelingRepository.UpsertDeviceAsync(
             request.Id.HasValue ? request.Id : Guid.NewGuid(), 
             request.DeviceGroupId,
