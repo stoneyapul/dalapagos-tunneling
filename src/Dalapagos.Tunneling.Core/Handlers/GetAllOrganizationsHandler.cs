@@ -3,11 +3,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Model;
 using Queries;
 
-internal sealed class GetAllOrganizationsHandler(ITunnelingRepository tunnelingRepository)
-        : HandlerBase<GetAllOrganizationsQuery, OperationResult<IList<Organization>>>(tunnelingRepository)
+internal sealed class GetAllOrganizationsHandler(ITunnelingRepository tunnelingRepository, IConfiguration config)
+        : HandlerBase<GetAllOrganizationsQuery, OperationResult<IList<Organization>>>(tunnelingRepository, config)
 {
     public override async ValueTask<OperationResult<IList<Organization>>> Handle(GetAllOrganizationsQuery request, CancellationToken cancellationToken)
     {

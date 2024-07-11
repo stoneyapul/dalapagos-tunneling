@@ -4,10 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Commands;
 using Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Model;
 
-internal sealed class AddDeviceHandler(ITunnelingRepository tunnelingRepository) 
-    : HandlerBase<AddDeviceCommand, OperationResult<Device>>(tunnelingRepository)
+internal sealed class AddDeviceHandler(ITunnelingRepository tunnelingRepository, IConfiguration config) 
+    : HandlerBase<AddDeviceCommand, OperationResult<Device>>(tunnelingRepository, config)
 {
     public override async ValueTask<OperationResult<Device>> Handle(AddDeviceCommand request, CancellationToken cancellationToken)
     {

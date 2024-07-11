@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Model;
 
 internal sealed  class DeleteDeviceGroupHandler(ILogger<DeleteDeviceGroupCommand> logger, IConfiguration config, ITunnelingRepository tunnelingRepository)
-    : HandlerBase<DeleteDeviceGroupCommand, OperationResult>(tunnelingRepository)
+    : HandlerBase<DeleteDeviceGroupCommand, OperationResult>(tunnelingRepository, config)
 {
    public override async ValueTask<OperationResult> Handle(DeleteDeviceGroupCommand request, CancellationToken cancellationToken)
     {

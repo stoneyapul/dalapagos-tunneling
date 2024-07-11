@@ -2,6 +2,7 @@
 // This command creates a device group in the database and kicks off provisioning for an RPort server.
 namespace Dalapagos.Tunneling.Core.Handlers;
 
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,11 +23,11 @@ internal sealed class AddDeviceGroupHandler(
     IConfiguration config, 
     ITunnelingRepository tunnelingRepository,
     IDeviceGroupDeploymentMonitor deploymentMonitor) 
-        : HandlerBase<AddDeviceGroupCommand, OperationResult<DeviceGroup>>(tunnelingRepository)
+        : HandlerBase<AddDeviceGroupCommand, OperationResult<DeviceGroup>>(tunnelingRepository, config)
 {
     public override async ValueTask<OperationResult<DeviceGroup>> Handle(AddDeviceGroupCommand request, CancellationToken cancellationToken)
     {
-        await VerifyUserOrganizationAsync(request, cancellationToken);
+        _ = await VerifyUserOrganizationAsync(request, cancellationToken);
  
         var keyVaultName = config["KeyVaultName"] ?? throw new ConfigurationException("KeyVaultName");
         var projectIdAsString = config["DevOpsProjectId"] ?? throw new ConfigurationException("DevOpsProjectId");

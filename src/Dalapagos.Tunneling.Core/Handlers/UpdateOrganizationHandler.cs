@@ -4,10 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Commands;
 using Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Model;
 
-internal sealed class UpdateOrganizationHandler(ITunnelingRepository tunnelingRepository) 
-    : HandlerBase<UpdateOrganizationCommand, OperationResult<Organization>>(tunnelingRepository)
+internal sealed class UpdateOrganizationHandler(ITunnelingRepository tunnelingRepository, IConfiguration config) 
+    : HandlerBase<UpdateOrganizationCommand, OperationResult<Organization>>(tunnelingRepository, config)
 {
     public override async ValueTask<OperationResult<Organization>> Handle(UpdateOrganizationCommand request, CancellationToken cancellationToken)
     {

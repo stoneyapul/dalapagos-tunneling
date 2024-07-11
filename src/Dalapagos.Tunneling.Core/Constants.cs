@@ -5,7 +5,7 @@ public static class Constants
     public const string DevOpsBaseUrl = "https://dev.azure.com/dalapagos";
     public const string PipelineName = "dalapagos-tunneling-server-scripts";
 
-    // Statuses map to http status codes. Just use HttpStatusCode enum instead?
+    // Statuses map to http status codes.
     public const int StatusSuccess = 200;
     public const int StatusSuccessCreated = 201;
     public const int StatusSuccessAccepted = 202;

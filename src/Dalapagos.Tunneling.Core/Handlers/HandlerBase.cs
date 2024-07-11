@@ -10,11 +10,16 @@ using Mediator;
 using Microsoft.Extensions.Configuration;   
 using Model;
 
-public abstract class HandlerBase<TRequest, TResponse>(ITunnelingRepository tunnelingRepository) : IRequestHandler<TRequest, TResponse> 
+public abstract class HandlerBase<TRequest, TResponse>(ITunnelingRepository tunnelingRepository, IConfiguration config) : IRequestHandler<TRequest, TResponse> 
     where TRequest : IRequest<TResponse>, ICommandIdentity
     where TResponse : OperationResult
 {
+    private const string AzureAdKey = "AzureAd";
+    private const string TunnelingAdminKey = "Groups:Dalapagos-Tunneling-Admin-Access";
+    private const string TunnelingUserKey = "Groups:Dalapagos-Tunneling-User-Access";
+
     protected readonly ITunnelingRepository tunnelingRepository = tunnelingRepository;
+    protected readonly IConfiguration config = config;
 
     protected static TokenCredential GetTokenCredential(IConfiguration config)
     {
@@ -37,12 +42,19 @@ public abstract class HandlerBase<TRequest, TResponse>(ITunnelingRepository tunn
         return await tunnelingRepository.GetOrganizationUsersByUserIdAsync(request.UserId, cancellationToken);              
     }
 
-    protected async Task VerifyUserOrganizationAsync(TRequest request, CancellationToken cancellationToken)
+    protected async Task<AccessType> VerifyUserOrganizationAsync(TRequest request, CancellationToken cancellationToken)
     {
+        var adConfigSection = config.GetSection(AzureAdKey) ?? throw new ConfigurationException(AzureAdKey);
+        var adminGroup = adConfigSection.GetValue<string>(TunnelingAdminKey) ?? throw new ConfigurationException(TunnelingAdminKey);
+        var userGroup = adConfigSection.GetValue<string>(TunnelingUserKey) ?? throw new ConfigurationException(TunnelingUserKey);
+
         var userOrganizations = await GetUserOrganizationsAsync(request, cancellationToken);
         if (userOrganizations.All(x => x.OrganizationId != request.OrganizationId))
         {
             throw new AccessDeniedException();
         }
+
+        var group =  userOrganizations.First(x => x.OrganizationId == request.OrganizationId);
+        return group.SecurityGroupId.Equals(adminGroup) ? AccessType.Admin : AccessType.User;
     }
 }

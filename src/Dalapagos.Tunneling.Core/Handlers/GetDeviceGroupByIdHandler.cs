@@ -3,11 +3,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Model;
 using Queries;
 
-internal sealed class GetDeviceGroupByIdHandler(ITunnelingRepository tunnelingRepository) 
-    : HandlerBase<GetDeviceGroupByIdQuery, OperationResult<DeviceGroup>>(tunnelingRepository)
+internal sealed class GetDeviceGroupByIdHandler(ITunnelingRepository tunnelingRepository, IConfiguration config) 
+    : HandlerBase<GetDeviceGroupByIdQuery, OperationResult<DeviceGroup>>(tunnelingRepository, config)
 {
    public override async ValueTask<OperationResult<DeviceGroup>> Handle(GetDeviceGroupByIdQuery request, CancellationToken cancellationToken)
     {

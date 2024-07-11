@@ -4,10 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Commands;
 using Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Model;
 
-internal sealed class DeleteDeviceHandler(ITunnelingRepository tunnelingRepository)
-    : HandlerBase<DeleteDeviceCommand, OperationResult>(tunnelingRepository)
+internal sealed class DeleteDeviceHandler(ITunnelingRepository tunnelingRepository, IConfiguration config)
+    : HandlerBase<DeleteDeviceCommand, OperationResult>(tunnelingRepository, config)
 {
     public override async ValueTask<OperationResult> Handle(DeleteDeviceCommand request, CancellationToken cancellationToken)
     {
