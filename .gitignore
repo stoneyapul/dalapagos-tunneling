@@ -398,7 +398,7 @@ FodyWeavers.xsd
 *.sln.iml
 
 src/Tests/Dalapagos.Tunneling.Repository.EF.Integrationtests/appsettings.json
-src/Tests/Dalapagos.Tunneling.Repository.EF/scaffolding.sh
+src/Tests/Dalapagos.Tunneling.Repository.EF/scaffold.sh
 src/Tests/Dalapagos.Tunneling.Core.IntegrationTests/appsettings.json
 src/Presentation/Dalapagos.Tunneling.Api/appsettings.Development.json
 
