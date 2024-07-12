@@ -4,7 +4,7 @@ using Core.Model;
 
 internal static class StatusCodeRouteHandlerBuilder
 {
-    public static RouteHandlerBuilder SetStatusCode(this RouteHandlerBuilder builder)
+    public static RouteHandlerBuilder SetResponseStatusCode(this RouteHandlerBuilder builder)
     {
         builder.AddEndpointFilter(async (invocationContext, next) => 
         {

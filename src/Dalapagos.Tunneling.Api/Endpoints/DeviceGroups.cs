@@ -2,7 +2,9 @@
 
 using Core.Commands;
 using Core.Model;
+using Core.Queries;
 using Dto;
+using Extensions;
 using Mappers;
 using Mediator;
 using Security;
@@ -12,16 +14,31 @@ public static class DeviceGroups
 {
    public static void RegisterDeviceGroupEndpoints(this IEndpointRouteBuilder routes)
     {
-        var endpoints = routes.MapGroup("v1/devicegroups")
-            .RequireAuthorization(Policies.TunnelingAdminPolicy);
+        var endpoints = routes.MapGroup("/organizations/{organizationId}/v1/devicegroups");
+ 
+        endpoints.MapGet("/{deviceGroupId}", async (Guid organizationId, Guid deviceGroupId, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
+        {
+            var result = await mediator.Send(
+                new GetDeviceGroupByIdQuery(
+                    deviceGroupId,
+                    organizationId,
+                    context.User.GetUserId()), 
+                cancellationToken);
 
-        endpoints.MapPost("", async (AddDeviceGroupRequest request, IMediator mediator, CancellationToken cancellationToken) =>
+            var mapper = new DeviceGroupMapper();
+            return mapper.MapOperationResult(result);
+        })
+        .WithName("GetDeviceGroup")
+        .RequireAuthorization(SecurityPolicies.TunnelingUserPolicy)
+        .SetResponseStatusCode();      
+
+        endpoints.MapPost("", async (Guid organizationId, AddDeviceGroupRequest request, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
         {
             var result = await mediator.Send(
                 new AddDeviceGroupCommand(
                     request.DeviceGroupId, 
-                    request.OrganizationId,
-                    
+                    organizationId,
+                    context.User.GetUserId(),
                     request.Name,
                     Enum.Parse<ServerLocation>(request.Location, true)), 
                 cancellationToken);
@@ -31,21 +48,23 @@ public static class DeviceGroups
         })
         .WithName("AddDeviceGroup")
         .Validate<AddDeviceGroupRequest>()
-        .SetStatusCode();
+        .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
+        .SetResponseStatusCode();
 
-        endpoints.MapDelete("/{deviceGroupId}", async (Guid deviceGroupId, IMediator mediator, CancellationToken cancellationToken) =>
+        endpoints.MapDelete("/{deviceGroupId}", async (Guid organizationId, Guid deviceGroupId, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
         {
             var result = await mediator.Send(
                 new DeleteDeviceGroupCommand(
                     deviceGroupId,
-                    request.OrganizationId,
-                    ), 
+                    organizationId,
+                    context.User.GetUserId()), 
                 cancellationToken);
 
             var mapper = new DeviceMapper();
             return mapper.MapOperationResult(result);
         })
         .WithName("DeleteDeviceGroup")
-        .SetStatusCode();      
+        .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
+        .SetResponseStatusCode();      
     }
 }

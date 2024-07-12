@@ -2,7 +2,7 @@
 
 public class DeviceResponse
 {
-   public Guid DeviceId { get; set; }
+    public Guid DeviceId { get; set; }
 
     public Guid? DeviceGroupId { get; set; }
 

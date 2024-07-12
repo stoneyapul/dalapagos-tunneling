@@ -25,13 +25,13 @@ public static class SecurityInstaller
             var adminGroup = adConfigSection.GetValue<string>($"Groups:{Groups.TunnelingAdmin}");
             if (adminGroup != null)
             {
-                opt.AddPolicy(Policies.TunnelingAdminPolicy, policy => policy.AddRequirements(new GroupAuthorizationRequirement([adminGroup])));
+                opt.AddPolicy(SecurityPolicies.TunnelingAdminPolicy, policy => policy.AddRequirements(new GroupAuthorizationRequirement([adminGroup])));
             }
 
             var userGroup = adConfigSection.GetValue<string>($"Groups:{Groups.TunnelingUser}");
             if (userGroup != null)
             {
-                opt.AddPolicy(Policies.TunnelingUserPolicy, policy => policy.AddRequirements(new GroupAuthorizationRequirement([userGroup])));
+                opt.AddPolicy(SecurityPolicies.TunnelingUserPolicy, policy => policy.AddRequirements(new GroupAuthorizationRequirement([userGroup])));
             }
         });
 

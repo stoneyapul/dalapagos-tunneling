@@ -2,7 +2,6 @@
 // This command creates a device group in the database and kicks off provisioning for an RPort server.
 namespace Dalapagos.Tunneling.Core.Handlers;
 
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;

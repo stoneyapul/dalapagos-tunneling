@@ -3,8 +3,10 @@
 using Core.Commands;
 using Core.Model;
 using Dto;
+using Extensions;
 using Mappers;
 using Mediator;
+using Microsoft.Identity.Web;
 using Security;
 using Validation;
 
@@ -12,10 +14,9 @@ public static class Devices
 {
     public static void RegisterDeviceEndpoints(this IEndpointRouteBuilder routes)
     {
-        var endpoints = routes.MapGroup("v1/devices")
-            .RequireAuthorization(Policies.TunnelingAdminPolicy);
+        var endpoints = routes.MapGroup("/organizations/{organizationId}/v1/devices");
 
-        endpoints.MapPost("", async (AddDeviceRequest request, IMediator mediator, CancellationToken cancellationToken) =>
+        endpoints.MapPost("", async (Guid organizationId, AddDeviceRequest request, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
         {
             var result = await mediator.Send(
                 new AddDeviceCommand(
@@ -23,7 +24,8 @@ public static class Devices
                     request.DeviceGroupId, 
                     request.Name, 
                     Enum.Parse<Os>(request.Os, true),
-                    request.OrganizationId),
+                    organizationId,
+                    context.User.GetUserId()),
                 cancellationToken);
 
             var mapper = new DeviceMapper();
@@ -31,6 +33,7 @@ public static class Devices
         })
         .WithName("AddDevice")
         .Validate<AddDeviceRequest>()
-        .SetStatusCode();
+        .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
+        .SetResponseStatusCode();
     }
 }

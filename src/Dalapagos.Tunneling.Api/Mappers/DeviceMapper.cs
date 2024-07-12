@@ -5,16 +5,16 @@ using Dto;
 
 public class DeviceMapper : MapperBase<Device, DeviceResponse>
 {
-    public override DeviceResponse Map(Device device)
+    public override DeviceResponse Map(Device source)
     {
-        ArgumentNullException.ThrowIfNull(device.Id, nameof(device.Id));
+        ArgumentNullException.ThrowIfNull(source.Id, nameof(source.Id));
 
         return new DeviceResponse
         {
-            DeviceId = device.Id.Value,
-            DeviceGroupId = device.DeviceGroupId,
-            Name = device.Name,
-            Os = device.Os.ToString()
+            DeviceId = source.Id.Value,
+            DeviceGroupId = source.DeviceGroupId,
+            Name = source.Name,
+            Os = source.Os.ToString()
         };
     }
 }

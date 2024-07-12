@@ -6,9 +6,6 @@ using Validation;
 
 public class AddDeviceGroupRequest
 {
-    [Required]
-    public Guid OrganizationId { get; set; }
-
     public Guid? DeviceGroupId { get; set; }
 
     [Required(AllowEmptyStrings = false)]

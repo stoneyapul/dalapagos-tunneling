@@ -12,6 +12,7 @@ public static class Constants
     public const int StatusSuccessNoResponse = 204;
     public const int StatusFailClient = 400;
     public const int StatusPermissionDenied = 403;
+    public const int StatusNotFound = 404;
     public const int StatusFailServer = 500;
-
+    public const int StatusNotImplemented = 501;
 }
