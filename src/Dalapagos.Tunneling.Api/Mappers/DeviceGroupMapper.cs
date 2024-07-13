@@ -22,7 +22,7 @@ public class DeviceGroupMapper : MapperBase<DeviceGroup, DeviceGroupResponse>
 
         return new DeviceGroupResponse
         {
-            DeviceGroupId = source.Id,
+            DeviceGroupId = source.Id.Value,
             Name = source.Name,
             Location = source.ServerLocation.ToString(), 
             Status = source.ServerStatus.ToString(), 
