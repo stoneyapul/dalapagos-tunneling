@@ -27,6 +27,8 @@
     <ProjectReference Include="..\Dalapagos.Tunneling.Core\Dalapagos.Tunneling.Core.csproj" />
     <ProjectReference Include="..\Dalapagos.Tunneling.Repository.EF\Dalapagos.Tunneling.Repository.EF.csproj" />
     <ProjectReference Include="..\Dalapagos.Tunneling.Monitor.HF\Dalapagos.Tunneling.Monitor.HF.csproj" />
+    <ProjectReference Include="..\Dalapagos.Tunneling.Secrets.KeyVault\Dalapagos.Tunneling.Secrets.KeyVault.csproj" />
+    <ProjectReference Include="..\Dalapagos.Tunneling.Rport\Dalapagos.Tunneling.Rport.csproj" />
   </ItemGroup>
 
 </Project>

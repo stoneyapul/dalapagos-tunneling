@@ -4,6 +4,11 @@ public static class Constants
 {
     public const string DevOpsBaseUrl = "https://dev.azure.com/dalapagos";
     public const string PipelineName = "dalapagos-tunneling-server-scripts";
+    public const string FakeBaseUrl = "http://fake.dalapagos.com";
+
+    public const string TunnelingServerFingerprintNameSfx = "-Tnls-Finger";
+    public const string TunnelingServerPassNameSfx = "-Tnls-RPortPass";
+    public const string TunnelingServerVmPassNameSfx = "-Tnls-VmPass";
 
     // Statuses map to http status codes.
     public const int StatusSuccess = 200;

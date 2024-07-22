@@ -17,6 +17,8 @@ public partial class DeviceGroup
 
     public int ServerStatus { get; set; }
 
+    public string? ServerBaseUrl { get; set; }
+
     public virtual ICollection<Device> Devices { get; set; } = new List<Device>();
 
     public virtual Organization Organization { get; set; } = null!;

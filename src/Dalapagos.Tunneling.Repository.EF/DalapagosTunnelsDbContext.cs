@@ -48,6 +48,7 @@ public partial class DalapagosTunnelsDbContext : DbContext
 
             entity.Property(e => e.DeviceGroupName).HasMaxLength(64);
             entity.Property(e => e.DeviceGroupUuid).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.ServerBaseUrl).HasMaxLength(255);
             entity.Property(e => e.ServerLocation).HasMaxLength(50);
 
             entity.HasOne(d => d.Organization).WithMany(p => p.DeviceGroups)

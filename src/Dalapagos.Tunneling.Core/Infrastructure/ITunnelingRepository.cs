@@ -31,4 +31,6 @@ public interface ITunnelingRepository
     Task<DeviceGroup> RetrieveDeviceGroupAsync(Guid organizationId, Guid deviceGroupId, CancellationToken cancellationToken);
 
     Task DeleteDeviceGroupAsync(Guid deviceGroupId, CancellationToken cancellationToken);
+
+    Task<string> RetrieveServerBaseAddressAsync(Guid deviceGroupId, CancellationToken cancellationToken);
 }

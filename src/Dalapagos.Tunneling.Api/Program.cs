@@ -4,6 +4,8 @@ using Dalapagos.Tunneling.Api.Security;
 using Dalapagos.Tunneling.Core.DependencyInjection;
 using Dalapagos.Tunneling.Monitor.HF;
 using Dalapagos.Tunneling.Repository.EF;
+using Dalapagos.Tunneling.Rport;
+using Dalapagos.Tunneling.Secrets.KeyVault;
 using Hangfire;
 using Microsoft.OpenApi.Models;
 
@@ -26,8 +28,10 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddMediation();
+builder.Services.AddKeyVaultSecrets();
 builder.Services.AddEfTunnelingRepository(builder.Configuration);
 builder.Services.AddHfMonitor(builder.Configuration);
+builder.Services.AddRportTunneling();
 builder.Services.AddEndpointSecurity(builder.Configuration);
  
 var app = builder.Build();

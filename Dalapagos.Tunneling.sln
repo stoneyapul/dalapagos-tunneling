@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Api.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Monitor.HF", "src\Dalapagos.Tunneling.Monitor.HF\Dalapagos.Tunneling.Monitor.HF.csproj", "{E283F624-AA2B-46A8-8127-E3C6542AB3A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Rport", "src\Dalapagos.Tunneling.Rport\Dalapagos.Tunneling.Rport.csproj", "{755CD2BF-7015-48B2-93F0-E4E6BBD6FEC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Secrets.KeyVault", "src\Dalapagos.Tunneling.Secrets.KeyVault\Dalapagos.Tunneling.Secrets.KeyVault.csproj", "{E26B94FC-4B44-4300-9FCA-E15191ACEEFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,14 @@ Global
 		{E283F624-AA2B-46A8-8127-E3C6542AB3A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E283F624-AA2B-46A8-8127-E3C6542AB3A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E283F624-AA2B-46A8-8127-E3C6542AB3A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{755CD2BF-7015-48B2-93F0-E4E6BBD6FEC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{755CD2BF-7015-48B2-93F0-E4E6BBD6FEC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{755CD2BF-7015-48B2-93F0-E4E6BBD6FEC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{755CD2BF-7015-48B2-93F0-E4E6BBD6FEC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E26B94FC-4B44-4300-9FCA-E15191ACEEFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E26B94FC-4B44-4300-9FCA-E15191ACEEFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E26B94FC-4B44-4300-9FCA-E15191ACEEFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E26B94FC-4B44-4300-9FCA-E15191ACEEFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,5 +84,7 @@ Global
 		{4E3FBE59-5A81-42C1-963D-49EA5E4D4355} = {BEE30165-7AAF-414F-919F-2C4E3DF3043F}
 		{B25DADFA-9CD7-4655-A0D1-0D16952F7DA1} = {BEE30165-7AAF-414F-919F-2C4E3DF3043F}
 		{E283F624-AA2B-46A8-8127-E3C6542AB3A8} = {84B5101B-040B-4171-AA19-B54EA6E4474B}
+		{755CD2BF-7015-48B2-93F0-E4E6BBD6FEC9} = {84B5101B-040B-4171-AA19-B54EA6E4474B}
+		{E26B94FC-4B44-4300-9FCA-E15191ACEEFA} = {84B5101B-040B-4171-AA19-B54EA6E4474B}
 	EndGlobalSection
 EndGlobal

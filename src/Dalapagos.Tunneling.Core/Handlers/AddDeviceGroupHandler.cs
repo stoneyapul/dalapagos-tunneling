@@ -1,11 +1,10 @@
-﻿// Device groups are a collection of devices. Each device group has an RPort tunneling server associated with it. 
-// This command creates a device group in the database and kicks off provisioning for an RPort server.
+﻿// Device groups are a collection of devices. Each device group has a tunneling server associated with it. 
+// This command creates a device group in the database and kicks off provisioning for a server.
 namespace Dalapagos.Tunneling.Core.Handlers;
 
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure.Security.KeyVault.Secrets;
 using Commands;
 using Exceptions;
 using Extensions;
@@ -16,10 +15,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Services.Common;
 using Model;
 
-
 internal sealed class AddDeviceGroupHandler(
     ILogger<AddDeviceGroupCommand> logger, 
     IConfiguration config, 
+    ISecrets secrets,
     ITunnelingRepository tunnelingRepository,
     IDeviceGroupDeploymentMonitor deploymentMonitor) 
         : HandlerBase<AddDeviceGroupCommand, OperationResult<DeviceGroup>>(tunnelingRepository, config)
@@ -54,19 +53,15 @@ internal sealed class AddDeviceGroupHandler(
             cancellationToken);
 
         var deviceGroupId = deviceGroup.Id ?? throw new Exception("Device group id is null.");
-        var shortDeviceGrpId = deviceGroupId.ToString().Substring(24, 12).ToLowerInvariant();
+        var shortDeviceGrpId = deviceGroupId.ToShortDeviceGroupId();
         var resourceGroupName = $"dlpg-{shortDeviceGrpId}";
         var adminVmPasswordSecretName = $"{shortDeviceGrpId}-Tnls-VmPass";
 
         // Add VM password secret to key vault.
         logger.LogInformation("Saving VM password for organization {OrganizationId} device group {ShortDeviceGrpId}.", request.OrganizationId, shortDeviceGrpId);
-        var credential = GetTokenCredential(config);
-        var keyVaultUrl = "https://" + keyVaultName + ".vault.azure.net";
-        var keyVaultClient = new SecretClient(new Uri(keyVaultUrl), credential);
-        await keyVaultClient.SetSecretAsync(adminVmPasswordSecretName, CreateVmPassword(), cancellationToken);
-
-        logger.LogInformation("Creating RPort server for organization {OrganizationId} device group {ShortDeviceGrpId}.", request.OrganizationId, shortDeviceGrpId);
+        await secrets.SetSecretAsync(adminVmPasswordSecretName, CreateVmPassword(), cancellationToken);
  
+        logger.LogInformation("Creating tunneling server for organization {OrganizationId} device group {ShortDeviceGrpId}.", request.OrganizationId, shortDeviceGrpId);
         var projectId = new Guid(projectIdAsString);
         var pipelineClient = new PipelinesHttpClient(new Uri(Constants.DevOpsBaseUrl), new VssBasicCredential(string.Empty, personalAccessToken));
         var pipelines = await pipelineClient.ListPipelinesAsync(projectId, cancellationToken: cancellationToken);
