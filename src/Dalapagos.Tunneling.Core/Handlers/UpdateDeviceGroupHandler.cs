@@ -21,6 +21,7 @@ internal sealed class UpdateDeviceGroupHandler(ITunnelingRepository tunnelingRep
             request.Name, 
             deviceGroup.ServerLocation,
             deviceGroup.ServerStatus,
+            deviceGroup.ServerBaseUrl,
             cancellationToken);
             
         return new OperationResult<DeviceGroup>(deviceGroup, true, Constants.StatusSuccess, []);

@@ -24,6 +24,7 @@ public interface ITunnelingRepository
         string deviceGroupName, 
         ServerLocation serverLocation, 
         ServerStatus serverStatus, 
+        string? serverBaseUrl,
         CancellationToken cancellationToken);
 
     Task UpdateDeviceGroupServerStatusAsync(Guid deviceGroupId, ServerStatus serverStatus, CancellationToken cancellationToken);

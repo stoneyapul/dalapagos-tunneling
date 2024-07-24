@@ -41,6 +41,7 @@ app.UseAuthorization();
 
 app.RegisterDeviceEndpoints();
 app.RegisterDeviceGroupEndpoints();
+app.RegisterTunnelEndpoints();
 
 app.UseSwagger();
 app.UseReDoc(c =>

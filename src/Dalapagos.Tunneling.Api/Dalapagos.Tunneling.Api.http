@@ -5,7 +5,7 @@
 @hostAddress = http://localhost:5001
 @orgId = ce80cca7-2591-43c5-a721-442a610d814b
 
-@access_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyIsImtpZCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyJ9.eyJhdWQiOiJhcGk6Ly9kYWxhcGFnb3MtdHVubmVsaW5nLWFwaSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzEzY2ZiYTRmLTkyMDMtNDQ5Ni1hNDI0LWIxOWZlNGYwNjI1Mi8iLCJpYXQiOjE3MjA4MzE2MjcsIm5iZiI6MTcyMDgzMTYyNywiZXhwIjoxNzIwODM1NTI3LCJhaW8iOiJFMmRnWUJBNGxocm5ucnh3MDUzL0FYWmIybjRrQWdBPSIsImFwcGlkIjoiZGQ4ODU1YjctOTQzYi00MTgyLThmYWMtYTdiNzBhY2EyYzJmIiwiYXBwaWRhY3IiOiIxIiwiZ3JvdXBzIjpbImFlMTIyZTY0LTBkY2UtNGU3My1iNDRlLTk0ZWY4MjhmOWI3NiIsIjVjYzZmYmUyLTYwZmItNDA5Mi1hOTRlLWM0NWNhOTI4NGI5OSJdLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIvIiwib2lkIjoiNjQ1MzkwYjAtMGI0NC00NWE5LWFiMzEtY2FkMTU3MmEwMTI0IiwicmgiOiIwLkFXOEFUN3JQRXdPU2xrU2tKTEdmNVBCaVVyZFZpTjA3bElKQmo2eW50d3JLTEM5dkFBQS4iLCJzdWIiOiI2NDUzOTBiMC0wYjQ0LTQ1YTktYWIzMS1jYWQxNTcyYTAxMjQiLCJ0aWQiOiIxM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIiLCJ1dGkiOiJ0LXRtWk1sVjJVdVczdkdIVVNFdkFBIiwidmVyIjoiMS4wIn0.qQY_tHdJPwu95-Jw3dFWxdvG2BIpzLJGlimRXDLjfptf8_b4P3nR3VZ0hr8cwphx8gGeLqeB1MMoQnILlzPuUyCQt4TAV-mv6EQOhjpUyspN8mY1bjnvAK_mi7axbvpW8OrdgEFS_q8ps4M2wBd2ImwAT5p9l4C52pEqOJRCoOdq6jbH_aA8Or2meu00uZDAZo2QzVRs4795VSbk7ELQJkzV70_i5M1Pd4yeFnuFCvM9EroXUMC5_tKEYGbs4q3X_oupVbyp00cZyA7PtcMsqgE80MrVZui-1f_pUPbh38LO7t7TrMZIK-JEBWI_uF90eJdLUFspmJZZNW6NpySp0w
+@access_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyIsImtpZCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyJ9.eyJhdWQiOiJhcGk6Ly9kYWxhcGFnb3MtdHVubmVsaW5nLWFwaSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzEzY2ZiYTRmLTkyMDMtNDQ5Ni1hNDI0LWIxOWZlNGYwNjI1Mi8iLCJpYXQiOjE3MjE3ODkzOTMsIm5iZiI6MTcyMTc4OTM5MywiZXhwIjoxNzIxNzkzMjkzLCJhaW8iOiJFMmRnWUxCTkZqTGJvQnYyV2YzbDVCV24zays0QXdBPSIsImFwcGlkIjoiZGQ4ODU1YjctOTQzYi00MTgyLThmYWMtYTdiNzBhY2EyYzJmIiwiYXBwaWRhY3IiOiIxIiwiZ3JvdXBzIjpbImFlMTIyZTY0LTBkY2UtNGU3My1iNDRlLTk0ZWY4MjhmOWI3NiIsIjVjYzZmYmUyLTYwZmItNDA5Mi1hOTRlLWM0NWNhOTI4NGI5OSJdLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIvIiwib2lkIjoiNjQ1MzkwYjAtMGI0NC00NWE5LWFiMzEtY2FkMTU3MmEwMTI0IiwicmgiOiIwLkFXOEFUN3JQRXdPU2xrU2tKTEdmNVBCaVVyZFZpTjA3bElKQmo2eW50d3JLTEM5dkFBQS4iLCJzdWIiOiI2NDUzOTBiMC0wYjQ0LTQ1YTktYWIzMS1jYWQxNTcyYTAxMjQiLCJ0aWQiOiIxM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIiLCJ1dGkiOiJIa0ZPZFZqRE9FZW9JZy1Mb29KS0FBIiwidmVyIjoiMS4wIn0.x1CtmJIyuNvF6ZHRiE8dQ5k9fdjTLX0SHfuHG9NAJ_NBvMdH2dVL19fB6RyZc4tItSewFwPkCuexiU4bNoQTPcqFGqqDv58AtL1pGnvuywQKpoijKMV-C51ohtkDBgvNHenVOET-_1ufeNrGuTEoo8A3aJbdvzNGafP71DKEV1STCNqq1RKee2mxQgZGwqWQcApQ9IqBW-7-qmKKFvsKGV6RRPKbEyVYopXV-8aaMEzfpPPk9nJavmbZGi91GduQTYPoU-mqM-jStRyKIH7JvMovclPliii3V1JP1KR-AyT_Mvp70UkJT-Rcq7_DKTjJTOPNEkDw_ocm8wT691CC8w
 
 ###
 # Get a JWT to access the API.
@@ -22,15 +22,14 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "organizationId": "ce80cca7-2591-43c5-a721-442a610d814b",
-    "deviceGroupId": "1bc050db-6339-4462-bb22-3afc33ef9ea8",
-    "name": "device 1",
+    "deviceGroupId": "528e3dda-5e7a-4af8-8437-396b835dfa6e",
+    "name": "device 2",
     "os": "linux"
 }
 
 ###
 # Get a device group.
-GET {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/1bc050db-6339-4462-bb22-3afc33ef9ea8
+GET {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/528e3dda-5e7a-4af8-8437-396b835dfa6e
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
@@ -47,9 +46,21 @@ Content-Type: application/json
 
 ###
 # Delete a device group.
-DELETE {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/1bc050db-6339-4462-bb22-3afc33ef9ea8
+DELETE {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/528e3dda-5e7a-4af8-8437-396b835dfa6e
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
+
+
+###
+# Add a tunnel.
+POST {{hostAddress}}/organizations/{{orgId}}/v1/tunnels/
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "deviceId": "1e26a0fe-22e7-4b4d-bddb-dd246b7feb61",
+    "protocol": "Ssh"
+}
 
 
 ###

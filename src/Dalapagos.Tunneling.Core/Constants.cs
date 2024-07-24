@@ -6,6 +6,11 @@ public static class Constants
     public const string PipelineName = "dalapagos-tunneling-server-scripts";
     public const string FakeBaseUrl = "http://fake.dalapagos.com";
 
+    // Default ports.
+    public const ushort DefaultSshPort = 22;
+    public const ushort DefaultHttpsPort = 443;
+
+    // Suffixes for secret names.
     public const string TunnelingServerFingerprintNameSfx = "-Tnls-Finger";
     public const string TunnelingServerPassNameSfx = "-Tnls-RPortPass";
     public const string TunnelingServerVmPassNameSfx = "-Tnls-VmPass";

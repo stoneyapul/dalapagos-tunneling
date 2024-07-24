@@ -44,18 +44,20 @@ internal sealed class AddDeviceGroupHandler(
             throw new Exception($"Device group {request.Name} is already deploying to {request.Location}.");
         }
 
+        var deviceGroupId = request.Id ?? Guid.NewGuid();
+        var shortDeviceGrpId = deviceGroupId.ToShortDeviceGroupId();
+        var resourceGroupName = $"dlpg-{shortDeviceGrpId}";
+        var adminVmPasswordSecretName = $"{shortDeviceGrpId}{Constants.TunnelingServerVmPassNameSfx}";
+        var fdqn = $"dalapagos-{shortDeviceGrpId}.{request.Location.ToAzureLocation()}.cloudapp.azure.com";
+
         var deviceGroup = await tunnelingRepository.UpsertDeviceGroupAsync(
-            request.Id.HasValue ? request.Id : Guid.NewGuid(), 
+            deviceGroupId, 
             request.OrganizationId,
             request.Name,
             request.Location,
             ServerStatus.Unknown,
+            fdqn,
             cancellationToken);
-
-        var deviceGroupId = deviceGroup.Id ?? throw new Exception("Device group id is null.");
-        var shortDeviceGrpId = deviceGroupId.ToShortDeviceGroupId();
-        var resourceGroupName = $"dlpg-{shortDeviceGrpId}";
-        var adminVmPasswordSecretName = $"{shortDeviceGrpId}-Tnls-VmPass";
 
         // Add VM password secret to key vault.
         logger.LogInformation("Saving VM password for organization {OrganizationId} device group {ShortDeviceGrpId}.", request.OrganizationId, shortDeviceGrpId);
@@ -94,6 +96,7 @@ internal sealed class AddDeviceGroupHandler(
             deviceGroup.Name,
             deviceGroup.ServerLocation,
             ServerStatus.Unknown,
+            fdqn,
             cancellationToken);
 
         // Monitor the deploment pipeline.

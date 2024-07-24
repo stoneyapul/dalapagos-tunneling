@@ -6,4 +6,5 @@ public record class DeviceGroup(
     string Name, 
     ServerLocation ServerLocation, 
     ServerStatus ServerStatus, 
+    string? ServerBaseUrl,
     IList<Device>? Devices = null);

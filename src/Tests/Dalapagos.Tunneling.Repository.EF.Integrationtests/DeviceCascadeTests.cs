@@ -1,5 +1,6 @@
 ﻿namespace Dalapagos.Tunneling.Repository.EF.Integrationtests;
 
+using Core;
 using Core.Infrastructure;
 using Core.Model;
 using Shouldly;
@@ -48,7 +49,8 @@ public class DeviceCascadeTests(ITestOutputHelper testOutputHelper, RepositoryTe
             _organizationId, 
             _deviceGroupName, 
             _serverLocation, 
-            Core.Model.ServerStatus.Unknown, 
+            ServerStatus.Unknown, 
+            Constants.FakeBaseUrl,
             cts.Token);
 
         deviceGroup.ShouldNotBeNull();

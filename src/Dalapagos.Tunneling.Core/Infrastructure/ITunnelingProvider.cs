@@ -2,7 +2,7 @@
 
 using Model;
 
-public interface ITunneling
+public interface ITunnelingProvider
 {
     Task<TunnelServer> GetServerInformationAsync(CancellationToken cancellationToken = default);
 

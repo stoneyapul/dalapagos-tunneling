@@ -1,5 +1,6 @@
 namespace Dalapagos.Tunneling.Repository.EF.Integrationtests;
 
+using Core;
 using Core.Infrastructure;
 using Core.Model;
 using Shouldly;
@@ -64,6 +65,7 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
             _deviceGroupName1, 
             _serverLocation, 
             ServerStatus.Unknown, 
+            Constants.FakeBaseUrl,
             cts.Token);
 
         deviceGroup.ShouldNotBeNull();
@@ -84,6 +86,7 @@ using Xunit.Microsoft.DependencyInjection.Attributes;
             _deviceGroupName2, 
             _serverLocation, 
             ServerStatus.Unknown, 
+            Constants.FakeBaseUrl,
             cts.Token);
 
         deviceGroup.ShouldNotBeNull();

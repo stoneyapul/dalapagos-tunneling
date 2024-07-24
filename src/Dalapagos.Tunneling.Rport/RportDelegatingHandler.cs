@@ -11,6 +11,8 @@ public class RportDelegatingHandler(
     ISecrets secrets) 
     : DelegatingHandler
 {
+    private const string username = "Admin";
+
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request.RequestUri);
@@ -26,8 +28,8 @@ public class RportDelegatingHandler(
 
         // Add the Authorization header.
         var serverPassword = await secrets.GetSecretAsync($"{deviceGroupContextAccessor.Current.DeviceGroupId.ToShortDeviceGroupId()}{Constants.TunnelingServerPassNameSfx}", cancellationToken);
-        var basicToken = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"admin:{serverPassword}"));
-        request.Headers.Add("Authorization", $"Basic: {basicToken}");
+        var basicToken = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{username}:{serverPassword}"));
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", basicToken);
 
         return await base.SendAsync(request, cancellationToken);
     }

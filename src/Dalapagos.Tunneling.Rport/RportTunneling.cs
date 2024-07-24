@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 public class RportTunneling( 
     ITunnelingRepository tunnelingRepository,  
     IRportTunnelClient rportTunnelClient,
-    ILogger<RportTunneling> logger) : ITunneling
+    ILogger<RportTunneling> logger) : ITunnelingProvider
 {
     private const string ConnectedState = "connected";
     private const string ConnectedErrMsg = "{0} is not connected to the RPort server.";

@@ -17,7 +17,8 @@ public static class RportTunnelingInstaller
     {
         var refitSettings = new RefitSettings { ContentSerializer = new SystemTextJsonContentSerializer() };
 
-        services.AddSingleton<IDeviceGroupContextAccessor, DeviceGroupContextAccessor>();
+        // services.AddSingleton<IDeviceGroupContextAccessor, DeviceGroupContextAccessor>();
+        // services.AddSingleton<RportDelegatingHandler>();
 
         services
             .AddRefitClient<IRportTunnelClient>(refitSettings)
@@ -28,7 +29,7 @@ public static class RportTunnelingInstaller
             .AddHttpMessageHandler<RportDelegatingHandler>()
             .AddPolicyHandler(GetRetryPolicy());
 
-        services.AddScoped<ITunneling, RportTunneling>();
+        services.AddScoped<ITunnelingProvider, RportTunneling>();
     }
 
     private static AsyncRetryPolicy<HttpResponseMessage> GetRetryPolicy()
