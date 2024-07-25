@@ -195,13 +195,19 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
         return new Core.Model.Organization(organizationEntity.OrganizationUuid, organizationEntity.OrganizationName, deviceGroups);
     }
 
-    public async Task<string> RetrieveServerBaseAddressAsync(Guid deviceGroupId, CancellationToken cancellationToken)
+    public async Task<string> RetrieveServerBaseAddressByDeviceIdAsync(Guid deviceId, CancellationToken cancellationToken)
     {
-        return await dbContext.DeviceGroups
+        var deviceGroup = (await dbContext.Devices
             .AsNoTracking()
-            .Where(d => d.DeviceGroupUuid == deviceGroupId)
-            .Select(d => d.ServerBaseUrl)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new DataNotFoundException($"Device group with id {deviceGroupId} not found");
+            .Include(d => d.DeviceGroup)
+            .Where(d => d.DeviceUuid == deviceId)
+            .Select(d => d.DeviceGroup)
+            .FirstOrDefaultAsync(cancellationToken) 
+            ?? throw new DataNotFoundException($"Device with id {deviceId} not found.")) 
+            ?? throw new DataNotFoundException($"Device with id {deviceId} does not belong to a device group.");
+
+        return deviceGroup.ServerBaseUrl 
+            ?? throw new DataNotFoundException($"Device group with id {deviceGroup.DeviceGroupUuid} does not have a server base address.");
     }
 
     private static Core.Model.DeviceGroup MapToDeviceGroup(Guid organizationId, DeviceGroup deviceGroupEntity)

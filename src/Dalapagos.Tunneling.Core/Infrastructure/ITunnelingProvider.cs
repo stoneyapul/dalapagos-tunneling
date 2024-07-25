@@ -4,7 +4,10 @@ using Model;
 
 public interface ITunnelingProvider
 {
-    Task<TunnelServer> GetServerInformationAsync(CancellationToken cancellationToken = default);
+    Task<TunnelServer> GetServerInformationAsync(
+        Guid organizationId, 
+        Guid deviceGroupId, 
+        CancellationToken cancellationToken = default);
 
     Task<IList<Tunnel>> GetTunnelsByDeviceIdAsync(
         Guid deviceId,
@@ -12,7 +15,7 @@ public interface ITunnelingProvider
     );
 
     Task<bool> IsDeviceConnectedAsync(
-        string deviceId,
+        Guid deviceId,
         CancellationToken cancellationToken = default
     );
 

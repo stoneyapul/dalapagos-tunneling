@@ -95,7 +95,7 @@ internal sealed class AddDeviceGroupHandler(
             deviceGroup.OrganizationId,
             deviceGroup.Name,
             deviceGroup.ServerLocation,
-            ServerStatus.Unknown,
+            ServerStatus.Deploying,
             fdqn,
             cancellationToken);
 

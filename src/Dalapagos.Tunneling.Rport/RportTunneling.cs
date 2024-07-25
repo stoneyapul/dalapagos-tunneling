@@ -10,12 +10,14 @@ using Core.Exceptions;
 using Core.Infrastructure;
 using Core.Model;
 using Microsoft.Extensions.Logging;
+using Polly;
+using Polly.Extensions.Http;
+using Polly.Retry;
+using Refit;
 
-public class RportTunneling( 
-    ITunnelingRepository tunnelingRepository,  
-    IRportTunnelClient rportTunnelClient,
-    ILogger<RportTunneling> logger) : ITunnelingProvider
+public class RportTunneling(ITunnelingRepository tunnelingRepository, ILogger<RportTunneling> logger) : ITunnelingProvider
 {
+    private const int MaxRetries = 2;
     private const string ConnectedState = "connected";
     private const string ConnectedErrMsg = "{0} is not connected to the RPort server.";
 
@@ -28,9 +30,8 @@ public class RportTunneling(
         CancellationToken cancellationToken = default)
     {
         try
-        {
-            var baseAddress = await tunnelingRepository.RetrieveServerBaseAddressAsync(deviceId, cancellationToken)
-                ?? throw new TunnelingException("Failed to retrieve server base address.", System.Net.HttpStatusCode.InternalServerError);
+        {        
+            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClient(deviceId, cancellationToken);
 
             var rportClient = await rportTunnelClient.GetClientById(deviceId.ToString(), cancellationToken)
                 ?? throw new TunnelingException("Failed to retrieve tunneling client information.", System.Net.HttpStatusCode.InternalServerError);
@@ -62,17 +63,19 @@ public class RportTunneling(
             return TunnelMapper.Map(rportTunnel.Data, baseAddress)
                 ?? throw new TunnelingException("Failed to create tunnel.", System.Net.HttpStatusCode.InternalServerError);
         }
-        catch (Refit.ApiException ex)
+        catch (ApiException ex)
         {
             logger.LogError("Message: {message} {content}", ex.RequestMessage, ex.Content);
             throw new TunnelingException(GetErrorMessage(ex), ex.StatusCode);
         }
     }
 
-    public async Task<TunnelServer> GetServerInformationAsync(CancellationToken cancellationToken = default)
+    public async Task<TunnelServer> GetServerInformationAsync(Guid organizationId, Guid deviceGroupId, CancellationToken cancellationToken = default)
     {
         try
         {
+            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClient(organizationId, deviceGroupId, cancellationToken);
+
             var serverStatus = await rportTunnelClient.GetServer(cancellationToken);
             return new TunnelServer(
                 ServerStatus.Online, 
@@ -94,8 +97,7 @@ public class RportTunneling(
 
         try
         {
-            var baseAddress = await tunnelingRepository.RetrieveServerBaseAddressAsync(deviceId, cancellationToken)
-                ?? throw new TunnelingException("Failed to retrieve server base address.", System.Net.HttpStatusCode.InternalServerError);
+            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClient(deviceId, cancellationToken);
 
             var rportClient = await rportTunnelClient.GetClientById(deviceId.ToString(), cancellationToken)
                 ?? throw new TunnelingException("Failed to retrieve tunneling client information.", System.Net.HttpStatusCode.InternalServerError);
@@ -124,22 +126,24 @@ public class RportTunneling(
 
             return tunnels;
         }
-        catch (Refit.ApiException ex)
+        catch (ApiException ex)
         {
             logger.LogError("Message: {message} {content}", ex.RequestMessage, ex.Content);
             throw new TunnelingException(GetErrorMessage(ex), ex.StatusCode);
         }
     }
 
-    public async Task<bool> IsDeviceConnectedAsync(string deviceId, CancellationToken cancellationToken = default)
+    public async Task<bool> IsDeviceConnectedAsync(Guid deviceId, CancellationToken cancellationToken = default)
     {
         try
         {
+            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClient(deviceId, cancellationToken);
+
             var rportClient = await rportTunnelClient.GetClientById(deviceId.ToString(), cancellationToken);
             return !string.IsNullOrWhiteSpace(rportClient.Data.ConnectionState)
                 && rportClient.Data.ConnectionState.Equals(ConnectedState);
         }
-        catch (Refit.ApiException ex)
+        catch (ApiException ex)
         {
             logger.LogError("Message: {message} {content}", ex.RequestMessage, ex.Content);
             throw new TunnelingException(GetErrorMessage(ex), ex.StatusCode);
@@ -150,6 +154,8 @@ public class RportTunneling(
     {
         try
         {
+            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClient(deviceId, cancellationToken);
+
             var rportClient = await rportTunnelClient.GetClientById(deviceId.ToString(), cancellationToken);
             if (
                 string.IsNullOrWhiteSpace(rportClient.Data.ConnectionState)
@@ -164,7 +170,7 @@ public class RportTunneling(
 
             await rportTunnelClient.RemoveClientTunnel(deviceId.ToString(), tunnelId, cancellationToken);
         }
-        catch (Refit.ApiException ex)
+        catch (ApiException ex)
         {
             logger.LogError("Message: {message} {content}", ex.RequestMessage, ex.Content);
             throw new TunnelingException(GetErrorMessage(ex), ex.StatusCode);
@@ -175,9 +181,10 @@ public class RportTunneling(
     {
         try
         {
+            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClient(deviceId, cancellationToken);
             await rportTunnelClient.RemoveClientAuth(deviceId.ToString(), cancellationToken);
         }
-        catch (Refit.ApiException ex)
+        catch (ApiException ex)
         {
             logger.LogError("Message: {message} {content}", ex.RequestMessage, ex.Content);
             throw new TunnelingException(GetErrorMessage(ex), ex.StatusCode);
@@ -202,5 +209,45 @@ public class RportTunneling(
         {
             return defaultMessage;
         }
+    }
+
+    // TODO: Figure out how to best use this retry policy.
+    private static AsyncRetryPolicy<HttpResponseMessage> GetRetryPolicy()
+    {
+        return HttpPolicyExtensions
+            .HandleTransientHttpError()
+            .WaitAndRetryAsync(
+                MaxRetries,
+                retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                (result, timeSpan, retryCount, context) =>
+                {
+                    Console.WriteLine(
+                        $"A non success code {(int?)result.Result?.StatusCode} was received on retry {retryCount}."
+                    );
+                }
+            );
+    }
+
+
+    private async Task<(IRportTunnelClient Client, string BaseAddress)> CreateRportTunnelClient(Guid deviceId, CancellationToken cancellationToken = default)
+    {
+        var refitSettings = new RefitSettings { ContentSerializer = new SystemTextJsonContentSerializer() };
+        var baseAddress = await tunnelingRepository.RetrieveServerBaseAddressByDeviceIdAsync(deviceId, cancellationToken);
+
+        return (RestService.For<IRportTunnelClient>($"https://{baseAddress}", refitSettings), baseAddress);
+    }
+
+    private async Task<(IRportTunnelClient Client, string BaseAddress)> CreateRportTunnelClient(Guid organizationId, Guid deviceGroupId, CancellationToken cancellationToken = default)
+    {
+        var refitSettings = new RefitSettings { ContentSerializer = new SystemTextJsonContentSerializer() };
+        var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(organizationId, deviceGroupId, cancellationToken) 
+            ?? throw new DataNotFoundException($"Device group {deviceGroupId} not found.");
+
+        if (string.IsNullOrWhiteSpace(deviceGroup.ServerBaseUrl))
+        {
+            throw new DataNotFoundException($"Failed to retrieve tunneling server base address for device group {deviceGroup.Name}.");
+        }
+
+        return (RestService.For<IRportTunnelClient>($"https://{deviceGroup.ServerBaseUrl}", refitSettings), deviceGroup.ServerBaseUrl);
     }
 }

@@ -22,6 +22,11 @@ internal sealed  class DeleteDeviceGroupHandler(
         await VerifyUserOrganizationAsync(request, cancellationToken);
         
         var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(request.OrganizationId, request.Id, cancellationToken);
+        if (deviceGroup.ServerStatus == ServerStatus.Deploying)
+        {
+            throw new Exception($"Device group {request.Id.ToShortDeviceGroupId()} is deploying. It cannot be deleted until the deployment is complete.");
+        }
+
         var warnings = new List<string>();   
 
         // Delete the resource group that has the VM. This takes awhile, so we will continue on without waiting for it to finish.
