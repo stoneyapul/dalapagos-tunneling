@@ -27,8 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Rport",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Secrets.KeyVault", "src\Dalapagos.Tunneling.Secrets.KeyVault\Dalapagos.Tunneling.Secrets.KeyVault.csproj", "{E26B94FC-4B44-4300-9FCA-E15191ACEEFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Repository.EF.IntegrationTests", "src\Tests\Dalapagos.Tunneling.Repository.EF.Integrationtests\Dalapagos.Tunneling.Repository.EF.IntegrationTests.csproj", "{809C1268-EE7C-40C8-965F-2A8A73A1A0B9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Api.Tests", "src\Tests\Dalapagos.Tunneling.Api.Tests\Dalapagos.Tunneling.Api.Tests.csproj", "{F5D94A84-EA6A-4C13-A29A-529D03056D6E}"
 EndProject
 Global
