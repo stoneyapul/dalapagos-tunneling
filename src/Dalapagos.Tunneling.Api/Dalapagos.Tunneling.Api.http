@@ -5,7 +5,7 @@
 @hostAddress = http://localhost:5001
 @orgId = ce80cca7-2591-43c5-a721-442a610d814b
 
-@access_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyIsImtpZCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyJ9.eyJhdWQiOiJhcGk6Ly9kYWxhcGFnb3MtdHVubmVsaW5nLWFwaSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzEzY2ZiYTRmLTkyMDMtNDQ5Ni1hNDI0LWIxOWZlNGYwNjI1Mi8iLCJpYXQiOjE3MjE4NzI1ODMsIm5iZiI6MTcyMTg3MjU4MywiZXhwIjoxNzIxODc2NDgzLCJhaW8iOiJFMmRnWUhnYVo3WldOa2QzMnBXckhTeVpTNjR4QXdBPSIsImFwcGlkIjoiZGQ4ODU1YjctOTQzYi00MTgyLThmYWMtYTdiNzBhY2EyYzJmIiwiYXBwaWRhY3IiOiIxIiwiZ3JvdXBzIjpbImFlMTIyZTY0LTBkY2UtNGU3My1iNDRlLTk0ZWY4MjhmOWI3NiIsIjVjYzZmYmUyLTYwZmItNDA5Mi1hOTRlLWM0NWNhOTI4NGI5OSJdLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIvIiwib2lkIjoiNjQ1MzkwYjAtMGI0NC00NWE5LWFiMzEtY2FkMTU3MmEwMTI0IiwicmgiOiIwLkFXOEFUN3JQRXdPU2xrU2tKTEdmNVBCaVVyZFZpTjA3bElKQmo2eW50d3JLTEM5dkFBQS4iLCJzdWIiOiI2NDUzOTBiMC0wYjQ0LTQ1YTktYWIzMS1jYWQxNTcyYTAxMjQiLCJ0aWQiOiIxM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIiLCJ1dGkiOiJSc0JyVWZ0ZE0wT3BndE50YUxUU0FBIiwidmVyIjoiMS4wIn0.A4uAHa_ptZ1OOyLmmJrghGc6RuNv0nQRpeP_JesKHwut4kLH3nMib7b1UO42q4bIqcpIn-b2DZvi3M9z_Tdjw9frFrek7b3-nV9oEl3m7kCaY1VT6DougK05HZ-klmN1zUsYTAyr2Asrt5AYq1zsRu1flr0Hmp9CmJ6MjwwndBUipTCq_rg06zEbHnwFMy0KfLfgMKk7pcl-JD3EsfVMKTtbFUZoJYv1naqBklYSvx-kpzLNnFqs55W8jQZyGjCH_Xm6lg-eGdmAkQj4TCYHp15IEMjhCx1saZgMovuKHjTDbKRV8fCfi624QWlV3JwZezNnYjE_yks8jAeP1mbNLA
+@access_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyIsImtpZCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyJ9.eyJhdWQiOiJhcGk6Ly9kYWxhcGFnb3MtdHVubmVsaW5nLWFwaSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzEzY2ZiYTRmLTkyMDMtNDQ5Ni1hNDI0LWIxOWZlNGYwNjI1Mi8iLCJpYXQiOjE3MjE5NTQ2NjEsIm5iZiI6MTcyMTk1NDY2MSwiZXhwIjoxNzIxOTU4NTYxLCJhaW8iOiJFMmRnWUpEVGFscHdXZDBsM1cvcWlSQ3U3d2xmQVE9PSIsImFwcGlkIjoiZGQ4ODU1YjctOTQzYi00MTgyLThmYWMtYTdiNzBhY2EyYzJmIiwiYXBwaWRhY3IiOiIxIiwiZ3JvdXBzIjpbImFlMTIyZTY0LTBkY2UtNGU3My1iNDRlLTk0ZWY4MjhmOWI3NiIsIjVjYzZmYmUyLTYwZmItNDA5Mi1hOTRlLWM0NWNhOTI4NGI5OSJdLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIvIiwib2lkIjoiNjQ1MzkwYjAtMGI0NC00NWE5LWFiMzEtY2FkMTU3MmEwMTI0IiwicmgiOiIwLkFXOEFUN3JQRXdPU2xrU2tKTEdmNVBCaVVyZFZpTjA3bElKQmo2eW50d3JLTEM5dkFBQS4iLCJzdWIiOiI2NDUzOTBiMC0wYjQ0LTQ1YTktYWIzMS1jYWQxNTcyYTAxMjQiLCJ0aWQiOiIxM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIiLCJ1dGkiOiJTcjRpeC1HcS0wLUNvWE52dmpWVUFBIiwidmVyIjoiMS4wIn0.shFLndAcgtlGPV083rzY1SI1ltu33zwB4X2QEtPC53xLLWWZSrht3ji_ljwCT1EfDx_ou8Xhc5TdcxmhzTX80AmWb2xHF9GgyW_iNd89qkOECNRO6BFqZuz99fxOcNdM4d_HDGdIhPiScu47x1WfpDTRUF7453y7ausdQy-kZPYX8wWGpIdThmKNdPraptlYEGDGxTmdnQh7rnqZsEP9-YFIhzPTZiGvT08j_F-prq79lAR97eHgyckDpFoP01w4C242qybW5aahKLra-YZr4p-0CjwtMCIJqlJop_Ri9xCxaydgZodGPBm26i8w_a0O2K-ax3CbZ9xLIK0YBoT5hA
 
 ###
 # Get a JWT to access the API.
@@ -22,14 +22,14 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "deviceGroupId": "cc213400-52f5-426c-99ed-ecc2bc710062",
+    "deviceGroupId": "2dd8fe8a-470a-4541-83f0-d4e54eefbcdf",
     "name": "device 2",
     "os": "linux"
 }
 
 ###
 # Get a device group.
-GET {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/644e26a7-ecd3-4b65-86ee-049c512de880
+GET {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/2dd8fe8a-470a-4541-83f0-d4e54eefbcdf
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 ###
 # Delete a device group.
-DELETE {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/644e26a7-ecd3-4b65-86ee-049c512de880
+DELETE {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/2dd8fe8a-470a-4541-83f0-d4e54eefbcdf
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
@@ -58,11 +58,11 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "deviceId": "1e26a0fe-22e7-4b4d-bddb-dd246b7feb61",
+    "deviceId": "3eb08ca9-0865-493c-ae83-a4f8843f4758",
     "protocol": "Ssh"
 }
 
 
 ###
-GET https://dlpg-openrport-332a710d814b.westus3.cloudapp.azure.com/api/v1/clients-auth
-Authorization: Basic YWRtaW46R2VlbmFlOWll
+GET https://dalapagos-d4e54eefbcdf.centralus.cloudapp.azure.com/api/v1/clients-auth
+Authorization: Basic YWRtaW46ZWlHaDl5ZWVn

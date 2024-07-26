@@ -2,26 +2,29 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Client;
+using Core;
 using Core.Exceptions;
+using Core.Extensions;
 using Core.Infrastructure;
 using Core.Model;
 using Microsoft.Extensions.Logging;
 using Polly;
-using Polly.Extensions.Http;
 using Polly.Retry;
 using Refit;
 
-public class RportTunneling(ITunnelingRepository tunnelingRepository, ILogger<RportTunneling> logger) : ITunnelingProvider
+public class RportTunneling(ITunnelingRepository tunnelingRepository, ISecrets secrets, ILogger<RportTunneling> logger) : ITunnelingProvider
 {
-    private const int MaxRetries = 2;
+    private const string Username = "admin";
     private const string ConnectedState = "connected";
     private const string ConnectedErrMsg = "{0} is not connected to the RPort server.";
 
     public async Task<Tunnel> AddTunnelAsync(
+        Guid organizationId,
         Guid deviceId, 
         Protocol protocol, 
         ushort port, 
@@ -29,11 +32,13 @@ public class RportTunneling(ITunnelingRepository tunnelingRepository, ILogger<Rp
         string? allowedIp = null, 
         CancellationToken cancellationToken = default)
     {
+        var retryPipeline = GetRetryPipeline();
+
         try
         {        
-            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClient(deviceId, cancellationToken);
+            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClientByDeviceIdAsync(organizationId, deviceId, cancellationToken);
 
-            var rportClient = await rportTunnelClient.GetClientById(deviceId.ToString(), cancellationToken)
+            var rportClient = await retryPipeline.ExecuteAsync(async (ct) => await rportTunnelClient.GetClientById(deviceId.ToString(), ct), cancellationToken)
                 ?? throw new TunnelingException("Failed to retrieve tunneling client information.", System.Net.HttpStatusCode.InternalServerError);
 
             if (
@@ -74,7 +79,7 @@ public class RportTunneling(ITunnelingRepository tunnelingRepository, ILogger<Rp
     {
         try
         {
-            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClient(organizationId, deviceGroupId, cancellationToken);
+            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClientByDeviceGroupIdAsync(organizationId, deviceGroupId, cancellationToken);
 
             var serverStatus = await rportTunnelClient.GetServer(cancellationToken);
             return new TunnelServer(
@@ -91,13 +96,13 @@ public class RportTunneling(ITunnelingRepository tunnelingRepository, ILogger<Rp
         }
     }
 
-    public async Task<IList<Tunnel>> GetTunnelsByDeviceIdAsync(Guid deviceId, CancellationToken cancellationToken = default)
+    public async Task<IList<Tunnel>> GetTunnelsByDeviceIdAsync(Guid organizationId, Guid deviceId, CancellationToken cancellationToken = default)
     {
         var tunnels = new List<Tunnel>();
 
         try
         {
-            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClient(deviceId, cancellationToken);
+            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClientByDeviceIdAsync(organizationId, deviceId, cancellationToken);
 
             var rportClient = await rportTunnelClient.GetClientById(deviceId.ToString(), cancellationToken)
                 ?? throw new TunnelingException("Failed to retrieve tunneling client information.", System.Net.HttpStatusCode.InternalServerError);
@@ -133,28 +138,28 @@ public class RportTunneling(ITunnelingRepository tunnelingRepository, ILogger<Rp
         }
     }
 
-    public async Task<bool> IsDeviceConnectedAsync(Guid deviceId, CancellationToken cancellationToken = default)
+    public async Task<bool> IsDeviceConnectedAsync(Guid organizationId, Guid deviceId, CancellationToken cancellationToken = default)
     {
         try
         {
-            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClient(deviceId, cancellationToken);
+            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClientByDeviceIdAsync(organizationId, deviceId, cancellationToken);
 
             var rportClient = await rportTunnelClient.GetClientById(deviceId.ToString(), cancellationToken);
             return !string.IsNullOrWhiteSpace(rportClient.Data.ConnectionState)
                 && rportClient.Data.ConnectionState.Equals(ConnectedState);
         }
         catch (ApiException ex)
-        {
+        { 
             logger.LogError("Message: {message} {content}", ex.RequestMessage, ex.Content);
             throw new TunnelingException(GetErrorMessage(ex), ex.StatusCode);
         }
     }
 
-    public async Task RemoveTunnelAsync(Guid deviceId, string tunnelId, CancellationToken cancellationToken = default)
+    public async Task RemoveTunnelAsync(Guid organizationId, Guid deviceId, string tunnelId, CancellationToken cancellationToken = default)
     {
         try
         {
-            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClient(deviceId, cancellationToken);
+            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClientByDeviceIdAsync(organizationId, deviceId, cancellationToken);
 
             var rportClient = await rportTunnelClient.GetClientById(deviceId.ToString(), cancellationToken);
             if (
@@ -177,11 +182,11 @@ public class RportTunneling(ITunnelingRepository tunnelingRepository, ILogger<Rp
         }
     }
 
-    public async Task RemoveTunnelCredentialsAsync(Guid deviceId, CancellationToken cancellationToken = default)
+    public async Task RemoveTunnelCredentialsAsync(Guid organizationId, Guid deviceId, CancellationToken cancellationToken = default)
     {
         try
         {
-            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClient(deviceId, cancellationToken);
+            var (rportTunnelClient, baseAddress) = await CreateRportTunnelClientByDeviceIdAsync(organizationId, deviceId, cancellationToken);
             await rportTunnelClient.RemoveClientAuth(deviceId.ToString(), cancellationToken);
         }
         catch (ApiException ex)
@@ -191,7 +196,7 @@ public class RportTunneling(ITunnelingRepository tunnelingRepository, ILogger<Rp
         }
     }
 
-    private static string GetErrorMessage(Refit.ApiException ex)
+    private static string GetErrorMessage(ApiException ex)
     {
         const string defaultMessage = "Unknown error from a downstream server.";
 
@@ -211,43 +216,61 @@ public class RportTunneling(ITunnelingRepository tunnelingRepository, ILogger<Rp
         }
     }
 
-    // TODO: Figure out how to best use this retry policy.
-    private static AsyncRetryPolicy<HttpResponseMessage> GetRetryPolicy()
+    private static ResiliencePipeline GetRetryPipeline()
     {
-        return HttpPolicyExtensions
-            .HandleTransientHttpError()
-            .WaitAndRetryAsync(
-                MaxRetries,
-                retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                (result, timeSpan, retryCount, context) =>
-                {
-                    Console.WriteLine(
-                        $"A non success code {(int?)result.Result?.StatusCode} was received on retry {retryCount}."
-                    );
-                }
-            );
+        return new ResiliencePipelineBuilder()
+            .AddRetry(new RetryStrategyOptions
+            {
+                BackoffType = DelayBackoffType.Exponential,
+                UseJitter = true
+            })
+            .Build();
     }
 
-
-    private async Task<(IRportTunnelClient Client, string BaseAddress)> CreateRportTunnelClient(Guid deviceId, CancellationToken cancellationToken = default)
+    private async Task<(IRportTunnelClient Client, string BaseAddress)> CreateRportTunnelClientByDeviceIdAsync(
+        Guid organizationId, 
+        Guid deviceId, 
+        CancellationToken cancellationToken = default)
     {
-        var refitSettings = new RefitSettings { ContentSerializer = new SystemTextJsonContentSerializer() };
-        var baseAddress = await tunnelingRepository.RetrieveServerBaseAddressByDeviceIdAsync(deviceId, cancellationToken);
+        var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupByDeviceIdAsync(organizationId, deviceId, cancellationToken)
+            ?? throw new DataNotFoundException($"Device group for device id {deviceId} not found.");
 
-        return (RestService.For<IRportTunnelClient>($"https://{baseAddress}", refitSettings), baseAddress);
+        var client = await CreateRportTunnelClientAsync(deviceGroup, cancellationToken);
+
+        return (client, deviceGroup.ServerBaseUrl!);
     }
 
-    private async Task<(IRportTunnelClient Client, string BaseAddress)> CreateRportTunnelClient(Guid organizationId, Guid deviceGroupId, CancellationToken cancellationToken = default)
+    private async Task<(IRportTunnelClient Client, string BaseAddress)> CreateRportTunnelClientByDeviceGroupIdAsync(
+        Guid organizationId, 
+        Guid deviceGroupId, 
+        CancellationToken cancellationToken = default)
     {
-        var refitSettings = new RefitSettings { ContentSerializer = new SystemTextJsonContentSerializer() };
         var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(organizationId, deviceGroupId, cancellationToken) 
             ?? throw new DataNotFoundException($"Device group {deviceGroupId} not found.");
 
-        if (string.IsNullOrWhiteSpace(deviceGroup.ServerBaseUrl))
-        {
-            throw new DataNotFoundException($"Failed to retrieve tunneling server base address for device group {deviceGroup.Name}.");
-        }
+        var client = await CreateRportTunnelClientAsync(deviceGroup, cancellationToken);
 
-        return (RestService.For<IRportTunnelClient>($"https://{deviceGroup.ServerBaseUrl}", refitSettings), deviceGroup.ServerBaseUrl);
+        return (client, deviceGroup.ServerBaseUrl!);
+    }
+
+    private async Task<IRportTunnelClient> CreateRportTunnelClientAsync(DeviceGroup deviceGroup, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(deviceGroup, nameof(deviceGroup));
+        ArgumentNullException.ThrowIfNull(deviceGroup.Id, nameof(deviceGroup.Id));
+        ArgumentException.ThrowIfNullOrWhiteSpace(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
+
+        var serverPassword = await secrets.GetSecretAsync($"{deviceGroup.Id.Value.ToShortDeviceGroupId()}{Constants.TunnelingServerPassNameSfx}", cancellationToken)
+            ?? throw new DataNotFoundException($"Failed to retrieve tunneling server password for device group {deviceGroup.Name}.");
+
+        var encodedAuthBytes = System.Text.Encoding.UTF8.GetBytes($"{Username}:{serverPassword}");
+        var encodedAuth = Convert.ToBase64String(encodedAuthBytes);
+
+        var refitSettings = new RefitSettings { ContentSerializer = new SystemTextJsonContentSerializer() };
+        var httpClient = RestService.CreateHttpClient($"https://{deviceGroup.ServerBaseUrl}", refitSettings);
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", encodedAuth);
+        httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+        httpClient.DefaultRequestVersion = new Version(1, 3);
+
+        return RestService.For<IRportTunnelClient>(httpClient, refitSettings);
     }
 }

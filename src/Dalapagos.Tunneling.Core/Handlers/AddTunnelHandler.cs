@@ -15,6 +15,7 @@ internal sealed class AddTunnelHandler(ITunnelingRepository tunnelingRepository,
         await VerifyUserOrganizationAsync(request, cancellationToken);
 
         var tunnel = await tunnelingProvider.AddTunnelAsync(
+            request.OrganizationId,
             request.DeviceId,
             request.Protocol,
             request.DevicePort ?? (request.Protocol == Protocol.Ssh ? Constants.DefaultSshPort : Constants.DefaultHttpsPort),
