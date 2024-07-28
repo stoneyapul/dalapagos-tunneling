@@ -3,7 +3,7 @@ ARG TARGETARCH
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
-COPY Dalapagos.Tunneling.sln .
+COPY ./Dalapagos.Tunneling.sln .
 RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.sln
 
 # copy everything else and build app
