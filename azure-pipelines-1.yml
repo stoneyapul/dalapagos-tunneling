@@ -13,7 +13,7 @@ variables:
   dockerRegistryServiceConnection: '30619128-0e00-4248-9d95-3b6736b9e52e'
   imageRepository: 'dalapagostunneling'
   containerRegistry: 'dalapagoscontainerregistry.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/src/Dalapagos.Tunneling.Api/Dockerfile'
+  dockerfilePath: '$(Build.SourcesDirectory)/src/Dockerfile'
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
