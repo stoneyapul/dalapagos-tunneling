@@ -1,14 +1,14 @@
 # https://hub.docker.com/_/microsoft-dotnet
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /source
+WORKDIR /src
 
 # copy csproj and restore as distinct layers
 COPY *.sln .
-COPY /src/*.csproj ./src/
+COPY Dalapagos.Tunneling.Api/*.csproj ./Dalapagos.Tunneling.Api/
 RUN dotnet restore
 
 # copy everything else and build app
-COPY src/. ./src/
+COPY Dalapagos.Tunneling.Api/. ./Dalapagos.Tunneling.Api/
 WORKDIR /src/Dalapagos.Tunneling.Api
 RUN dotnet publish -c release -o /app --no-restore
 
