@@ -38,10 +38,9 @@ steps:
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
-- task: AzureRmWebAppDeployment@4
+
+- task: AzureContainerApps@1
   inputs:
-    ConnectionType: 'AzureRM'
+    appSourcePath: '$(Build.SourcesDirectory)/src'
     azureSubscription: 'DalapagosServiceP'
-    appType: 'apiApp'
-    WebAppName: 'dalapagos-tunneling-api'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    acrName: 'dalapagos-containers'
