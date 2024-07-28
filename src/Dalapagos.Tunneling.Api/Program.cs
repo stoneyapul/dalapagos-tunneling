@@ -50,12 +50,9 @@ app.UseReDoc(c =>
   c.SpecUrl = "/swagger/v1/swagger.json";
 });   
 
-if (app.Environment.IsDevelopment())
-{
   app.UseHangfireDashboard("/monitor", new DashboardOptions
   {
       Authorization = [new HangfireAuthorizationFilter()]
   });
- }
 
 app.Run();
