@@ -8,7 +8,7 @@ COPY /src/*.csproj ./src/
 RUN dotnet restore
 
 # copy everything else and build app
-COPY /src/. ./src/
+COPY src/. ./src/
 WORKDIR /src/Dalapagos.Tunneling.Api
 RUN dotnet publish -c release -o /app --no-restore
 
