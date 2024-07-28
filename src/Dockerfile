@@ -3,18 +3,8 @@ ARG TARGETARCH
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
-COPY Dalapagos.Tunneling.Api/*.csproj .
-COPY Dalapagos.Tunneling.Core/*.csproj .
-COPY Dalapagos.Tunneling.Monitor.HF/*.csproj .
-COPY Dalapagos.Tunneling.Repository.EF/*.csproj .
-COPY Dalapagos.Tunneling.Rport/*.csproj .
-COPY Dalapagos.Tunneling.Secrets.KeyVault/*.csproj .
-RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Api.csproj
-RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Core.csproj
-RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Monitor.HF.csproj
-RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Repository.EF.csproj
-RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Rport.csproj
-RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Secrets.KeyVault.csproj
+COPY Dalapagos.Tunneling.sln .
+RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.sln
 
 # copy everything else and build app
 COPY Dalapagos.Tunneling.Api/. .
