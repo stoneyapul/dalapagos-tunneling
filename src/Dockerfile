@@ -7,7 +7,7 @@ COPY Dalapagos.Tunneling.Core/Dalapagos.Tunneling.Core.csproj ./Dalapagos.Tunnel
 COPY Dalapagos.Tunneling.Monitor.HF/Dalapagos.Tunneling.Monitor.HF.csproj ./Dalapagos.Tunneling.Monitor.HF/
 COPY Dalapagos.Tunneling.Repository.EF/Dalapagos.Tunneling.Repository.EF.csproj ./Dalapagos.Tunneling.Repository.EF/
 COPY Dalapagos.Tunneling.Rport/Dalapagos.Tunneling.Rport.csproj ./Dalapagos.Tunneling.Rport/
-COPY Dalapagos.Tunneling.Secrets.KeyVault/Dalapagos.Tunneling.Secrets.KeyVault.csproj .Dalapagos.Tunneling.Secrets.KeyVault/
+COPY Dalapagos.Tunneling.Secrets.KeyVault/Dalapagos.Tunneling.Secrets.KeyVault.csproj ./Dalapagos.Tunneling.Secrets.KeyVault/
 COPY Dalapagos.Tunneling.Api/Dalapagos.Tunneling.Api.csproj ./Dalapagos.Tunneling.Api/
 RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Core/Dalapagos.Tunneling.Core.csproj
 RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Monitor.HF/Dalapagos.Tunneling.Monitor.HF.csproj
