@@ -9,7 +9,12 @@ COPY Dalapagos.Tunneling.Monitor.HF/*.csproj .
 COPY Dalapagos.Tunneling.Repository.EF/*.csproj .
 COPY Dalapagos.Tunneling.Rport/*.csproj .
 COPY Dalapagos.Tunneling.Secrets.KeyVault/*.csproj .
-RUN dotnet restore -a $TARGETARCH
+RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Api.csproj
+RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Core.csproj
+RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Monitor.HF.csproj
+RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Repository.EF.csproj
+RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Rport.csproj
+RUN dotnet restore -a $TARGETARCH Dalapagos.Tunneling.Secrets.KeyVault.csproj
 
 # copy everything else and build app
 COPY Dalapagos.Tunneling.Api/. .
