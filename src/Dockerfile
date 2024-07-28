@@ -4,10 +4,20 @@ WORKDIR /source
 
 # copy csproj and restore as distinct layers
 COPY Dalapagos.Tunneling.Api/*.csproj .
+COPY Dalapagos.Tunneling.Core/*.csproj .
+COPY Dalapagos.Tunneling.Monitor.HF/*.csproj .
+COPY Dalapagos.Tunneling.Repository.EF/*.csproj .
+COPY Dalapagos.Tunneling.Rport/*.csproj .
+COPY Dalapagos.Tunneling.Secrets.KeyVault/*.csproj .
 RUN dotnet restore -a $TARGETARCH
 
 # copy everything else and build app
 COPY Dalapagos.Tunneling.Api/. .
+COPY Dalapagos.Tunneling.Core/. .
+COPY Dalapagos.Tunneling.Monitor.HF/. .
+COPY Dalapagos.Tunneling.Repository.EF/. .
+COPY Dalapagos.Tunneling.Rport/. .
+COPY Dalapagos.Tunneling.Secrets.KeyVault/. .
 RUN dotnet publish -a $TARGETARCH --no-restore -o /app
 
 # final stage/image
