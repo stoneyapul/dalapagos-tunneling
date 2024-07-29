@@ -22,7 +22,7 @@ COPY Dalapagos.Tunneling.Core/. ./Dalapagos.Tunneling.Core
 COPY Dalapagos.Tunneling.Monitor.HF/. ./Dalapagos.Tunneling.Monitor.HF
 COPY Dalapagos.Tunneling.Repository.EF/. ./Dalapagos.Tunneling.Repository.EF
 COPY Dalapagos.Tunneling.Rport/. ./Dalapagos.Tunneling.Rport
-COPY Dalapagos.Tunneling.Secrets.KeyVault/. .Dalapagos.Tunneling.Secrets.KeyVault
+COPY Dalapagos.Tunneling.Secrets.KeyVault/. ./Dalapagos.Tunneling.Secrets.KeyVault
 RUN dotnet publish -a $TARGETARCH --no-restore -o /app Dalapagos.Tunneling.Api/Dalapagos.Tunneling.Api.csproj
 
 # final stage/image
