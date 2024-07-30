@@ -36,4 +36,14 @@ stages:
         dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
-          $(tag)
+          production
+          $(Build.BuildId)
+
+    - task: AzureContainerApps@1
+      inputs:
+        azureSubscription: 'Dalapagos subscription'
+        acrName: 'dalapagosContainerRegistry'
+        imageToDeploy: 'dalapagosContainerRegistry.azurecr.io/dalapagostunneling:$(Build.BuildId)'
+        containerAppName: 'dalapagos-tunneling'
+        resourceGroup: 'DalapagosTunneling'
+        containerAppEnvironment: 'managedEnvironment-DalapagosTunnel'
