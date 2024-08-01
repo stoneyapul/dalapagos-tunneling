@@ -14,7 +14,7 @@ public interface ITunnelingRepository
 
     Task DeleteOrganizationAsync(Guid organizationId, CancellationToken cancellationToken);
 
-    Task<Device> UpsertDeviceAsync(Guid? deviceId, Guid? deviceGroupId, string deviceName, Os os, CancellationToken cancellationToken);
+    Task<Device> UpsertDeviceAsync(Guid? deviceId, Guid? deviceGroupId, string deviceName, Os os, Guid organizationId, CancellationToken cancellationToken);
 
     Task DeleteDeviceAsync(Guid deviceId, CancellationToken cancellationToken);
     
@@ -28,6 +28,8 @@ public interface ITunnelingRepository
         CancellationToken cancellationToken);
 
     Task UpdateDeviceGroupServerStatusAsync(Guid deviceGroupId, ServerStatus serverStatus, CancellationToken cancellationToken);
+
+    Task<Device> RetrieveDeviceAsync(Guid deviceId, CancellationToken cancellationToken);
 
     Task<DeviceGroup> RetrieveDeviceGroupAsync(Guid organizationId, Guid deviceGroupId, CancellationToken cancellationToken);
 

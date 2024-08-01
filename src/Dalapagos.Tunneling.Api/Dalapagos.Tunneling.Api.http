@@ -3,10 +3,10 @@
 @scope = api://dalapagos-tunneling-api/.default
 
 #@hostAddress = http://localhost:5001
-@hostAddress = https://dalapagos-tunneling--dliyktm.wonderfulmoss-3fd689be.westus3.azurecontainerapps.io
+@hostAddress = https://dalapagos-tunneling.salmonstone-ca93e2e0.westus3.azurecontainerapps.io
 @orgId = ce80cca7-2591-43c5-a721-442a610d814b
 
-@access_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyIsImtpZCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyJ9.eyJhdWQiOiJhcGk6Ly9kYWxhcGFnb3MtdHVubmVsaW5nLWFwaSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzEzY2ZiYTRmLTkyMDMtNDQ5Ni1hNDI0LWIxOWZlNGYwNjI1Mi8iLCJpYXQiOjE3MjIzNTQ0NTQsIm5iZiI6MTcyMjM1NDQ1NCwiZXhwIjoxNzIyMzU4MzU0LCJhaW8iOiJFMmRnWUtnTHIzWFZPNzFxNmpPbWZYYjd3bE5uQXdBPSIsImFwcGlkIjoiZGQ4ODU1YjctOTQzYi00MTgyLThmYWMtYTdiNzBhY2EyYzJmIiwiYXBwaWRhY3IiOiIxIiwiZ3JvdXBzIjpbImFlMTIyZTY0LTBkY2UtNGU3My1iNDRlLTk0ZWY4MjhmOWI3NiIsIjVjYzZmYmUyLTYwZmItNDA5Mi1hOTRlLWM0NWNhOTI4NGI5OSJdLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIvIiwib2lkIjoiNjQ1MzkwYjAtMGI0NC00NWE5LWFiMzEtY2FkMTU3MmEwMTI0IiwicmgiOiIwLkFXOEFUN3JQRXdPU2xrU2tKTEdmNVBCaVVyZFZpTjA3bElKQmo2eW50d3JLTEM5dkFBQS4iLCJzdWIiOiI2NDUzOTBiMC0wYjQ0LTQ1YTktYWIzMS1jYWQxNTcyYTAxMjQiLCJ0aWQiOiIxM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIiLCJ1dGkiOiJqTTZDQzFoZ3prZW8tYVNXbVc1YUFBIiwidmVyIjoiMS4wIn0.YMK8dV4peUAeyy1Yj0QeiVu2qmZYCZH4UUNEgBxcc5HS6D46MXxQnaMBuV5gKa8VlKDNxTfbJZGhcnFNzDBTDrsT67QaexQwsMRhFWm9wSFfFWOk9OgHtryKi1MlM6ReHV751nWyYmpia-Jkjlquu6zgwTcuFE-lSX0HHKdiY_M7KDTTAKWp5c4Ydhtim8gyfO0d0X0vVMRidHfduwX8kpa_oumYU1F5DvyZv7Sb20SmNgE-Q5vKegdW0xKn6yQHV9czXboVmO8NcNP9zJmPy6WwxhM1Jls44eevAEIZoo0lig3oGvcA2gRVW4gdm-bIlmVfxK4kXfbcohl0BgHC7A
+@access_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyIsImtpZCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyJ9.eyJhdWQiOiJhcGk6Ly9kYWxhcGFnb3MtdHVubmVsaW5nLWFwaSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzEzY2ZiYTRmLTkyMDMtNDQ5Ni1hNDI0LWIxOWZlNGYwNjI1Mi8iLCJpYXQiOjE3MjI1NDk1MTQsIm5iZiI6MTcyMjU0OTUxNCwiZXhwIjoxNzIyNTUzNDE0LCJhaW8iOiJFMmRnWUxCYmN6cmxlK1g4RHdkRWZsZ0d4aTVNQlFBPSIsImFwcGlkIjoiZGQ4ODU1YjctOTQzYi00MTgyLThmYWMtYTdiNzBhY2EyYzJmIiwiYXBwaWRhY3IiOiIxIiwiZ3JvdXBzIjpbImFlMTIyZTY0LTBkY2UtNGU3My1iNDRlLTk0ZWY4MjhmOWI3NiIsIjVjYzZmYmUyLTYwZmItNDA5Mi1hOTRlLWM0NWNhOTI4NGI5OSJdLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIvIiwib2lkIjoiNjQ1MzkwYjAtMGI0NC00NWE5LWFiMzEtY2FkMTU3MmEwMTI0IiwicmgiOiIwLkFXOEFUN3JQRXdPU2xrU2tKTEdmNVBCaVVyZFZpTjA3bElKQmo2eW50d3JLTEM5dkFBQS4iLCJzdWIiOiI2NDUzOTBiMC0wYjQ0LTQ1YTktYWIzMS1jYWQxNTcyYTAxMjQiLCJ0aWQiOiIxM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIiLCJ1dGkiOiJpUHdRRlBIMkgwcU1PWDNkYS1NSEFBIiwidmVyIjoiMS4wIn0.Kek3AzzrKZ8eQuJ-mzcaxzAM1V_hArPfcCfJwNAy7e_ufBgDf5xIjFwQW5ramkS3S7-iEjLtqa46q0qWz2Fbgo5ZLB6mqf-VBFVxLhWqBQ516aNsXi7aGJOOcvJl9C6GvyZsiAuYZJ389EfR6azeaRBntyD0TvEa1T_nVCo19Oo5ZqnVG2A2xDjcG41yqmoxBGbhGIQJam7Hy7slWh6hR5QSbBscXA8MT3l6GtaHLtI4Q5sljJZD1n25plmlTcGKgwvbaG9T42ZCniV-9WjT5FooTgeRcpD3-LGQqNC2yQeb-7ZPciOQYGxaZ7UBPYXHLmd_grb4WeWPG6-KS3SEqw
 
 ###
 # Get a JWT to access the API.
@@ -23,14 +23,14 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "deviceGroupId": "2dd8fe8a-470a-4541-83f0-d4e54eefbcdf",
-    "name": "device 2",
+    "deviceGroupId": "6f3b34cb-0393-4c91-8078-596c60d15a82",
+    "name": "device 1",
     "os": "linux"
 }
 
 ###
 # Get a device group.
-GET {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/afe143eb-79a4-43a9-9805-f66484573ee6
+GET {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/6f3b34cb-0393-4c91-8078-596c60d15a82
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
@@ -47,7 +47,7 @@ Content-Type: application/json
 
 ###
 # Delete a device group.
-DELETE {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/afe143eb-79a4-43a9-9805-f66484573ee6
+DELETE {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/6f3b34cb-0393-4c91-8078-596c60d15a82
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
@@ -59,7 +59,7 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "deviceId": "3eb08ca9-0865-493c-ae83-a4f8843f4758",
+    "deviceId": "3edf888f-e789-4867-a946-3c5a63076a50",
     "protocol": "Ssh"
 }
 

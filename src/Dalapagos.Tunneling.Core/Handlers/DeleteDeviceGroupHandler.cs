@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Azure.ResourceManager;
 using Commands;
-using Dalapagos.Tunneling.Core.Extensions;
+using Extensions;
 using Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -114,7 +114,13 @@ internal sealed  class DeleteDeviceGroupHandler(
         {
             foreach (var device in deviceGroup.Devices)
             {
-                await tunnelingRepository.UpsertDeviceAsync(device.Id, null, device.Name, device.Os, cancellationToken);
+                await tunnelingRepository.UpsertDeviceAsync(
+                    device.Id, 
+                    null, 
+                    device.Name, 
+                    device.Os, 
+                    request.OrganizationId, 
+                    cancellationToken);
             }
         }
 

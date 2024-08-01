@@ -19,6 +19,7 @@ internal sealed class UpdateDeviceHandler(ITunnelingRepository tunnelingReposito
             request.DeviceGroupId,
             request.Name, 
             request.Os,
+            request.OrganizationId,
             cancellationToken);
             
         return new OperationResult<Device>(device, true, Constants.StatusSuccess, []);

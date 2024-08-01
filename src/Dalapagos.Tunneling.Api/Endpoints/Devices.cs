@@ -16,6 +16,22 @@ public static class Devices
         var endpoints = routes.MapGroup("/organizations/{organizationId}/v1/devices")
             .WithName("Devices");
 
+    //    endpoints.MapGet("/{deviceId}/connection-status", async (Guid organizationId, Guid deviceId, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
+    //     {
+    //         var result = await mediator.Send(
+    //             new GetDeviceGroupByIdQuery(
+    //                 deviceGroupId,
+    //                 organizationId,
+    //                 context.User.GetUserId()), 
+    //             cancellationToken);
+
+    //         var mapper = new DeviceGroupMapper();
+    //         return mapper.MapOperationResult(result);
+    //     })
+    //     .WithName("Get Device Connection Status")
+    //     .RequireAuthorization(SecurityPolicies.TunnelingUserPolicy)
+    //     .SetResponseStatusCode();      
+
         endpoints.MapPost("", async (Guid organizationId, AddDeviceRequest request, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
         {
             var result = await mediator.Send(

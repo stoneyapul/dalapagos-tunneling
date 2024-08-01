@@ -16,6 +16,7 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
         Guid? deviceGroupId, 
         string deviceName, 
         Core.Model.Os os, 
+        Guid organizationId,
         CancellationToken cancellationToken)
     {
         if (!deviceId.HasValue)
@@ -27,10 +28,11 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
         var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceGroupId ?? (object)DBNull.Value, IsNullable = true };
         var deviceNameParam = new SqlParameter("@DeviceName", System.Data.SqlDbType.NVarChar, 64) { Value = deviceName };
         var osParam = new SqlParameter("@Os", System.Data.SqlDbType.Int) { Value = (int)os };
-        var parms = new List<object> { deviceIdParam, deviceGroupIdParam, deviceNameParam, osParam };
+        var organizationIdParam = new SqlParameter("@OrganizationUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = organizationId };
+        var parms = new List<object> { deviceIdParam, deviceGroupIdParam, deviceNameParam, osParam, organizationIdParam };
 
         await dbContext.Database.ExecuteSqlRawAsync(
-            "EXECUTE UpsertDevice @DeviceUuid, @DeviceGroupUuid, @DeviceName, @Os", 
+            "EXECUTE UpsertDevice @DeviceUuid, @DeviceGroupUuid, @DeviceName, @Os, @OrganizationUuid", 
             parms, 
             cancellationToken);
 
@@ -166,6 +168,17 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
 
         return organizationUsers;
    }
+
+    public async Task<Core.Model.Device> RetrieveDeviceAsync(Guid deviceId, CancellationToken cancellationToken)
+    {
+       var deviceEntity = await dbContext.Devices
+            .AsNoTracking()
+            .Where(d => d.DeviceUuid == deviceId)
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new DataNotFoundException($"Device with id {deviceId} not found");
+
+        // TODO: Fix this stuff.
+        return new Core.Model.Device(deviceId, Guid.NewGuid(), deviceEntity.DeviceName, (Core.Model.Os)deviceEntity.Os);
+    }
 
     public async Task<Core.Model.DeviceGroup> RetrieveDeviceGroupAsync(Guid organizationId, Guid deviceGroupId, CancellationToken cancellationToken)
     {

@@ -13,5 +13,7 @@ public partial class Organization
 
     public virtual ICollection<DeviceGroup> DeviceGroups { get; set; } = new List<DeviceGroup>();
 
+    public virtual ICollection<Device> Devices { get; set; } = new List<Device>();
+
     public virtual ICollection<OrganizationUser> OrganizationUsers { get; set; } = new List<OrganizationUser>();
 }

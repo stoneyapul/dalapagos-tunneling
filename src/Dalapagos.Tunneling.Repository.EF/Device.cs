@@ -15,5 +15,9 @@ public partial class Device
 
     public int Os { get; set; }
 
+    public int OrganizationId { get; set; }
+
     public virtual DeviceGroup? DeviceGroup { get; set; }
+
+    public virtual Organization Organization { get; set; } = null!;
 }
