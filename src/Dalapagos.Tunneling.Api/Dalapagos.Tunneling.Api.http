@@ -29,13 +29,13 @@ Content-Type: application/json
 }
 
 ###
-# Get a device group.
-GET {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/6f3b34cb-0393-4c91-8078-596c60d15a82
+# Get a hub.
+GET {{hostAddress}}/organizations/{{orgId}}/v1/hubs/f643c0c3-1a0e-4eba-a830-23e2567d5986
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 ###
-# Add a device group.
+# Add a hub.
 POST {{hostAddress}}/organizations/{{orgId}}/v1/hubs/
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
@@ -46,8 +46,8 @@ Content-Type: application/json
 }
 
 ###
-# Delete a device group.
-DELETE {{hostAddress}}/organizations/{{orgId}}/v1/devicegroups/6f3b34cb-0393-4c91-8078-596c60d15a82
+# Delete a hub.
+DELETE {{hostAddress}}/organizations/{{orgId}}/v1/hubs/f643c0c3-1a0e-4eba-a830-23e2567d5986
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
