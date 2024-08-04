@@ -2,8 +2,8 @@
 
 public static class GuidExtensions
 {
-   public static string ToShortDeviceGroupId(this Guid deviceGroupId)
+   public static string ToShortHubId(this Guid hubId)
     {
-        return deviceGroupId.ToString().Substring(24, 12).ToLowerInvariant();
+        return hubId.ToString().Substring(24, 12).ToLowerInvariant();
     }
 }

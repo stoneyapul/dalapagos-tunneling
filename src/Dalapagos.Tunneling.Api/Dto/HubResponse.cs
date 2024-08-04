@@ -3,21 +3,33 @@
 using System.Text.Json.Serialization;
 
 /// <summary>
-/// Represents a response with device group information. 
+/// Represents a response with hub information. 
 /// </summary>
-public class DeviceGroupResponse
+public class HubResponse
 {
     /// <summary>
-    /// A globally unique identifier for the device group.
+    /// A globally unique identifier for the hub.
     /// </summary>
-    [JsonPropertyName("deviceGroupId")]
-    public Guid DeviceGroupId { get; set; }
+    [JsonPropertyName("hubId")]
+    public Guid HubId { get; set; }
 
     /// <summary>
     /// A device group name.
     /// </summary>
     [JsonPropertyName("name")]
     public string Name { get; set; } = default!;
+
+    /// <summary>
+    /// A count of connected devices.
+    /// </summary>
+    [JsonPropertyName("connectedDevices")]
+    public int? ConnectedDevices { get; set; }
+
+    /// <summary>
+    /// A count of devices, connected and not connected.
+    /// </summary>
+    [JsonPropertyName("totalDevices")]
+    public int? TotalDevices { get; set; }
 
     /// <summary>
     /// A region in the US where the tunneling server is provisioned. West, Central, or East.
@@ -32,7 +44,7 @@ public class DeviceGroupResponse
     public string Status { get; set; } = default!;
 
     /// <summary>
-    /// A list of devices that belong to the device group.
+    /// A list of devices that belong to the hub.
     /// </summary>
     [JsonPropertyName("devices")]
     public IList<DeviceResponse>? Devices { get; set; }

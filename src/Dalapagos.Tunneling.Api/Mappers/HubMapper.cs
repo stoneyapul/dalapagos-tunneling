@@ -3,9 +3,9 @@
 using Core.Model;
 using Dto;
 
-public class DeviceGroupMapper : MapperBase<DeviceGroup, DeviceGroupResponse>
+public class HubMapper : MapperBase<Hub, HubResponse>
 {
-    public override DeviceGroupResponse Map(DeviceGroup source)
+    public override HubResponse Map(Hub source)
     {
         ArgumentNullException.ThrowIfNull(source.Id, nameof(source.Id));
 
@@ -20,12 +20,14 @@ public class DeviceGroupMapper : MapperBase<DeviceGroup, DeviceGroupResponse>
             }
         }
 
-        return new DeviceGroupResponse
+        return new HubResponse
         {
-            DeviceGroupId = source.Id.Value,
+            ConnectedDevices = source.ConnectedDeviceCount,
+            TotalDevices = source.TotalDeviceCount,
+            HubId = source.Id.Value,
             Name = source.Name,
-            Location = source.ServerLocation.ToString(), 
-            Status = source.ServerStatus.ToString(), 
+            Location = source.Location.ToString(), 
+            Status = source.Status.ToString(), 
             Devices = devices
         };
     }

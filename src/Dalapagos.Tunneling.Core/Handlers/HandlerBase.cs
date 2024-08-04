@@ -1,5 +1,6 @@
 ﻿namespace Dalapagos.Tunneling.Core.Handlers;
 
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Core;
@@ -33,6 +34,30 @@ public abstract class HandlerBase<TRequest, TResponse>(ITunnelingRepository tunn
             || string.IsNullOrWhiteSpace(clientSecret)
             ? new DefaultAzureCredential()
             : new ClientSecretCredential(tenantId, clientId, clientSecret);
+    }
+
+    protected static string CreatePassword()
+    {
+        const string specialChars = "!@#$;:?";
+        const string numbers = "0123456789";
+        const string upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const string lowerCase = "abcdefghijklmnopqrstuvwxyz";
+        const string allChars = specialChars + numbers + upperCase + lowerCase;
+
+        var password = new StringBuilder();
+        var random = new Random();
+
+        password.Append(lowerCase[random.Next(lowerCase.Length)]);
+        password.Append(specialChars[random.Next(specialChars.Length)]);
+        password.Append(upperCase[random.Next(upperCase.Length)]);
+        password.Append(numbers[random.Next(numbers.Length)]);
+    
+        for (var i = 0; i < 8; i++)
+        {
+            password.Append(allChars[random.Next(allChars.Length)]);
+        }
+
+        return password.ToString();
     }
 
     public abstract ValueTask<TResponse> Handle(TRequest request, CancellationToken cancellationToken);

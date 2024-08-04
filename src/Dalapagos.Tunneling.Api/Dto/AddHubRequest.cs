@@ -6,16 +6,16 @@ using Core.Model;
 using Validation;
 
 /// <summary>
-/// Represents a request to add a device group. 
-/// This takes a few minutes because a tunneling server is provisioned for the device group.
+/// Represents a request to add a hub. 
+/// This takes a few minutes because a tunneling server is provisioned for the hub.
 /// </summary>
-public class AddDeviceGroupRequest
+public class AddHubRequest
 {
     /// <summary>
-    /// A globally unique identifier for the device group. If not provided, the device group id will be generated.
+    /// A globally unique identifier for the hub. If not provided, the hub id will be generated.
     /// </summary>
-    [JsonPropertyName("deviceGroupId")]
-    public Guid? DeviceGroupId { get; set; }
+    [JsonPropertyName("hubId")]
+    public Guid? HubId { get; set; }
 
     /// <summary>
     /// A device group name.

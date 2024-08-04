@@ -34,7 +34,6 @@ public interface IRportTunnelClient
 
     [Post("/api/v1/clients-auth")]
     Task AddClientAuth(
-        [AliasAs("client_auth_id")] string clientAuthId,
         RportClientAuthData request,
         CancellationToken cancellationToken
     );

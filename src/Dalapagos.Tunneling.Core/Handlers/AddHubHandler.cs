@@ -1,8 +1,7 @@
-﻿// Device groups are a collection of devices. Each device group has a tunneling server associated with it. 
-// This command creates a device group in the database and kicks off provisioning for a server.
+﻿// Hubs are a collection of devices, a tunneling server, and a device group record in the database. 
+// This command creates a device group in the database and kicks off provisioning for a tunneling server.
 namespace Dalapagos.Tunneling.Core.Handlers;
 
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Commands;
@@ -15,15 +14,15 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Services.Common;
 using Model;
 
-internal sealed class AddDeviceGroupHandler(
-    ILogger<AddDeviceGroupCommand> logger, 
+internal sealed class AddHubHandler(
+    ILogger<AddHubCommand> logger, 
     IConfiguration config, 
     ISecrets secrets,
     ITunnelingRepository tunnelingRepository,
     IDeviceGroupDeploymentMonitor deploymentMonitor) 
-        : HandlerBase<AddDeviceGroupCommand, OperationResult<DeviceGroup>>(tunnelingRepository, config)
+        : HandlerBase<AddHubCommand, OperationResult<Hub>>(tunnelingRepository, config)
 {
-    public override async ValueTask<OperationResult<DeviceGroup>> Handle(AddDeviceGroupCommand request, CancellationToken cancellationToken)
+    public override async ValueTask<OperationResult<Hub>> Handle(AddHubCommand request, CancellationToken cancellationToken)
     {
         _ = await VerifyUserOrganizationAsync(request, cancellationToken);
  
@@ -44,14 +43,14 @@ internal sealed class AddDeviceGroupHandler(
             throw new Exception($"Device group {request.Name} is already deploying to {request.Location}.");
         }
 
-        var deviceGroupId = request.Id ?? Guid.NewGuid();
-        var shortDeviceGrpId = deviceGroupId.ToShortDeviceGroupId();
-        var resourceGroupName = $"dlpg-{shortDeviceGrpId}";
-        var adminVmPasswordSecretName = $"{shortDeviceGrpId}{Constants.TunnelingServerVmPassNameSfx}";
-        var fdqn = $"dalapagos-{shortDeviceGrpId}.{request.Location.ToAzureLocation()}.cloudapp.azure.com";
+        var hubId = request.Id ?? Guid.NewGuid();
+        var shorthubId = hubId.ToShortHubId();
+        var resourceGroupName = $"dlpg-{shorthubId}";
+        var adminVmPasswordSecretName = $"{shorthubId}{Constants.TunnelingServerVmPassNameSfx}";
+        var fdqn = $"dalapagos-{shorthubId}.{request.Location.ToAzureLocation()}.cloudapp.azure.com";
 
         var deviceGroup = await tunnelingRepository.UpsertDeviceGroupAsync(
-            deviceGroupId, 
+            hubId, 
             request.OrganizationId,
             request.Name,
             request.Location,
@@ -60,10 +59,10 @@ internal sealed class AddDeviceGroupHandler(
             cancellationToken);
 
         // Add VM password secret to key vault.
-        logger.LogInformation("Saving VM password for organization {OrganizationId} device group {ShortDeviceGrpId}.", request.OrganizationId, shortDeviceGrpId);
-        await secrets.SetSecretAsync(adminVmPasswordSecretName, CreateVmPassword(), cancellationToken);
+        logger.LogInformation("Saving VM password for organization {OrganizationId} device group {ShortHubId}.", request.OrganizationId, shorthubId);
+        await secrets.SetSecretAsync(adminVmPasswordSecretName, CreatePassword(), cancellationToken);
  
-        logger.LogInformation("Creating tunneling server for organization {OrganizationId} device group {ShortDeviceGrpId}.", request.OrganizationId, shortDeviceGrpId);
+        logger.LogInformation("Creating tunneling server for organization {OrganizationId} device group {ShortHubId}.", request.OrganizationId, shorthubId);
         var projectId = new Guid(projectIdAsString);
         var pipelineClient = new PipelinesHttpClient(new Uri(Constants.DevOpsBaseUrl), new VssBasicCredential(string.Empty, personalAccessToken));
         var pipelines = await pipelineClient.ListPipelinesAsync(projectId, cancellationToken: cancellationToken);
@@ -73,7 +72,7 @@ internal sealed class AddDeviceGroupHandler(
         {       
             TemplateParameters = new Dictionary<string, string>
             {
-                { "deviceGrpId", shortDeviceGrpId },
+                { "hubId", shorthubId },
                 { "location", request.Location.ToAzureLocation() },
                 { "resourceGroupName", resourceGroupName },
                 { "keyVaultName", keyVaultName },
@@ -91,7 +90,7 @@ internal sealed class AddDeviceGroupHandler(
         var pipelineRun = await pipelineClient.RunPipelineAsync(pipelineParameters, projectId, pipeline.Id, cancellationToken: cancellationToken);
 
         deviceGroup = await tunnelingRepository.UpsertDeviceGroupAsync(
-            deviceGroupId, 
+            hubId, 
             deviceGroup.OrganizationId,
             deviceGroup.Name,
             deviceGroup.ServerLocation,
@@ -100,32 +99,8 @@ internal sealed class AddDeviceGroupHandler(
             cancellationToken);
 
         // Monitor the deploment pipeline.
-        deploymentMonitor.MonitorDeployment(deviceGroupId, projectId, pipelineRun.Pipeline.Id, pipelineRun.Id, personalAccessToken, cancellationToken);
+        deploymentMonitor.MonitorDeployment(hubId, projectId, pipelineRun.Pipeline.Id, pipelineRun.Id, personalAccessToken, cancellationToken);
         
-        return new OperationResult<DeviceGroup>(deviceGroup, true, Constants.StatusSuccessAccepted, []);
-    }
-        
-    private static string CreateVmPassword()
-    {
-        const string specialChars = "!@#$;:?";
-        const string numbers = "0123456789";
-        const string upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const string lowerCase = "abcdefghijklmnopqrstuvwxyz";
-        const string allChars = specialChars + numbers + upperCase + lowerCase;
-
-        var password = new StringBuilder();
-        var random = new Random();
-
-        password.Append(lowerCase[random.Next(lowerCase.Length)]);
-        password.Append(specialChars[random.Next(specialChars.Length)]);
-        password.Append(upperCase[random.Next(upperCase.Length)]);
-        password.Append(numbers[random.Next(numbers.Length)]);
-    
-        for (var i = 0; i < 8; i++)
-        {
-            password.Append(allChars[random.Next(allChars.Length)]);
-        }
-
-        return password.ToString();
+        return new OperationResult<Hub>(new Hub(deviceGroup), true, Constants.StatusSuccessAccepted, []);
     }
 }

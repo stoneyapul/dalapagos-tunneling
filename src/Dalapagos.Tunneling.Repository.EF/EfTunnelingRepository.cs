@@ -36,7 +36,7 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
             parms, 
             cancellationToken);
 
-        return new Core.Model.Device(deviceId.Value, deviceGroupId, deviceName, os);
+        return new Core.Model.Device(deviceId.Value, deviceGroupId, deviceName, os, ""); // TODO
     }
 
     public async Task<Core.Model.DeviceGroup> UpsertDeviceGroupAsync(
@@ -173,11 +173,11 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
     {
        var deviceEntity = await dbContext.Devices
             .AsNoTracking()
+            .Include(d => d.DeviceGroup)
             .Where(d => d.DeviceUuid == deviceId)
             .FirstOrDefaultAsync(cancellationToken) ?? throw new DataNotFoundException($"Device with id {deviceId} not found");
 
-        // TODO: Fix this stuff.
-        return new Core.Model.Device(deviceId, Guid.NewGuid(), deviceEntity.DeviceName, (Core.Model.Os)deviceEntity.Os);
+        return new Core.Model.Device(deviceId, deviceEntity?.DeviceGroup?.DeviceGroupUuid, deviceEntity.DeviceName, (Core.Model.Os)deviceEntity.Os, ""); // TODO
     }
 
     public async Task<Core.Model.DeviceGroup> RetrieveDeviceGroupAsync(Guid organizationId, Guid deviceGroupId, CancellationToken cancellationToken)
@@ -257,6 +257,7 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
                 deviceEntity.DeviceUuid, 
                 deviceGroupId, 
                 deviceEntity.DeviceName,
-                (Core.Model.Os)deviceEntity.Os);
+                (Core.Model.Os)deviceEntity.Os,
+                ""); // TODO
     }
 }

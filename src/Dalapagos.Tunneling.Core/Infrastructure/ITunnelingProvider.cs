@@ -5,25 +5,28 @@ using Model;
 public interface ITunnelingProvider
 {
     Task<TunnelServer> GetServerInformationAsync(
-        Guid organizationId, 
-        Guid deviceGroupId, 
+        Guid hubId,
+        string baseAddress,
         CancellationToken cancellationToken = default);
 
     Task<IList<Tunnel>> GetTunnelsByDeviceIdAsync(
-        Guid organizationId,
-        Guid deviceId,
+        Guid hubId,
+        Guid deviceId, 
+        string baseAddress,
         CancellationToken cancellationToken = default
     );
 
     Task<bool> IsDeviceConnectedAsync(
-        Guid organizationId,
-        Guid deviceId,
+        Guid hubId,
+        Guid deviceId, 
+        string baseAddress,
         CancellationToken cancellationToken = default
     );
 
     Task<Tunnel> AddTunnelAsync(
-        Guid organizationId,
-        Guid deviceId,
+        Guid hubId,
+        Guid deviceId, 
+        string baseAddress,
         Protocol protocol,
         ushort port,
         int? deleteAfterMin,
@@ -32,14 +35,29 @@ public interface ITunnelingProvider
     );
 
     Task RemoveTunnelAsync(
-        Guid organizationId,
-        Guid deviceId,
+        Guid hubId,
+        Guid deviceId, 
+        string baseAddress,
         string tunnelId,
         CancellationToken cancellationToken = default
     );
 
-    Task RemoveTunnelCredentialsAsync(
-        Guid organizationId,
+    Task<string> GetDeviceCredentialStringAsync(
+        Guid hubId,
         Guid deviceId, 
+        string baseAddress,
+        CancellationToken cancellationToken = default);
+
+    Task AddDeviceCredentialStringAsync(
+        Guid hubId,
+        Guid deviceId, 
+        string baseAddress,
+        string password,
+        CancellationToken cancellationToken = default);
+
+    Task RemoveDeviceCredentialStringAsync(
+        Guid hubId,
+        Guid deviceId, 
+        string baseAddress,
         CancellationToken cancellationToken = default);
 }

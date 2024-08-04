@@ -10,27 +10,27 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Model;
 
-internal sealed  class DeleteDeviceGroupHandler(
-    ILogger<DeleteDeviceGroupCommand> logger, 
+internal sealed  class DeleteHubHandler(
+    ILogger<DeleteHubCommand> logger, 
     IConfiguration config, 
     ISecrets secrets,
     ITunnelingRepository tunnelingRepository)
-    : HandlerBase<DeleteDeviceGroupCommand, OperationResult>(tunnelingRepository, config)
+    : HandlerBase<DeleteHubCommand, OperationResult>(tunnelingRepository, config)
 {
-   public override async ValueTask<OperationResult> Handle(DeleteDeviceGroupCommand request, CancellationToken cancellationToken)
+   public override async ValueTask<OperationResult> Handle(DeleteHubCommand request, CancellationToken cancellationToken)
     {
         await VerifyUserOrganizationAsync(request, cancellationToken);
         
         var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(request.OrganizationId, request.Id, cancellationToken);
         if (deviceGroup.ServerStatus == ServerStatus.Deploying)
         {
-            throw new Exception($"Device group {request.Id.ToShortDeviceGroupId()} is deploying. It cannot be deleted until the deployment is complete.");
+            throw new Exception($"Hub {request.Id.ToShortHubId()} is deploying. It cannot be deleted until the deployment is complete.");
         }
 
         var warnings = new List<string>();   
 
         // Delete the resource group that has the VM. This takes awhile, so we will continue on without waiting for it to finish.
-        var resourceGroupName = $"dlpg-{request.Id.ToShortDeviceGroupId()}";
+        var resourceGroupName = $"dlpg-{request.Id.ToShortHubId()}";
         logger.LogInformation("Deleting resource group {ResourceGroup}.", resourceGroupName);
         try
         {
@@ -48,15 +48,15 @@ internal sealed  class DeleteDeviceGroupHandler(
             }
 
             warnings.Add("Failed to delete the resource group.");
-            logger.LogWarning(aex, "Failed to delete resource group for {DeviceGrpId}.", request.Id.ToShortDeviceGroupId());
+            logger.LogWarning(aex, "Failed to delete resource group for {DeviceGrpId}.", request.Id.ToShortHubId());
         }
 
         // Delete key vault secrets.
-        logger.LogInformation("Deleting secrets for {DeviceGrpId}.", request.Id.ToShortDeviceGroupId());
+        logger.LogInformation("Deleting secrets for {DeviceGrpId}.", request.Id.ToShortHubId());
 
         try
         {
-            await secrets.RemoveSecretAsync($"{request.Id.ToShortDeviceGroupId()}{Constants.TunnelingServerFingerprintNameSfx}", cancellationToken);
+            await secrets.RemoveSecretAsync($"{request.Id.ToShortHubId()}{Constants.TunnelingServerFingerprintNameSfx}", cancellationToken);
         }
         catch (Azure.RequestFailedException aex)
         {
@@ -69,12 +69,12 @@ internal sealed  class DeleteDeviceGroupHandler(
             logger.LogWarning(
                 aex, 
                 "Failed to delete secret {Secret} for {DeviceGrpId}.", 
-                $"{request.Id.ToShortDeviceGroupId()}{Constants.TunnelingServerFingerprintNameSfx}", request.Id.ToShortDeviceGroupId());
+                $"{request.Id.ToShortHubId()}{Constants.TunnelingServerFingerprintNameSfx}", request.Id.ToShortHubId());
         }
 
         try
         {
-            await secrets.RemoveSecretAsync($"{request.Id.ToShortDeviceGroupId()}{Constants.TunnelingServerPassNameSfx}", cancellationToken);
+            await secrets.RemoveSecretAsync($"{request.Id.ToShortHubId()}{Constants.TunnelingServerPassNameSfx}", cancellationToken);
         }
         catch (Azure.RequestFailedException aex)
         {
@@ -87,12 +87,12 @@ internal sealed  class DeleteDeviceGroupHandler(
             logger.LogWarning(
                 aex, 
                 "Failed to delete secret {Secret} for {DeviceGrpId}.", 
-                $"{request.Id.ToShortDeviceGroupId()}{Constants.TunnelingServerPassNameSfx}", request.Id.ToShortDeviceGroupId());
+                $"{request.Id.ToShortHubId()}{Constants.TunnelingServerPassNameSfx}", request.Id.ToShortHubId());
         }
 
         try
         {
-            await secrets.RemoveSecretAsync($"{request.Id.ToShortDeviceGroupId()}{Constants.TunnelingServerVmPassNameSfx}", cancellationToken);
+            await secrets.RemoveSecretAsync($"{request.Id.ToShortHubId()}{Constants.TunnelingServerVmPassNameSfx}", cancellationToken);
         }
         catch (Azure.RequestFailedException aex)
         {
@@ -105,8 +105,8 @@ internal sealed  class DeleteDeviceGroupHandler(
             logger.LogWarning(
                 aex, 
                 "Failed to delete secret {Secret} for {DeviceGrpId}.", 
-                $"{request.Id.ToShortDeviceGroupId()}{Constants.TunnelingServerVmPassNameSfx}", 
-                request.Id.ToShortDeviceGroupId());
+                $"{request.Id.ToShortHubId()}{Constants.TunnelingServerVmPassNameSfx}", 
+                request.Id.ToShortHubId());
         }
 
         // Any devices in the group should be orphaned, ie no longer associated with a group.

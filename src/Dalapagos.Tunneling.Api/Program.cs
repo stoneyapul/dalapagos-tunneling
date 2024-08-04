@@ -40,7 +40,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.RegisterDeviceEndpoints();
-app.RegisterDeviceGroupEndpoints();
+app.RegisterHubEndpoints();
 app.RegisterTunnelEndpoints();
 
 app.UseSwagger();

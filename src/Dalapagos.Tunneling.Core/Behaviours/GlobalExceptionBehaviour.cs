@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Exceptions;
 using Mediator;
 using Microsoft.Extensions.Logging;
 using Model;
@@ -18,6 +19,7 @@ public sealed class GlobalExceptionBehaviour<TMessage, TResponse>(ILogger<Global
             { "ArgumentException", badRequestHandler },
             { "ArgumentNullException", badRequestHandler },
             { "AccessDeniedException", unauthorizedHandler },
+            { "TunnelingException", tunnelingHandler },
             { "DataNotFoundException", notFoundHandler }
         };
 
@@ -72,5 +74,15 @@ public sealed class GlobalExceptionBehaviour<TMessage, TResponse>(ILogger<Global
     private static readonly Func<Exception, int> notFoundHandler = (ex) =>
     {
         return Constants.StatusNotFound;
+    };
+
+    private static readonly Func<Exception, int> tunnelingHandler = (ex) =>
+    {
+        if (ex is TunnelingException tex)
+        {
+            return (int)tex.DownstreamStatusCode;
+        }
+
+        return Constants.StatusFailServer;
     };
 }

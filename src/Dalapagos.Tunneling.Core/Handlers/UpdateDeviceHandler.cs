@@ -16,7 +16,7 @@ internal sealed class UpdateDeviceHandler(ITunnelingRepository tunnelingReposito
 
         var device = await tunnelingRepository.UpsertDeviceAsync(
             request.Id, 
-            request.DeviceGroupId,
+            request.HubId,
             request.Name, 
             request.Os,
             request.OrganizationId,
