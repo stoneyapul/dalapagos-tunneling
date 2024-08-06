@@ -52,8 +52,7 @@ public abstract class HandlerBase<TRequest, TResponse>(ITunnelingRepository tunn
         password.Append(upperCase[random.Next(upperCase.Length)]);
         password.Append(numbers[random.Next(numbers.Length)]);
     
-        var passwordLength = random.Next(13, 18);
-        for (var i = 0; i < passwordLength; i++)
+        for (var i = 0; i < 17; i++)
         {
             password.Append(allChars[random.Next(allChars.Length)]);
         }
