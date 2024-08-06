@@ -12,7 +12,7 @@ public class DeviceMapper : MapperBase<Device, DeviceResponse>
         return new DeviceResponse
         {
             DeviceId = source.Id.Value,
-            DeviceGroupId = source.DeviceGroupId,
+            HubId = source.HubId,
             Name = source.Name,
             Os = source.Os.ToString()
         };

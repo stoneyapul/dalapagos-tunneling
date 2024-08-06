@@ -23,14 +23,14 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "deviceGroupId": "6f3b34cb-0393-4c91-8078-596c60d15a82",
-    "name": "device 1",
+    "hubId": "f812a5ef-e971-400e-8ac3-1718919dab49",
+    "name": "device 3",
     "os": "linux"
 }
 
 ###
 # Get a hub.
-GET {{hostAddress}}/organizations/{{orgId}}/v1/hubs/f643c0c3-1a0e-4eba-a830-23e2567d5986
+GET {{hostAddress}}/organizations/{{orgId}}/v1/hubs/f812a5ef-e971-400e-8ac3-1718919dab49
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
@@ -47,7 +47,7 @@ Content-Type: application/json
 
 ###
 # Delete a hub.
-DELETE {{hostAddress}}/organizations/{{orgId}}/v1/hubs/f643c0c3-1a0e-4eba-a830-23e2567d5986
+DELETE {{hostAddress}}/organizations/{{orgId}}/v1/hubs/f812a5ef-e971-400e-8ac3-1718919dab49
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 

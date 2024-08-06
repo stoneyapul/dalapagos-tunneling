@@ -14,10 +14,10 @@ public class DeviceResponse
     public Guid DeviceId { get; set; }
 
     /// <summary>
-    /// A globally unique identifier for the device group.
+    /// A globally unique identifier for the hub.
     /// </summary>
-    [JsonPropertyName("deviceGroupId")]
-    public Guid? DeviceGroupId { get; set; }
+    [JsonPropertyName("hubId")]
+    public Guid? HubId { get; set; }
 
     /// <summary>
     /// A device name.
