@@ -3,42 +3,53 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Commands;
+using Exceptions;
 using Infrastructure;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Model;
 
-internal sealed class AddDeviceHandler(ITunnelingRepository tunnelingRepository, ITunnelingProvider tunnelingProvider, IConfiguration config) 
+internal sealed class AddDeviceHandler(
+    ITunnelingRepository tunnelingRepository, 
+    ITunnelingProvider tunnelingProvider, 
+    IConfiguration config, 
+    ILogger<AddDeviceHandler> logger) 
     : HandlerBase<AddDeviceCommand, OperationResult<Device>>(tunnelingRepository, config)
 {
     public override async ValueTask<OperationResult<Device>> Handle(AddDeviceCommand request, CancellationToken cancellationToken)
     {
         await VerifyUserOrganizationAsync(request, cancellationToken);
 
+        var deviceId = request.Id ?? Guid.NewGuid();
         var device = await tunnelingRepository.UpsertDeviceAsync(
-            request.Id.HasValue ? request.Id : Guid.NewGuid(), 
+            deviceId, 
             request.HubId,
             request.Name,
             request.Os, 
             request.OrganizationId,
             cancellationToken);
             
-    //     try
-    //     {
-    //         await tunnelingProvider.AddDeviceCredentialStringAsync(request.HubId, device.Id, cancellationToken);
-    //         return creds.Data.Password;
-    //     }
-    //     catch (Refit.ApiException ex)
-    //     {
-    //         if (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
-    //         {
-    //             return await AddClientAuthAsync(tunnelingDeviceIdNotNull, cancellationToken);
-    //         }
+        // Specifying a hub that the device belongs to is optional.    
+        if (!request.HubId.HasValue)
+        {
+            return new OperationResult<Device>(device, true, Constants.StatusSuccessCreated, []);
+        }
 
-    //         logger.Error("Message: {message} {content}", ex.RequestMessage, ex.Content);
-    //         throw new TunnelingException(GetErrorMessage(ex), ex.StatusCode);
-    //     }
+        try
+        {
+            var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(request.OrganizationId, request.HubId.Value, cancellationToken) 
+                ?? throw new DataNotFoundException($"Information not found for hub {request.HubId.Value}.");
 
-    //    await tunnelingProvider.
+            ArgumentNullException.ThrowIfNull(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
+ 
+            var credentialString = $"{deviceId}:{CreatePassword()}";
+            await tunnelingProvider.AddDeviceCredentialStringAsync(request.HubId.Value, deviceId, deviceGroup.ServerBaseUrl, credentialString, cancellationToken);           
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex.Message);
+        }
+
         return new OperationResult<Device>(device, true, Constants.StatusSuccessCreated, []);
     }
 }

@@ -52,7 +52,7 @@ public interface ITunnelingProvider
         Guid hubId,
         Guid deviceId, 
         string baseAddress,
-        string password,
+        string credentialString,
         CancellationToken cancellationToken = default);
 
     Task RemoveDeviceCredentialStringAsync(
