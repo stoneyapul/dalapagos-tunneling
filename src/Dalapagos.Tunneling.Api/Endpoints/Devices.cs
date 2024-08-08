@@ -58,7 +58,7 @@ public static class Devices
             var result = await mediator.Send(
                 new UpdateDeviceCommand(
                     deviceId, 
-                    request.DeviceGroupId, 
+                    request.HubId, 
                     request.Name, 
                     Enum.Parse<Os>(request.Os, true),
                     organizationId,

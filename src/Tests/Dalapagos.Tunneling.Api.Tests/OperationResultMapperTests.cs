@@ -14,9 +14,7 @@ public class OperationResultMapperTests
             Guid.NewGuid(),
             Guid.NewGuid(),
             "Test Device",
-            Os.Windows,
-            ""
-        );
+            Os.Windows);
 
         var operationResult = new OperationResult<Device>(device, true, 200, []);
         var mapper = new DeviceMapper();

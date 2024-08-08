@@ -17,7 +17,7 @@ public class AddDeviceRequest
     public Guid? DeviceId { get; set; }
 
     /// <summary>
-    /// A globally unique identifier for the device group. If not provided, the device will not be associated with a device group.
+    /// A globally unique identifier for the hub. If not provided, the device will not be associated with a hub.
     /// </summary>
     [JsonPropertyName("hubId")]
     public Guid? HubId { get; set; }

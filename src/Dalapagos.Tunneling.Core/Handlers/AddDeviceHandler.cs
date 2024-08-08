@@ -43,7 +43,7 @@ internal sealed class AddDeviceHandler(
             ArgumentNullException.ThrowIfNull(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
  
             var credentialString = $"{deviceId}:{CreatePassword()}";
-            await tunnelingProvider.AddDeviceCredentialStringAsync(request.HubId.Value, deviceId, deviceGroup.ServerBaseUrl, credentialString, cancellationToken);           
+            device.DeviceConnectionScript = await tunnelingProvider.ConfigureDeviceConnectionAsync(request.HubId.Value, deviceId, deviceGroup.ServerBaseUrl, credentialString, request.Os, cancellationToken);           
         }
         catch (Exception ex)
         {

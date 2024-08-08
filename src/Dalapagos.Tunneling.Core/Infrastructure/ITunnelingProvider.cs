@@ -42,20 +42,15 @@ public interface ITunnelingProvider
         CancellationToken cancellationToken = default
     );
 
-    Task<string> GetDeviceCredentialStringAsync(
-        Guid hubId,
-        Guid deviceId, 
-        string baseAddress,
-        CancellationToken cancellationToken = default);
-
-    Task AddDeviceCredentialStringAsync(
+    Task<string?> ConfigureDeviceConnectionAsync(
         Guid hubId,
         Guid deviceId, 
         string baseAddress,
         string credentialString,
+        Os os,
         CancellationToken cancellationToken = default);
 
-    Task RemoveDeviceCredentialStringAsync(
+    Task RemoveDeviceCredentialsAsync(
         Guid hubId,
         Guid deviceId, 
         string baseAddress,

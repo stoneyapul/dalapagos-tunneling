@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Reposit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BEE30165-7AAF-414F-919F-2C4E3DF3043F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{28B2EB13-935E-49B9-AA4F-111EB18D5116}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Monitor.HF", "src\Dalapagos.Tunneling.Monitor.HF\Dalapagos.Tunneling.Monitor.HF.csproj", "{E283F624-AA2B-46A8-8127-E3C6542AB3A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Rport", "src\Dalapagos.Tunneling.Rport\Dalapagos.Tunneling.Rport.csproj", "{755CD2BF-7015-48B2-93F0-E4E6BBD6FEC9}"
@@ -59,10 +57,6 @@ Global
 		{E26B94FC-4B44-4300-9FCA-E15191ACEEFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E26B94FC-4B44-4300-9FCA-E15191ACEEFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E26B94FC-4B44-4300-9FCA-E15191ACEEFA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{809C1268-EE7C-40C8-965F-2A8A73A1A0B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{809C1268-EE7C-40C8-965F-2A8A73A1A0B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{809C1268-EE7C-40C8-965F-2A8A73A1A0B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{809C1268-EE7C-40C8-965F-2A8A73A1A0B9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F5D94A84-EA6A-4C13-A29A-529D03056D6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F5D94A84-EA6A-4C13-A29A-529D03056D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5D94A84-EA6A-4C13-A29A-529D03056D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU

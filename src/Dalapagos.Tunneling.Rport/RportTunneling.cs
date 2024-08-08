@@ -17,7 +17,7 @@ using Polly;
 using Polly.Retry;
 using Refit;
 
-public class RportTunneling(ISecrets secrets, ILogger<RportTunneling> logger) : ITunnelingProvider
+public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets secrets, ILogger<RportTunneling> logger) : ITunnelingProvider
 {
     private const string Username = "admin";
     private const string ConnectedState = "connected";
@@ -81,11 +81,13 @@ public class RportTunneling(ISecrets secrets, ILogger<RportTunneling> logger) : 
         string baseAddress,
         CancellationToken cancellationToken = default)
     {
+        var retryPipeline = GetRetryPipeline();
+
         try
         {
             var rportTunnelClient = await CreateRportTunnelClientAsync(hubId, baseAddress, cancellationToken);
+            var serverStatus = await retryPipeline.ExecuteAsync(async (ct) => await rportTunnelClient.GetServer(ct), cancellationToken);
 
-            var serverStatus = await rportTunnelClient.GetServer(cancellationToken);
             return new TunnelServer(
                 ServerStatus.Online, 
                 null,
@@ -107,12 +109,13 @@ public class RportTunneling(ISecrets secrets, ILogger<RportTunneling> logger) : 
         CancellationToken cancellationToken = default)
     {
         var tunnels = new List<Tunnel>();
+        var retryPipeline = GetRetryPipeline();
 
         try
         {
             var rportTunnelClient = await CreateRportTunnelClientAsync(hubId, baseAddress, cancellationToken);
 
-            var rportClient = await rportTunnelClient.GetClientById(deviceId.ToString(), cancellationToken)
+            var rportClient = await retryPipeline.ExecuteAsync(async (ct) => await rportTunnelClient.GetClientById(deviceId.ToString(), ct), cancellationToken)
                 ?? throw new TunnelingException("Failed to retrieve tunneling client information.", System.Net.HttpStatusCode.InternalServerError);
 
            if (
@@ -152,11 +155,13 @@ public class RportTunneling(ISecrets secrets, ILogger<RportTunneling> logger) : 
         string baseAddress,
         CancellationToken cancellationToken = default)
     {
+        var retryPipeline = GetRetryPipeline();
+
         try
         {
             var rportTunnelClient = await CreateRportTunnelClientAsync(hubId, baseAddress, cancellationToken);
+            var rportClient = await retryPipeline.ExecuteAsync(async (ct) => await rportTunnelClient.GetClientById(deviceId.ToString(), ct), cancellationToken);
 
-            var rportClient = await rportTunnelClient.GetClientById(deviceId.ToString(), cancellationToken);
             return !string.IsNullOrWhiteSpace(rportClient.Data.ConnectionState)
                 && rportClient.Data.ConnectionState.Equals(ConnectedState);
         }
@@ -174,11 +179,13 @@ public class RportTunneling(ISecrets secrets, ILogger<RportTunneling> logger) : 
         string tunnelId, 
         CancellationToken cancellationToken = default)
     {
+        var retryPipeline = GetRetryPipeline();
+
         try
         {
             var rportTunnelClient = await CreateRportTunnelClientAsync(hubId, baseAddress, cancellationToken);
+            var rportClient = await retryPipeline.ExecuteAsync(async (ct) => await rportTunnelClient.GetClientById(deviceId.ToString(), ct), cancellationToken);
 
-            var rportClient = await rportTunnelClient.GetClientById(deviceId.ToString(), cancellationToken);
             if (
                 string.IsNullOrWhiteSpace(rportClient.Data.ConnectionState)
                 || !rportClient.Data.ConnectionState.Equals(ConnectedState)
@@ -199,11 +206,12 @@ public class RportTunneling(ISecrets secrets, ILogger<RportTunneling> logger) : 
         }
     }
 
-    public async Task AddDeviceCredentialStringAsync(
+    public async Task<string?> ConfigureDeviceConnectionAsync(
         Guid hubId,
         Guid deviceId, 
         string baseAddress,
         string credentialString,
+        Os os,
         CancellationToken cancellationToken = default)
     {
         var credentials = credentialString.Split(":");
@@ -211,6 +219,8 @@ public class RportTunneling(ISecrets secrets, ILogger<RportTunneling> logger) : 
         {
             throw new TunnelingException("Invalid credential string.", System.Net.HttpStatusCode.BadRequest);
         }
+
+        var retryPipeline = GetRetryPipeline();
 
         try
         {
@@ -221,7 +231,25 @@ public class RportTunneling(ISecrets secrets, ILogger<RportTunneling> logger) : 
                 Password = credentials[1]
             };
 
-            await rportTunnelClient.AddClientAuth(authData, cancellationToken);
+            await retryPipeline.ExecuteAsync(async (ct) => await rportTunnelClient.AddClientAuth(authData, ct), cancellationToken);
+
+            var pairingResponse = await retryPipeline.ExecuteAsync(async (ct) => await rportPairingClient.PairClient(
+                new PairingRequest
+                {
+                    ClientAuthId = deviceId.ToString(),
+                    Password = credentials[1],
+                    ConnectUrl = $"https://{baseAddress}",
+                    Fingerprint = ""
+                }, ct), cancellationToken);
+
+            var installer = os switch
+            {
+                Os.Linux => pairingResponse.Installers.Linux,
+                Os.Windows => pairingResponse.Installers.Windows,
+                _ => throw new TunnelingException("Unsupported OS.", System.Net.HttpStatusCode.BadRequest)
+            };
+
+            return installer;
         }
         catch (ApiException ex)
         {
@@ -230,36 +258,18 @@ public class RportTunneling(ISecrets secrets, ILogger<RportTunneling> logger) : 
         }
     }
 
-    public async Task<string> GetDeviceCredentialStringAsync(
+    public async Task RemoveDeviceCredentialsAsync(
         Guid hubId,
         Guid deviceId, 
         string baseAddress,
         CancellationToken cancellationToken = default)
     {
+        var retryPipeline = GetRetryPipeline();
+
         try
         {
             var rportTunnelClient = await CreateRportTunnelClientAsync(hubId, baseAddress, cancellationToken);
-            var response = await rportTunnelClient.GetClientAuthById(deviceId.ToString(), cancellationToken);
-
-            return $"{deviceId}:{response.Data.Password}";
-        }
-        catch (ApiException ex)
-        {
-            logger.LogError("Message: {message} {content}", ex.RequestMessage, ex.Content);
-            throw new TunnelingException(GetErrorMessage(ex), ex.StatusCode);
-        }
-    }
-
-    public async Task RemoveDeviceCredentialStringAsync(
-        Guid hubId,
-        Guid deviceId, 
-        string baseAddress,
-        CancellationToken cancellationToken = default)
-    {
-        try
-        {
-            var rportTunnelClient = await CreateRportTunnelClientAsync(hubId, baseAddress, cancellationToken);
-            await rportTunnelClient.RemoveClientAuth(deviceId.ToString(), cancellationToken);
+            await retryPipeline.ExecuteAsync(async (ct) => await rportTunnelClient.RemoveClientAuth(deviceId.ToString(), ct), cancellationToken);
         }
         catch (ApiException ex)
         {
@@ -310,7 +320,6 @@ public class RportTunneling(ISecrets secrets, ILogger<RportTunneling> logger) : 
         var httpClient = RestService.CreateHttpClient($"https://{baseAddress}", refitSettings);
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", encodedAuth);
         httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-        httpClient.DefaultRequestVersion = new Version(1, 3);
 
         return RestService.For<IRportTunnelClient>(httpClient, refitSettings);
     }

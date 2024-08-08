@@ -11,10 +11,10 @@ using Validation;
 public class UpdateDeviceRequest
 {
     /// <summary>
-    /// A globally unique identifier for the device group. If not provided, the device will not be associated with a device group.
+    /// A globally unique identifier for the hub. If not provided, the device will not be associated with a hub.
     /// </summary>
-    [JsonPropertyName("deviceGroupId")]
-    public Guid? DeviceGroupId { get; set; }
+    [JsonPropertyName("hubId")]
+    public Guid? HubId { get; set; }
 
     /// <summary>
     /// A device name.
