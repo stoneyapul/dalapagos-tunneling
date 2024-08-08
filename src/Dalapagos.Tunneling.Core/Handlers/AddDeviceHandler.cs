@@ -28,27 +28,29 @@ internal sealed class AddDeviceHandler(
             request.Os, 
             request.OrganizationId,
             cancellationToken);
-            
+
+        logger.LogInformation("Device {DeviceId} information was added to the database.", deviceId);
+
         // Specifying a hub that the device belongs to is optional.    
         if (!request.HubId.HasValue)
         {
             return new OperationResult<Device>(device, true, Constants.StatusSuccessCreated, []);
         }
 
-        try
-        {
-            var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(request.OrganizationId, request.HubId.Value, cancellationToken) 
-                ?? throw new DataNotFoundException($"Information not found for hub {request.HubId.Value}.");
+        var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(request.OrganizationId, request.HubId.Value, cancellationToken) 
+            ?? throw new DataNotFoundException($"Information not found for hub {request.HubId.Value}.");
 
-            ArgumentNullException.ThrowIfNull(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
- 
-            var credentialString = $"{deviceId}:{CreatePassword()}";
-            device.DeviceConnectionScript = await tunnelingProvider.ConfigureDeviceConnectionAsync(request.HubId.Value, deviceId, deviceGroup.ServerBaseUrl, credentialString, request.Os, cancellationToken);           
-        }
-        catch (Exception ex)
-        {
-            logger.LogWarning(ex.Message);
-        }
+        ArgumentNullException.ThrowIfNull(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
+
+        device.DeviceConnectionScript = await tunnelingProvider.ConfigureDeviceConnectionAsync(
+            request.HubId.Value, 
+            deviceId, 
+            deviceGroup.ServerBaseUrl, 
+            $"{deviceId}:{CreatePassword()}", 
+            request.Os, 
+            cancellationToken);           
+
+        logger.LogInformation("Device {DeviceId} was configured in the hub.", deviceId);
 
         return new OperationResult<Device>(device, true, Constants.StatusSuccessCreated, []);
     }
