@@ -38,7 +38,7 @@ public abstract class HandlerBase<TRequest, TResponse>(ITunnelingRepository tunn
 
     protected static string CreatePassword()
     {
-        const string specialChars = "!@#$;:?";
+        const string specialChars = "!@#$?";
         const string numbers = "0123456789";
         const string upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const string lowerCase = "abcdefghijklmnopqrstuvwxyz";
