@@ -45,8 +45,9 @@ public interface ITunnelingProvider
     Task<string?> ConfigureDeviceConnectionAsync(
         Guid hubId,
         Guid deviceId, 
-        string baseAddress,
-        string credentialString,
+        string serverBaseAddress,
+        string serverFingerprint,
+        string clientCredentialString,
         Os os,
         CancellationToken cancellationToken = default);
 

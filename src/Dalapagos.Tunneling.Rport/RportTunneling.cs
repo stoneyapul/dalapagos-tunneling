@@ -209,12 +209,13 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
     public async Task<string?> ConfigureDeviceConnectionAsync(
         Guid hubId,
         Guid deviceId, 
-        string baseAddress,
-        string credentialString,
+        string serverBaseAddress,
+        string serverFingerprint,
+        string clientCredentialString,
         Os os,
         CancellationToken cancellationToken = default)
     {
-        var credentials = credentialString.Split(":");
+        var credentials = clientCredentialString.Split(":");
         if (credentials == Array.Empty<string>() || credentials.Length != 2 || !credentials[0].Equals(deviceId.ToString()))
         {
             throw new TunnelingException("Invalid credential string.", System.Net.HttpStatusCode.BadRequest);
@@ -224,7 +225,7 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
 
         try
         {
-            var rportTunnelClient = await CreateRportTunnelClientAsync(hubId, baseAddress, cancellationToken);
+            var rportTunnelClient = await CreateRportTunnelClientAsync(hubId, serverBaseAddress, cancellationToken);
 
             var authData = new RportClientAuthData{
                 ClientAuthId = deviceId.ToString(),
@@ -238,8 +239,8 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
                 {
                     ClientAuthId = deviceId.ToString(),
                     Password = credentials[1],
-                    ConnectUrl = $"https://{baseAddress}",
-                    Fingerprint = ""
+                    ConnectUrl = $"https://{serverBaseAddress}",
+                    Fingerprint = serverFingerprint
                 }, ct), cancellationToken);
 
             var installer = os switch
@@ -249,7 +250,7 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
                 _ => throw new TunnelingException("Unsupported OS.", System.Net.HttpStatusCode.BadRequest)
             };
 
-            return installer;
+            return installer!;
         }
         catch (ApiException ex)
         {
