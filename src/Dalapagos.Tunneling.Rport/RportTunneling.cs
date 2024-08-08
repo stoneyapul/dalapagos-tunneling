@@ -283,9 +283,14 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
     {
         const string defaultMessage = "Unknown error from a downstream server.";
 
-        if (ex == null || string.IsNullOrWhiteSpace(ex.Content))
+        if (ex == null)
         {
             return defaultMessage;
+        }
+
+        if (string.IsNullOrWhiteSpace(ex.Content))
+        {
+            return ex.Message;
         }
 
         try
