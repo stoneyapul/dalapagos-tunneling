@@ -26,7 +26,7 @@ internal sealed class AddTunnelHandler(ITunnelingRepository tunnelingRepository,
         ArgumentNullException.ThrowIfNull(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
 
         var tunnel = await tunnelingProvider.AddTunnelAsync(
-            request.OrganizationId,
+            device.HubId.Value,
             request.DeviceId,
             deviceGroup.ServerBaseUrl,
             request.Protocol,
