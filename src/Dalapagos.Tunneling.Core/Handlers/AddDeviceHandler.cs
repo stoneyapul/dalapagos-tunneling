@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Commands;
 using Exceptions;
-using Extensions;
 using Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -13,7 +12,6 @@ using Model;
 internal sealed class AddDeviceHandler(
     ITunnelingRepository tunnelingRepository, 
     ITunnelingProvider tunnelingProvider, 
-    ISecrets secrets,
     IConfiguration config, 
     ILogger<AddDeviceHandler> logger) 
     : HandlerBase<AddDeviceCommand, OperationResult<Device>>(tunnelingRepository, config)
@@ -44,15 +42,10 @@ internal sealed class AddDeviceHandler(
 
         ArgumentNullException.ThrowIfNull(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
 
-        var shorthubId = request.HubId.Value.ToShortHubId();
-        var fingerprintSecretName = $"{shorthubId}{Constants.TunnelingServerFingerprintNameSfx}";
-        var fingerprint = await secrets.GetSecretAsync(fingerprintSecretName, cancellationToken);
-
         device.DeviceConnectionScript = await tunnelingProvider.ConfigureDeviceConnectionAsync(
             request.HubId.Value, 
             deviceId, 
             deviceGroup.ServerBaseUrl,
-            fingerprint,
             $"{deviceId}:{CreatePassword()}", 
             request.Os, 
             cancellationToken);           

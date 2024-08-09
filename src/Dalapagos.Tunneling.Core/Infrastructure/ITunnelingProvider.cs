@@ -46,7 +46,6 @@ public interface ITunnelingProvider
         Guid hubId,
         Guid deviceId, 
         string serverBaseAddress,
-        string serverFingerprint,
         string clientCredentialString,
         Os os,
         CancellationToken cancellationToken = default);

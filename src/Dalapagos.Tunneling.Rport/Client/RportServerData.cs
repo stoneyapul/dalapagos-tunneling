@@ -7,6 +7,9 @@ public class RportServerData
     [JsonPropertyName("version")]
     public string? Version { get; set; }
 
+    [JsonPropertyName("fingerprint")]
+    public string? Fingerprint { get; set; }
+
     [JsonPropertyName("clients_connected")]
     public int? ClientsConnected { get; set; }
 

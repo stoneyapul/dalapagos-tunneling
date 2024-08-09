@@ -92,13 +92,14 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
                 ServerStatus.Online, 
                 null,
                 serverStatus.Data.Version,
+                serverStatus.Data.Fingerprint,
                 serverStatus.Data.ClientsConnected
             );
         }
         catch (Exception ex)
         {
             logger.LogError("Message: {message}", ex.Message);
-            return new TunnelServer(ServerStatus.Error, ex.Message, null, null);
+            return new TunnelServer(ServerStatus.Error, ex.Message, null, null, null);
         }
     }
 
@@ -210,7 +211,6 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
         Guid hubId,
         Guid deviceId, 
         string serverBaseAddress,
-        string serverFingerprint,
         string clientCredentialString,
         Os os,
         CancellationToken cancellationToken = default)
@@ -232,6 +232,12 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
                 Password = credentials[1]
             };
 
+            var serverStatus = await retryPipeline.ExecuteAsync(async (ct) => await rportTunnelClient.GetServer(ct), cancellationToken);
+            if (serverStatus == null || serverStatus.Data == null || string.IsNullOrWhiteSpace(serverStatus.Data.Fingerprint))
+            {
+                throw new TunnelingException("Failed to retrieve tunneling server fingerprint.", System.Net.HttpStatusCode.InternalServerError);
+            }
+
             await retryPipeline.ExecuteAsync(async (ct) => await rportTunnelClient.AddClientAuth(authData, ct), cancellationToken);
 
             var pairingResponse = await retryPipeline.ExecuteAsync(async (ct) => await rportPairingClient.PairClient(
@@ -240,7 +246,7 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
                     ClientAuthId = deviceId.ToString(),
                     Password = credentials[1],
                     ConnectUrl = $"https://{serverBaseAddress}",
-                    Fingerprint = serverFingerprint
+                    Fingerprint = serverStatus.Data.Fingerprint,
                 }, ct), cancellationToken);
 
             var installer = os switch
