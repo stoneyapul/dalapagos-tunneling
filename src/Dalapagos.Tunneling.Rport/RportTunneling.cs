@@ -245,7 +245,7 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
                 {
                     ClientAuthId = deviceId.ToString(),
                     Password = credentials[1],
-                    ConnectUrl = $"https://{serverBaseAddress}",
+                    ConnectUrl = GetConnectUrl(serverBaseAddress, serverStatus.Data.ConnectUrls),   
                     Fingerprint = serverStatus.Data.Fingerprint,
                 }, ct), cancellationToken);
 
@@ -283,6 +283,16 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
             logger.LogError("Message: {message} {content}", ex.RequestMessage, ex.Content);
             throw new TunnelingException(GetErrorMessage(ex), ex.StatusCode);
         }
+    }
+
+    private static string GetConnectUrl(string baseAddress, string[]? urls)
+    {
+        if (urls == null || urls.Length == 0)
+        {
+            return $"{baseAddress}:80";
+        }
+
+        return urls[0];
     }
 
     private static string GetErrorMessage(ApiException ex)

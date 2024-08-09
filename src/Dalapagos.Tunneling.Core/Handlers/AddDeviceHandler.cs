@@ -45,7 +45,7 @@ internal sealed class AddDeviceHandler(
         device.ConnectionScript = await tunnelingProvider.ConfigureDeviceConnectionAsync(
             request.HubId.Value, 
             deviceId, 
-            $"{deviceGroup.ServerBaseUrl}:80",
+            $"{deviceGroup.ServerBaseUrl}",
             $"{deviceId}:{CreatePassword()}", 
             request.Os, 
             cancellationToken);           

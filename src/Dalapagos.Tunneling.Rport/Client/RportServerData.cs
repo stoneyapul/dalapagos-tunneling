@@ -18,4 +18,7 @@ public class RportServerData
 
     [JsonPropertyName("used_ports")]
     public string[]? UsedPorts { get; set; }
+
+    [JsonPropertyName("connect_url")]
+    public string[]? ConnectUrls { get; set; }
 }

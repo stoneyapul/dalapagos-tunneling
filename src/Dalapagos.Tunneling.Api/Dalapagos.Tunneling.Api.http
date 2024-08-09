@@ -6,7 +6,7 @@
 @hostAddress = https://dalapagos-tunneling.salmonstone-ca93e2e0.westus3.azurecontainerapps.io
 @orgId = ce80cca7-2591-43c5-a721-442a610d814b
 
-@access_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktRMnRBY3JFN2xCYVZWR0JtYzVGb2JnZEpvNCIsImtpZCI6IktRMnRBY3JFN2xCYVZWR0JtYzVGb2JnZEpvNCJ9.eyJhdWQiOiJhcGk6Ly9kYWxhcGFnb3MtdHVubmVsaW5nLWFwaSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzEzY2ZiYTRmLTkyMDMtNDQ5Ni1hNDI0LWIxOWZlNGYwNjI1Mi8iLCJpYXQiOjE3MjMxNjE3NjEsIm5iZiI6MTcyMzE2MTc2MSwiZXhwIjoxNzIzMTY1NjYxLCJhaW8iOiJFMmRnWU9ENlVkUG1YbU54ZWZyL2VaT243T1ZTQkFBPSIsImFwcGlkIjoiZGQ4ODU1YjctOTQzYi00MTgyLThmYWMtYTdiNzBhY2EyYzJmIiwiYXBwaWRhY3IiOiIxIiwiZ3JvdXBzIjpbImFlMTIyZTY0LTBkY2UtNGU3My1iNDRlLTk0ZWY4MjhmOWI3NiIsIjVjYzZmYmUyLTYwZmItNDA5Mi1hOTRlLWM0NWNhOTI4NGI5OSJdLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIvIiwib2lkIjoiNjQ1MzkwYjAtMGI0NC00NWE5LWFiMzEtY2FkMTU3MmEwMTI0IiwicmgiOiIwLkFXOEFUN3JQRXdPU2xrU2tKTEdmNVBCaVVyZFZpTjA3bElKQmo2eW50d3JLTEM5dkFBQS4iLCJzdWIiOiI2NDUzOTBiMC0wYjQ0LTQ1YTktYWIzMS1jYWQxNTcyYTAxMjQiLCJ0aWQiOiIxM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIiLCJ1dGkiOiJwVi1GQ1ZkWkxFNmNYaXlQcWljQkFBIiwidmVyIjoiMS4wIn0.ZIo0_YwYbzXP2M-uWq-qchT4XlZWRickDL2L49X52xpr9czjOF9CZh0bUx-GAOXGRPUrrMOoirnQ5E820EzfDDzQ8d1Bq6aGVf8_UZ5UvxH73Z2ETS3ecSgOyT3WO-WOMqWUkT9gcXrdOtiErOvtmfBBxKtCeayLobWUtqRcPJmBecZ27Cz7wfSi3pV2vljv-6tzepJDrzw2IfUvJ1C6xecTnWMHfbYs4MkOJxoPoy-xuw9D_ew2SxWth0bhJundm8GTJOBCcejhoID2uQLIoDmq0sP8bpkV7MuZ3P1w2zgHuqURL8zSI0c_505WB_JRAZAvT2uwQ1xj7AZyarT2rw
+@access_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktRMnRBY3JFN2xCYVZWR0JtYzVGb2JnZEpvNCIsImtpZCI6IktRMnRBY3JFN2xCYVZWR0JtYzVGb2JnZEpvNCJ9.eyJhdWQiOiJhcGk6Ly9kYWxhcGFnb3MtdHVubmVsaW5nLWFwaSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzEzY2ZiYTRmLTkyMDMtNDQ5Ni1hNDI0LWIxOWZlNGYwNjI1Mi8iLCJpYXQiOjE3MjMyMjQ4MDgsIm5iZiI6MTcyMzIyNDgwOCwiZXhwIjoxNzIzMjI4NzA4LCJhaW8iOiJFMmRnWURnWG1mSll6WjdaSkZUcDd2bnFWV2NPQVFBPSIsImFwcGlkIjoiZGQ4ODU1YjctOTQzYi00MTgyLThmYWMtYTdiNzBhY2EyYzJmIiwiYXBwaWRhY3IiOiIxIiwiZ3JvdXBzIjpbImFlMTIyZTY0LTBkY2UtNGU3My1iNDRlLTk0ZWY4MjhmOWI3NiIsIjVjYzZmYmUyLTYwZmItNDA5Mi1hOTRlLWM0NWNhOTI4NGI5OSJdLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIvIiwib2lkIjoiNjQ1MzkwYjAtMGI0NC00NWE5LWFiMzEtY2FkMTU3MmEwMTI0IiwicmgiOiIwLkFXOEFUN3JQRXdPU2xrU2tKTEdmNVBCaVVyZFZpTjA3bElKQmo2eW50d3JLTEM5dkFBQS4iLCJzdWIiOiI2NDUzOTBiMC0wYjQ0LTQ1YTktYWIzMS1jYWQxNTcyYTAxMjQiLCJ0aWQiOiIxM2NmYmE0Zi05MjAzLTQ0OTYtYTQyNC1iMTlmZTRmMDYyNTIiLCJ1dGkiOiI0eUVjNDBlZU5VZTNHRkxwWXpDMUFBIiwidmVyIjoiMS4wIn0.zkIrx3GKOFSu1dNaCdHufbAKqesLqKUJliyutqsKGtNMJtzGMCNUk2w68lqCBdz7PaeK0DsVy3m3IVlYaWI0Njw9RRhzKwF6gDHJOXorzCTHaFJcWXh5Dr-pppf_ct_8gn2DYtJ5qb5hASju6U8h6ksNNeHmz5Vwvz1jJq1GhAV0aZi-viwcRWUflgjgGyebgGc-0bP7syr3_hHDTdgihMlKt13s9GtKMTCQzFNpHtqZT4WXFH5-AR-Gjl7eYTSaKeHCK8qkJWdxaOxkltDbc2BlAxOPnpPoUY2lxRU7cEL9dkcM4VV9OtXglvUEiokbnMK6Gyj-ZeY_--BKkj4yFA
 
 ###
 # Get a JWT to access the API.
@@ -23,14 +23,14 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "hubId": "11e63d4f-e78c-4966-89b3-6131000fd418",
-    "name": "test device 8",
+    "hubId": "27880597-0fd1-429c-909d-b85ef53d50fa",
+    "name": "test device 1",
     "os": "linux"
 }
 
 ###
 # Get a hub.
-GET {{hostAddress}}/organizations/{{orgId}}/v1/hubs/11e63d4f-e78c-4966-89b3-6131000fd418
+GET {{hostAddress}}/organizations/{{orgId}}/v1/hubs/27880597-0fd1-429c-909d-b85ef53d50fa
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
@@ -41,13 +41,13 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "name": "Test Hub",
-    "location": "central"
+    "name": "Test Hub West",
+    "location": "west"
 }
 
 ###
 # Delete a hub.
-DELETE {{hostAddress}}/organizations/{{orgId}}/v1/hubs/11e63d4f-e78c-4966-89b3-6131000fd418
+DELETE {{hostAddress}}/organizations/{{orgId}}/v1/hubs/27880597-0fd1-429c-909d-b85ef53d50fa
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
