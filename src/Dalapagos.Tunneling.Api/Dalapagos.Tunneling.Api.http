@@ -24,7 +24,7 @@ Content-Type: application/json
 
 {
     "hubId": "11e63d4f-e78c-4966-89b3-6131000fd418",
-    "name": "test device 6",
+    "name": "test device 8",
     "os": "linux"
 }
 
