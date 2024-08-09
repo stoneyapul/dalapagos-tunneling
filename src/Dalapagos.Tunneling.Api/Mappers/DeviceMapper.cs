@@ -14,6 +14,7 @@ public class DeviceMapper : MapperBase<Device, DeviceResponse>
             DeviceId = source.Id.Value,
             HubId = source.HubId,
             Name = source.Name,
+            ConnectionScript = source.ConnectionScript,
             Os = source.Os.ToString()
         };
     }

@@ -2,5 +2,5 @@
 
 public record Device(Guid? Id, Guid? HubId, string Name, Os Os)
 {
-    public string? DeviceConnectionScript { get; set; }
+    public string? ConnectionScript { get; set; }
 }

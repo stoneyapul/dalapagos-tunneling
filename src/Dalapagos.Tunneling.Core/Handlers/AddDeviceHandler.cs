@@ -42,7 +42,7 @@ internal sealed class AddDeviceHandler(
 
         ArgumentNullException.ThrowIfNull(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
 
-        device.DeviceConnectionScript = await tunnelingProvider.ConfigureDeviceConnectionAsync(
+        device.ConnectionScript = await tunnelingProvider.ConfigureDeviceConnectionAsync(
             request.HubId.Value, 
             deviceId, 
             deviceGroup.ServerBaseUrl,

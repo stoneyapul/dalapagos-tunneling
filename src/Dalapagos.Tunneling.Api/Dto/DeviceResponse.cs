@@ -30,4 +30,10 @@ public class DeviceResponse
     /// </summary>
     [JsonPropertyName("os")]
     public string Os { get; set; } = default!;
+
+    /// <summary>
+    /// A script to run on the device for connecting to the tunneling server.
+    /// </summary>
+    [JsonPropertyName("connectionScript")]
+    public string? ConnectionScript { get; set; }
 }
