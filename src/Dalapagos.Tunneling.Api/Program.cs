@@ -16,7 +16,8 @@ builder.Services.AddSwaggerGen(options =>
 {
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    options.IncludeXmlComments(xmlPath);
+    options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Dalapagos.Tunneling.Core.xml"), includeControllerXmlComments: true);
 
     options.SwaggerDoc("v1",
         new OpenApiInfo

@@ -33,7 +33,13 @@ public static class Tunnels
             return mapper.MapOperationResult(result);
         })
         .WithName("Create tunnel")
-        .WithDescription("Create a tunnel to a device.")
+        .WithTags("Tunnels")
+        .WithOpenApi(op =>
+        {
+            op.Description = "Create a tunnel to a device.";
+            op.Parameters[0].Description = "A globally unique identifier that represents the organization.";
+            return op;
+        })
         .Validate<AddTunnelRequest>()
         .RequireAuthorization(SecurityPolicies.TunnelingUserPolicy)
         .SetResponseStatusCode();

@@ -23,12 +23,14 @@ public class HubResponse
     /// A count of connected devices.
     /// </summary>
     [JsonPropertyName("connectedDevices")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? ConnectedDevices { get; set; }
 
     /// <summary>
     /// A count of devices, connected and not connected.
     /// </summary>
     [JsonPropertyName("totalDevices")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? TotalDevices { get; set; }
 
     /// <summary>
@@ -47,5 +49,6 @@ public class HubResponse
     /// A list of devices that belong to the hub.
     /// </summary>
     [JsonPropertyName("devices")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IList<DeviceResponse>? Devices { get; set; }
 }

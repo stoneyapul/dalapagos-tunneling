@@ -2,6 +2,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using Exceptions;
 using Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Model;
@@ -14,9 +15,22 @@ internal sealed class GetDeviceConnectionStatusHandler(ITunnelingRepository tunn
     {
         await VerifyUserOrganizationAsync(request, cancellationToken);
         
-        // TODO: Implement this stuff.
-        var device = await tunnelingRepository.RetrieveDeviceAsync(request.Id, cancellationToken);
+        var device = await tunnelingRepository.RetrieveDeviceAsync(request.Id, cancellationToken) 
+            ?? throw new DataNotFoundException($"Information not found for device {request.Id}.");
 
-        return new OperationResult<bool>(false, true, Constants.StatusSuccess, []);;
+        ArgumentNullException.ThrowIfNull(device.HubId, nameof(device.HubId));
+
+        var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(request.OrganizationId, device.HubId.Value, cancellationToken) 
+            ?? throw new DataNotFoundException($"Information not found for hub {device.HubId.Value}.");
+
+        ArgumentNullException.ThrowIfNull(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
+
+        var isConnected = await tunnelingProvider.IsDeviceConnectedAsync(
+            device.HubId.Value, 
+            request.Id, 
+            deviceGroup.ServerBaseUrl, 
+            cancellationToken);
+
+        return new OperationResult<bool>(isConnected, true, Constants.StatusSuccess, []);;
     }
 }

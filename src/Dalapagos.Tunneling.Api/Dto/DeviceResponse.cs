@@ -17,6 +17,7 @@ public class DeviceResponse
     /// A globally unique identifier for the hub.
     /// </summary>
     [JsonPropertyName("hubId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Guid? HubId { get; set; }
 
     /// <summary>
@@ -35,5 +36,6 @@ public class DeviceResponse
     /// A script to run on the device for connecting to the tunneling server.
     /// </summary>
     [JsonPropertyName("connectionScript")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? ConnectionScript { get; set; }
 }

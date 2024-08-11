@@ -15,7 +15,7 @@ public static class Hubs
    public static void RegisterHubEndpoints(this IEndpointRouteBuilder routes)
     {
         var endpoints = routes.MapGroup("/organizations/{organizationId}/v1/hubs")
-        .WithName("Hubs");
+            .WithName("Hubs");
  
         endpoints.MapGet("/{hubId}", async (Guid organizationId, Guid hubId, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
         {
@@ -30,6 +30,14 @@ public static class Hubs
             return mapper.MapOperationResult(result);
         })
         .WithName("Get Hub")
+        .WithTags("Hubs")
+        .WithOpenApi(op =>
+        {
+            op.Description = "Get a hub.";
+            op.Parameters[0].Description = "A globally unique identifier that represents the organization.";
+            op.Parameters[1].Description = "A globally unique identifier that represents the hub.";
+            return op;
+        })
         .RequireAuthorization(SecurityPolicies.TunnelingUserPolicy)
         .SetResponseStatusCode();      
 
@@ -48,6 +56,13 @@ public static class Hubs
             return mapper.MapOperationResult(result);
         })
         .WithName("Add Hub")
+        .WithTags("Hubs")
+        .WithOpenApi(op =>
+        {
+            op.Description = "Add a hub.";
+            op.Parameters[0].Description = "A globally unique identifier that represents the organization.";
+            return op;
+        })
         .Validate<AddHubRequest>()
         .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
         .SetResponseStatusCode();
@@ -66,7 +81,14 @@ public static class Hubs
             return mapper.MapOperationResult(result);
         })
         .WithName("Update Hub")
-        .WithDescription("Update hub name.")
+        .WithTags("Hubs")
+        .WithOpenApi(op =>
+        {
+            op.Description = "Update a hub.";
+            op.Parameters[0].Description = "A globally unique identifier that represents the organization.";
+            op.Parameters[1].Description = "A globally unique identifier that represents the hub.";
+            return op;
+        })
         .Validate<UpdateHubRequest>()
         .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
         .SetResponseStatusCode();
@@ -83,6 +105,14 @@ public static class Hubs
             return result;
         })
         .WithName("Delete Hub")
+        .WithTags("Hubs")
+        .WithOpenApi(op =>
+        {
+            op.Description = "Delete a hub.";
+            op.Parameters[0].Description = "A globally unique identifier that represents the organization.";
+            op.Parameters[1].Description = "A globally unique identifier that represents the hub.";
+            return op;
+        })
         .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
         .SetResponseStatusCode();      
     }

@@ -48,7 +48,13 @@ public static class Devices
             return mapper.MapOperationResult(result);
         })
         .WithName("Add Device")
-        .WithDescription("Add a new device.")
+        .WithTags("Devices")
+        .WithOpenApi(op =>
+        {
+            op.Description = "Add a device.";
+            op.Parameters[0].Description = "A globally unique identifier that represents the organization.";
+            return op;
+        })
         .Validate<AddDeviceRequest>()
         .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
         .SetResponseStatusCode();
@@ -69,7 +75,14 @@ public static class Devices
             return mapper.MapOperationResult(result);
         })
         .WithName("Update Device")
-        .WithDescription("Update device information.")
+        .WithTags("Devices")
+        .WithOpenApi(op =>
+        {
+            op.Description = "Update a device.";
+            op.Parameters[0].Description = "A globally unique identifier that represents the organization.";
+            op.Parameters[1].Description = "A globally unique identifier that represents the device.";
+            return op;
+        })
         .Validate<UpdateDeviceRequest>()
         .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
         .SetResponseStatusCode();
@@ -86,7 +99,14 @@ public static class Devices
             return result;
         })
         .WithName("Delete Device")
-        .WithDescription("Delete a device.")
+        .WithTags("Devices")
+        .WithOpenApi(op =>
+        {
+            op.Description = "Delete a device.";
+            op.Parameters[0].Description = "A globally unique identifier that represents the organization.";
+            op.Parameters[1].Description = "A globally unique identifier that represents the device.";
+            return op;
+        })
         .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
         .SetResponseStatusCode();      
      }
