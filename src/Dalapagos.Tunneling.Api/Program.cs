@@ -24,7 +24,7 @@ builder.Services.AddSwaggerGen(options =>
         {
             Title = "Dalapagos Tunnels API Documentation",
             Version = "v1",
-            Description = "REST endpoints to manage tunneling."
+            Description = "ReST endpoints to manage tunneling."
         });
 });
 
