@@ -399,4 +399,4 @@ FodyWeavers.xsd
 
 *.sh
 src/Dalapagos.Tunneling.Api/appsettings.Development.json
-# src/Tests/Dalapagos.Tunneling.Repository.EF.Integrationtests/appsettings.json
+src/Dalapagos.Tunneling.Api/Dalapagos.Tunneling.Api.http
