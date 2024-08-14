@@ -399,3 +399,5 @@ FodyWeavers.xsd
 
 *.sh
 src/Dalapagos.Tunneling.Api/Tests/*.http
+src/Dalapagos.Tunneling.Api/appsettings.Local.Json
+src/Dalapagos.Tunneling.Repository.EF/db-first-scaffold.sh
