@@ -398,5 +398,4 @@ FodyWeavers.xsd
 *.sln.iml
 
 *.sh
-src/Dalapagos.Tunneling.Api/appsettings.Development.json
-src/Dalapagos.Tunneling.Api/Dalapagos.Tunneling.Api.http
+src/Dalapagos.Tunneling.Api/Tests/*.http
