@@ -44,8 +44,6 @@ stages:
       inputs:      
         azureSubscription: 'Dalapagos subscription'
         acrName: 'dalapagosContainerRegistry'
-        acrUsername: 'dalapagosContainerRegistry'
-        acrPassword: 'l0/jegr6E8rJjCgSPre7OYV+SUzgW/MWLSpWNJMRlQ+ACRB2e/4O'
         imageToDeploy: 'dalapagosContainerRegistry.azurecr.io/dalapagostunneling:latest'
         containerAppName: 'dalapagos-tunneling'
         resourceGroup: 'DalapagosTunneling'
