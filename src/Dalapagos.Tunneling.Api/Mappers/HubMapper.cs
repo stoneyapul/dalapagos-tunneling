@@ -23,7 +23,7 @@ public class HubMapper : MapperBase<Hub, HubResponse>
         return new HubResponse
         {
             ConnectedDevices = source.ConnectedDeviceCount,
-            TotalDevices = source.TotalDeviceCount,
+            TotalDevices = source.TotalDeviceCount.HasValue && source.TotalDeviceCount.Value > 0 ? source.TotalDeviceCount : null,
             HubId = source.Id.Value,
             Name = source.Name,
             Location = source.Location.ToString(), 
