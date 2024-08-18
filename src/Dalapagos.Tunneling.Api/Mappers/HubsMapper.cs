@@ -18,7 +18,7 @@ public class HubsMapper : MapperBase<IList<Hub>, IList<HubResponse>>
             responses.Add(
                 new HubResponse
                 {
-                    TotalDevices = hub.TotalDeviceCount,
+                    TotalDevices = hub.TotalDeviceCount.HasValue && hub.TotalDeviceCount.Value > 0 ? hub.TotalDeviceCount : null,                    
                     HubId = hub.Id.Value,
                     Name = hub.Name,
                     Location = hub.Location.ToString(), 
