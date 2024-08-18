@@ -17,6 +17,28 @@ public static class Hubs
         var endpoints = routes.MapGroup("/organizations/{organizationId}/v1/hubs")
             .WithName("Hubs");
  
+        endpoints.MapGet("", async (Guid organizationId, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
+        {
+            var result = await mediator.Send(
+                new GetHubsByOrganizationIdQuery(
+                    organizationId,
+                    context.User.GetUserId()), 
+                cancellationToken);
+
+            var mapper = new HubsMapper();
+            return mapper.MapOperationResult(result);
+        })
+        .WithName("Get Hubs")
+        .WithTags("Hubs")
+        .WithOpenApi(op =>
+        {
+            op.Description = "Get a list of hubs by organization.";
+            op.Parameters[0].Description = "A globally unique identifier that represents the organization.";
+            return op;
+        })
+        .RequireAuthorization(SecurityPolicies.TunnelingUserPolicy)
+        .SetResponseStatusCode();      
+
         endpoints.MapGet("/{hubId}", async (Guid organizationId, Guid hubId, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
         {
             var result = await mediator.Send(
