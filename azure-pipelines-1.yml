@@ -40,10 +40,11 @@ stages:
           latest
 
     - task: AzureContainerApps@1
-      inputs:
+      displayName: Deploy to Container App
+      inputs:      
         azureSubscription: 'Dalapagos subscription'
         acrName: 'dalapagosContainerRegistry'
-        imageToDeploy: 'dalapagosContainerRegistry.azurecr.io/dalapagostunneling:$(tag)'
+        imageToDeploy: 'dalapagosContainerRegistry.azurecr.io/dalapagostunneling:latest'
         containerAppName: 'dalapagos-tunneling'
         resourceGroup: 'DalapagosTunneling'
         containerAppEnvironment: 'managedEnvironment-DalapagosTunnel'
