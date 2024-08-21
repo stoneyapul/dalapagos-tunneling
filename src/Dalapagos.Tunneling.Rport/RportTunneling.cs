@@ -297,7 +297,6 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
 
     private static string GetErrorMessage(ApiException ex)
     {
-        return ex.Content;
         const string defaultMessage = "Unknown error from a downstream server.";
 
         if (ex == null)
