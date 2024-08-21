@@ -89,7 +89,7 @@ public static class Hubs
         .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
         .SetResponseStatusCode();
 
-         endpoints.MapPut("/{hubId}", async (Guid organizationId, Guid hubId, UpdateHubRequest request, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
+        endpoints.MapPut("/{hubId}", async (Guid organizationId, Guid hubId, UpdateHubRequest request, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
         {
             var result = await mediator.Send(
                 new UpdateHubCommand(
@@ -115,7 +115,7 @@ public static class Hubs
         .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
         .SetResponseStatusCode();
 
-       endpoints.MapDelete("/{hubId}", async (Guid organizationId, Guid hubId, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
+        endpoints.MapDelete("/{hubId}", async (Guid organizationId, Guid hubId, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
         {
             var result = await mediator.Send(
                 new DeleteHubCommand(
