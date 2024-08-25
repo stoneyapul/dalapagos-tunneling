@@ -27,7 +27,7 @@ internal class TunnelMapper
         var url = source.TunnelUrl;
         if (string.IsNullOrWhiteSpace(source.TunnelUrl))
         {
-            var domain = new Uri(baseAddress);
+            var domain = new Uri($"https://{baseAddress}");
 
             switch (protocol)
             {
