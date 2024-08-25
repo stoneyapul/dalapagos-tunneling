@@ -1,7 +1,6 @@
 ﻿namespace Dalapagos.Tunneling.Api.Validation;
 
 using System.ComponentModel.DataAnnotations;
-using Core.Model;
 
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
 public class ValidEnumAttribute<Tnum> : ValidationAttribute where Tnum : Enum
@@ -34,8 +33,8 @@ public class ValidEnumAttribute<Tnum> : ValidationAttribute where Tnum : Enum
 
      private void SetErrorMessage()
      {
-         var vals = string.Join(",", Enum.GetValues(typeof(ServerLocation)).Cast<ServerLocation>());
-         ErrorMessage = $"Invalid location. Valid values are: {vals}.";
+         var vals = string.Join(",", Enum.GetValues(typeof(Tnum)).Cast<Tnum>());
+         ErrorMessage = $"Invalid {typeof(Tnum).Name}. Valid values are: {vals}.";
      }
 
 }
