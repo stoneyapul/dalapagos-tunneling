@@ -35,7 +35,7 @@ public class DeviceResponse
     /// <summary>
     /// A script to run on the device for connecting to the tunneling server.
     /// </summary>
-    [JsonPropertyName("connectionScript")]
+    [JsonPropertyName("pairingScript")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? ConnectionScript { get; set; }
+    public string? PairingScript { get; set; }
 }

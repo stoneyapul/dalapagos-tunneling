@@ -50,6 +50,13 @@ public interface ITunnelingProvider
         Os os,
         CancellationToken cancellationToken = default);
 
+    Task<string> GetPairingScriptAsync(
+        Guid hubId,
+        Guid deviceId, 
+        string serverBaseAddress,
+        Os os,
+        CancellationToken cancellationToken = default);
+
     Task RemoveDeviceCredentialsAsync(
         Guid hubId,
         Guid deviceId, 

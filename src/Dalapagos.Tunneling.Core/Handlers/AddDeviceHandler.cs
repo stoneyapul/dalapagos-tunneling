@@ -3,7 +3,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Commands;
-using Exceptions;
 using Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -37,12 +36,11 @@ internal sealed class AddDeviceHandler(
             return new OperationResult<Device>(device, true, Constants.StatusSuccessCreated, []);
         }
 
-        var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(request.OrganizationId, request.HubId.Value, cancellationToken) 
-            ?? throw new DataNotFoundException($"Information not found for hub {request.HubId.Value}.");
+        var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(request.OrganizationId, request.HubId.Value, cancellationToken); 
 
         ArgumentNullException.ThrowIfNull(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
 
-        device.ConnectionScript = await tunnelingProvider.ConfigureDeviceConnectionAsync(
+        device.PairingScript = await tunnelingProvider.ConfigureDeviceConnectionAsync(
             request.HubId.Value, 
             deviceId, 
             $"{deviceGroup.ServerBaseUrl}",

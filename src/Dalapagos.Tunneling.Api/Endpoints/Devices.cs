@@ -2,6 +2,7 @@
 
 using Core.Commands;
 using Core.Model;
+using Core.Queries;
 using Dto;
 using Extensions;
 using Mappers;
@@ -87,6 +88,30 @@ public static class Devices
         .WithOpenApi(op =>
         {
             op.Description = "Delete a device.";
+            op.Parameters[0].Description = "A globally unique identifier that represents the organization.";
+            op.Parameters[1].Description = "A globally unique identifier that represents the device.";
+            return op;
+        })
+        .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
+        .SetResponseStatusCode();      
+
+        endpoints.MapGet("/{deviceId}/pairing-script", async (Guid organizationId, Guid deviceId, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
+        {
+            var result = await mediator.Send(
+                new GetDevicePairingScriptQuery(
+                    deviceId,
+                    organizationId,
+                    context.User.GetUserId()), 
+                cancellationToken);
+
+            var mapper = new HubsMapper();
+            return mapper.MapOperationResult(result);
+        })
+        .WithName("Get Pairing Script")
+        .WithTags("Devices")
+        .WithOpenApi(op =>
+        {
+            op.Description = "Get the pairing script for a device.";
             op.Parameters[0].Description = "A globally unique identifier that represents the organization.";
             op.Parameters[1].Description = "A globally unique identifier that represents the device.";
             return op;

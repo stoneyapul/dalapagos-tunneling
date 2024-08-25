@@ -265,6 +265,56 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
         }
     }
 
+    public async Task<string> GetPairingScriptAsync(
+        Guid hubId,
+        Guid deviceId, 
+        string serverBaseAddress,
+        Os os,
+        CancellationToken cancellationToken = default)
+    {
+        var retryPipeline = GetRetryPipeline();
+
+        try 
+        {
+            var rportTunnelClient = await CreateRportTunnelClientAsync(hubId, serverBaseAddress, cancellationToken);
+
+            var serverStatus = await retryPipeline.ExecuteAsync(async (ct) => await rportTunnelClient.GetServer(ct), cancellationToken);
+            if (serverStatus == null || serverStatus.Data == null || string.IsNullOrWhiteSpace(serverStatus.Data.Fingerprint))
+            {
+                throw new TunnelingException("Failed to retrieve tunneling server fingerprint.", System.Net.HttpStatusCode.InternalServerError);
+            }
+
+            var clientAuth = await retryPipeline.ExecuteAsync(async (ct) => await rportTunnelClient.GetClientAuthById(deviceId.ToString(), ct), cancellationToken);
+            if (clientAuth == null || clientAuth.Data == null || string.IsNullOrWhiteSpace(clientAuth.Data.Password))
+            {
+                throw new TunnelingException("Failed to retrieve client auth data.", System.Net.HttpStatusCode.InternalServerError);
+            }
+
+            var pairingResponse = await retryPipeline.ExecuteAsync(async (ct) => await rportPairingClient.PairClient(
+                new PairingRequest
+                {
+                    ClientAuthId = deviceId.ToString(),
+                    Password = clientAuth.Data.Password,
+                    ConnectUrl = GetConnectUrl(serverBaseAddress, serverStatus.Data.ConnectUrls),   
+                    Fingerprint = serverStatus.Data.Fingerprint,
+                }, ct), cancellationToken);
+
+            var installer = os switch
+            {
+                Os.Linux => pairingResponse.Installers.Linux,
+                Os.Windows => pairingResponse.Installers.Windows,
+                _ => throw new TunnelingException("Unsupported OS.", System.Net.HttpStatusCode.BadRequest)
+            };
+
+            return installer!;
+        }
+        catch (ApiException ex)
+        {
+            logger.LogError("Message: {message} {content}", ex.RequestMessage, ex.Content);
+            throw new TunnelingException(GetErrorMessage(ex), ex.StatusCode);
+        }
+    }
+
     public async Task RemoveDeviceCredentialsAsync(
         Guid hubId,
         Guid deviceId, 

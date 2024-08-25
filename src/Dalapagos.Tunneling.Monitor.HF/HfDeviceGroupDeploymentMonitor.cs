@@ -1,5 +1,4 @@
-﻿// TODO: Review whether injecting another infrastructure service into this infrastructure service is a good idea..
-namespace Dalapagos.Tunneling.Monitor.HF;
+﻿namespace Dalapagos.Tunneling.Monitor.HF;
 
 using System;
 using System.Threading;

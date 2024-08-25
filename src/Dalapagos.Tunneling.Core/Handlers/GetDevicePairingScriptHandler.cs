@@ -1,23 +1,23 @@
-﻿namespace Dalapagos.Tunneling.Core.Handlers;
+namespace Dalapagos.Tunneling.Core.Handlers;
 
 using System.Threading;
 using System.Threading.Tasks;
 using Exceptions;
 using Infrastructure;
+using Queries;
 using Microsoft.Extensions.Configuration;
 using Model;
-using Queries;
 
-internal sealed class GetDeviceConnectionStatusHandler(
-    ITunnelingRepository tunnelingRepository, 
-    ITunnelingProvider tunnelingProvider, 
+internal sealed class GetDevicePairingScriptHandler(
+    ITunnelingRepository tunnelingRepository,
+    ITunnelingProvider tunnelingProvider,
     IConfiguration config)
-    : HandlerBase<GetDeviceConnectionStatusQuery, OperationResult<bool>>(tunnelingRepository, config)
+    : HandlerBase<GetDevicePairingScriptQuery, OperationResult<string?>>(tunnelingRepository, config)
 {
-    public override async ValueTask<OperationResult<bool>> Handle(GetDeviceConnectionStatusQuery request, CancellationToken cancellationToken)
+    public override async ValueTask<OperationResult<string?>> Handle(GetDevicePairingScriptQuery request, CancellationToken cancellationToken)
     {
         await VerifyUserOrganizationAsync(request, cancellationToken);
-        
+
         var device = await tunnelingRepository.RetrieveDeviceAsync(request.Id, cancellationToken) 
             ?? throw new DataNotFoundException($"Information not found for device {request.Id}.");
 
@@ -28,12 +28,13 @@ internal sealed class GetDeviceConnectionStatusHandler(
 
         ArgumentNullException.ThrowIfNull(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
 
-        var isConnected = await tunnelingProvider.IsDeviceConnectedAsync(
-            device.HubId.Value, 
-            request.Id, 
-            deviceGroup.ServerBaseUrl, 
+        var pairingScript = await tunnelingProvider.GetPairingScriptAsync(
+            device.HubId.Value,
+            request.Id,
+            deviceGroup.ServerBaseUrl,
+            device.Os,
             cancellationToken);
 
-        return new OperationResult<bool>(isConnected, true, Constants.StatusSuccess, []);;
+        return new OperationResult<string?>(pairingScript, true, Constants.StatusSuccess, []);;
     }
 }
