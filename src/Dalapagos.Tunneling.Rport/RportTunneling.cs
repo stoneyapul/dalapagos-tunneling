@@ -249,14 +249,7 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
                     Fingerprint = serverStatus.Data.Fingerprint,
                 }, ct), cancellationToken);
 
-            var installer = os switch
-            {
-                Os.Linux => pairingResponse.Installers.Linux,
-                Os.Windows => pairingResponse.Installers.Windows,
-                _ => throw new TunnelingException("Unsupported OS.", System.Net.HttpStatusCode.BadRequest)
-            };
-
-            return installer!;
+            return CreatePairingScript(os, pairingResponse.PairingCode);
         }
         catch (ApiException ex)
         {
@@ -299,14 +292,7 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
                     Fingerprint = serverStatus.Data.Fingerprint,
                 }, ct), cancellationToken);
 
-            var installer = os switch
-            {
-                Os.Linux => pairingResponse.Installers.Linux,
-                Os.Windows => pairingResponse.Installers.Windows,
-                _ => throw new TunnelingException("Unsupported OS.", System.Net.HttpStatusCode.BadRequest)
-            };
-
-            return installer!;
+            return CreatePairingScript(os, pairingResponse.PairingCode);
         }
         catch (ApiException ex)
         {
@@ -381,6 +367,19 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
             .Build();
     }
 
+    private static string CreatePairingScript(Os os, string? code)
+    {
+        ArgumentNullException.ThrowIfNull(code, nameof(code));
+
+        var installer = os switch
+        {
+            Os.Linux => $"curl https://pairing.openrport.io/{code} > rport-installer.sh\nsed -i 's,$(gen_uuid),$CLIENT_ID,' rport-installer.sh\nsudo sh rport-installer.sh -d",
+            Os.Windows => throw new TunnelingException("Unsupported OS.", System.Net.HttpStatusCode.BadRequest),
+            _ => throw new TunnelingException("Unsupported OS.", System.Net.HttpStatusCode.BadRequest)
+        };
+
+        return installer;
+    }
     private async Task<IRportTunnelClient> CreateRportTunnelClientAsync(Guid hubId, string baseAddress, CancellationToken cancellationToken = default)
     {
         var serverPassword = await secrets.GetSecretAsync($"{hubId.ToShortHubId()}{Constants.TunnelingServerPassNameSfx}", cancellationToken)

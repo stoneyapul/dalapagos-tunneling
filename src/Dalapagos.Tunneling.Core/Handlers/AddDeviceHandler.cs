@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Commands;
+using Exceptions;
 using Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
