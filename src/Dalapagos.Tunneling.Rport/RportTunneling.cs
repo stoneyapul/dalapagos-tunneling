@@ -374,7 +374,7 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
         var installer = os switch
         {
             Os.Linux => $"curl https://pairing.openrport.io/{code} > rport-installer.sh;sed -i 's,$(gen_uuid),$CLIENT_ID,' rport-installer.sh;sudo sh rport-installer.sh -d",
-            Os.Windows => throw new TunnelingException("Unsupported OS.", System.Net.HttpStatusCode.BadRequest),
+            Os.Windows => $"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$url=\"https://pairing.openrport.io/XzZTUVB\";Invoke-WebRequest -Uri $url -OutFile \"rport-installer.ps1\";powershell -ExecutionPolicy Bypass -File .\rport-installer.ps1 -d",
             _ => throw new TunnelingException("Unsupported OS.", System.Net.HttpStatusCode.BadRequest)
         };
 
