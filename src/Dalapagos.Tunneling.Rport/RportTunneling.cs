@@ -356,13 +356,18 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
         }
     }
 
-    private static ResiliencePipeline GetRetryPipeline()
+    private ResiliencePipeline GetRetryPipeline()
     {
         return new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions
             {
                 BackoffType = DelayBackoffType.Exponential,
-                UseJitter = true
+                UseJitter = true,
+                OnRetry = args =>
+                {
+                   logger.LogWarning("Retrying request. Retry count: {retryCount}. Delay: {delay}.", args.AttemptNumber, args.RetryDelay);
+                   return default;
+                }
             })
             .Build();
     }
