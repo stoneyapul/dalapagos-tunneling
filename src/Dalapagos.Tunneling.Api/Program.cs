@@ -7,9 +7,23 @@ using Dalapagos.Tunneling.Repository.EF;
 using Dalapagos.Tunneling.Rport;
 using Dalapagos.Tunneling.Secrets.KeyVault;
 using Hangfire;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add a rate limiter that allows up to 8 requests every 10 seconds.
+builder.Services.AddRateLimiter(limiters =>
+    limiters.AddFixedWindowLimiter(
+        "fixedLimiter",
+        options =>
+        {
+            options.PermitLimit = 8;
+            options.QueueLimit = 4;
+            options.Window = TimeSpan.FromSeconds(10);
+            options.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+        }
+    ));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

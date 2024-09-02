@@ -1,1 +1,0 @@
-sed -i "s/#id = .*/id = \"$MACHINE_ID\"/g" "$CONFIG_FILE"
