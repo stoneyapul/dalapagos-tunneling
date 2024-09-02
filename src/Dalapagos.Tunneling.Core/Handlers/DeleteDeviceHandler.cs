@@ -37,9 +37,21 @@ internal sealed class DeleteDeviceHandler(
 
         ArgumentNullException.ThrowIfNull(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
 
-        await tunnelingProvider.RemoveDeviceCredentialsAsync(device.HubId.Value, request.Id, deviceGroup.ServerBaseUrl, cancellationToken);
+        try 
+        {
+            await tunnelingProvider.RemoveDeviceCredentialsAsync(device.HubId.Value, request.Id, deviceGroup.ServerBaseUrl, cancellationToken);
+            logger.LogInformation("Device {DeviceId} was removed from the hub.", request.Id);
+        } 
+        catch (TunnelingException ex) 
+        {
+            if (ex.DownstreamStatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                logger.LogWarning("Device {DeviceId} was not found in the hub.", request.Id);
+                return new OperationResult(true, Constants.StatusSuccess, []);
+            }
 
-        logger.LogInformation("Device {DeviceId} was removed from the hub.", request.Id);
+            throw;
+        }
 
         return new OperationResult(true, Constants.StatusSuccess, []);
     }
