@@ -14,7 +14,7 @@ public static class Hubs
 {
    public static void RegisterHubEndpoints(this IEndpointRouteBuilder routes)
     {
-        var endpoints = routes.MapGroup("/organizations/{organizationId}/v1/hubs")
+        var endpoints = routes.MapGroup("/v1/organizations/{organizationId}/hubs")
             .WithName("Hubs");
  
         endpoints.MapGet("", async (Guid organizationId, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>

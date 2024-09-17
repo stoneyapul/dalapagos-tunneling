@@ -14,7 +14,7 @@ public static class Devices
 {
     public static void RegisterDeviceEndpoints(this IEndpointRouteBuilder routes)
     {
-        var endpoints = routes.MapGroup("/organizations/{organizationId}/v1/devices")
+        var endpoints = routes.MapGroup("/v1/organizations/{organizationId}/devices")
             .WithName("Devices");
 
         endpoints.MapPost("", async (Guid organizationId, AddDeviceRequest request, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>

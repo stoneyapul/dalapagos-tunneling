@@ -163,7 +163,8 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
                 new Core.Model.OrganizationUser(
                     organizationUserEntity.Organization.OrganizationUuid, 
                     userId, 
-                    organizationUserEntity.SecurityGroupUuid));
+                    organizationUserEntity.SecurityGroupUuid,
+                    organizationUserEntity.Organization.OrganizationName));
         }
 
         return organizationUsers;

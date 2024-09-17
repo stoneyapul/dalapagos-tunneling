@@ -54,6 +54,7 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.RegisterOrganizationEndpoints();
 app.RegisterDeviceEndpoints();
 app.RegisterHubEndpoints();
 app.RegisterTunnelEndpoints();

@@ -13,7 +13,7 @@ public static class Tunnels
 {
     public static void RegisterTunnelEndpoints(this IEndpointRouteBuilder routes)
     {
-        var endpoints = routes.MapGroup("/organizations/{organizationId}/v1/tunnels")
+        var endpoints = routes.MapGroup("/v1/organizations/{organizationId}/tunnels")
             .WithName("Tunnels");
 
         endpoints.MapPost("", async (Guid organizationId, AddTunnelRequest request, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
