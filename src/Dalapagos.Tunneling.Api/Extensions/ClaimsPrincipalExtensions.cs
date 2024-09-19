@@ -7,7 +7,7 @@ internal static class ClaimsPrincipalExtensions
 {
     public static Guid GetUserId(this ClaimsPrincipal user)
     {
-        var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = user.FindFirstValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
         if (Guid.TryParse(userId, out var userIdGuid))
         {
             return userIdGuid;
