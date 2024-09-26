@@ -104,7 +104,7 @@ public static class Devices
                     context.User.GetUserId()), 
                 cancellationToken);
 
-            var mapper = new HubsMapper();
+            var mapper = new DevicePairingScriptResponseMapper();
             return mapper.MapOperationResult(result);
         })
         .WithName("Get Pairing Script")

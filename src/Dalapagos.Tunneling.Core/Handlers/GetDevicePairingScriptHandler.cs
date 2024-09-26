@@ -35,6 +35,6 @@ internal sealed class GetDevicePairingScriptHandler(
             device.Os,
             cancellationToken);
 
-        return new OperationResult<string?>(pairingScript, true, Constants.StatusSuccess, []);;
+        return new OperationResult<string?>(pairingScript, true, Constants.StatusSuccess, []);
     }
 }
