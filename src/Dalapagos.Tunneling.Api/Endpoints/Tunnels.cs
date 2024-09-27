@@ -29,7 +29,7 @@ public static class Tunnels
                     context.User.GetUserId()),
                 cancellationToken);
 
-            var mapper = new DeviceMapper();
+            var mapper = new TunnelMapper();
             return mapper.MapOperationResult(result);
         })
         .WithName("Create tunnel")
