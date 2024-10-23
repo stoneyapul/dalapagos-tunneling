@@ -58,6 +58,7 @@ app.RegisterOrganizationEndpoints();
 app.RegisterDeviceEndpoints();
 app.RegisterHubEndpoints();
 app.RegisterTunnelEndpoints();
+app.RegisterRestEndpoints();
 
 app.UseSwagger();
 app.UseReDoc(c =>
