@@ -30,4 +30,17 @@ public class UpdateDeviceRequest
     [ValidEnum<Os>]  
     [JsonPropertyName("os")]
     public string Os { get; set; } = default!;
+
+    ///// <summary>
+    ///// The ReST protocol. Http or Https.
+    ///// </summary>
+    [JsonPropertyName("restProtocol")]
+    [ValidEnum<RestProtocol>]  
+     public string? RestProtocol { get; set; }
+
+    /// <summary>
+    /// The port to use on the controller for the ReST endpoints.
+    /// </summary>
+    [JsonPropertyName("restPort")]
+    public ushort? RestPort { get; set; }
 }

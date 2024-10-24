@@ -32,6 +32,18 @@ public class DeviceResponse
     [JsonPropertyName("os")]
     public string Os { get; set; } = default!;
 
+    ///// <summary>
+    ///// The ReST protocol. Http or Https.
+    ///// </summary>
+    [JsonPropertyName("restProtocol")]
+    public string? RestProtocol { get; set; }
+
+    /// <summary>
+    /// The port to use on the controller for the ReST endpoints.
+    /// </summary>
+    [JsonPropertyName("restPort")]
+    public ushort? RestPort { get; set; }
+
     /// <summary>
     /// A script to run on the device for connecting to the tunneling server.
     /// </summary>

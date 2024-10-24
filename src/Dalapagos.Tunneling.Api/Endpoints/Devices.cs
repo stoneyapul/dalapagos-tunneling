@@ -25,6 +25,8 @@ public static class Devices
                     request.HubId, 
                     request.Name, 
                     Enum.Parse<Os>(request.Os, true),
+                    !string.IsNullOrWhiteSpace(request.RestProtocol) ? Enum.Parse<RestProtocol>(request.RestProtocol, true) : null,
+                    request.RestPort,
                     organizationId,
                     context.User.GetUserId()),
                 cancellationToken);
@@ -52,6 +54,8 @@ public static class Devices
                     request.HubId, 
                     request.Name, 
                     Enum.Parse<Os>(request.Os, true),
+                    !string.IsNullOrWhiteSpace(request.RestProtocol) ? Enum.Parse<RestProtocol>(request.RestProtocol, true) : null,
+                    request.RestPort,
                     organizationId,
                     context.User.GetUserId()),
                 cancellationToken);

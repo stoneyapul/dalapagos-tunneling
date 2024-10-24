@@ -15,7 +15,9 @@ public class DeviceMapper : MapperBase<Device, DeviceResponse>
             HubId = source.HubId,
             Name = source.Name,
             PairingScript = source.PairingScript,
-            Os = source.Os.ToString()
+            Os = source.Os.ToString(),
+            RestPort = source.RestPort,
+            RestProtocol = source.RestProtocol?.ToString()
         };
     }
 }

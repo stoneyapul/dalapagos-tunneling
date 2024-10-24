@@ -14,7 +14,9 @@ public class OperationResultMapperTests
             Guid.NewGuid(),
             Guid.NewGuid(),
             "Test Device",
-            Os.Windows);
+            Os.Windows,
+            RestProtocol.Http,
+            80);
 
         var operationResult = new OperationResult<Device>(device, true, 200, []);
         var mapper = new DeviceMapper();
@@ -28,6 +30,8 @@ public class OperationResultMapperTests
         result.Data.Name.ShouldBe(device.Name);
         result.Data.DeviceId.ShouldBe(device.Id!.Value);
         result.Data.Os.ShouldBe(device.Os.ToString());
+        result.Data.RestProtocol.ShouldBe(device.RestProtocol.ToString());
+        result.Data.RestPort.ShouldBe(device.RestPort);
     }
 
     [Fact]

@@ -32,6 +32,7 @@ public partial class DalapagosTunnelsDbContext : DbContext
             entity.HasIndex(e => e.DeviceUuid, "Index_Device_Uuid").IsUnique();
 
             entity.Property(e => e.DeviceName).HasMaxLength(64);
+            entity.Property(e => e.RestProtocol).HasMaxLength(5);
             entity.Property(e => e.DeviceUuid).HasDefaultValueSql("(newid())");
 
             entity.HasOne(d => d.DeviceGroup).WithMany(p => p.Devices)
