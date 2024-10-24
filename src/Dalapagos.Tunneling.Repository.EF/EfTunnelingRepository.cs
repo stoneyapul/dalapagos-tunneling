@@ -188,7 +188,7 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
             .Where(d => d.DeviceUuid == deviceId)
             .FirstOrDefaultAsync(cancellationToken) ?? throw new DataNotFoundException($"Device with id {deviceId} not found");
 
-        return MapToDevice(deviceId, deviceEntity);
+        return MapToDevice(deviceEntity.DeviceGroup?.DeviceGroupUuid, deviceEntity);
     }
 
     public async Task<Core.Model.DeviceGroup> RetrieveDeviceGroupAsync(Guid organizationId, Guid deviceGroupId, CancellationToken cancellationToken)
@@ -262,7 +262,7 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
                 devices);
     }
 
-   private static Core.Model.Device MapToDevice(Guid deviceGroupId, Device deviceEntity)
+   private static Core.Model.Device MapToDevice(Guid? deviceGroupId, Device deviceEntity)
     {
         return new Core.Model.Device(
             deviceEntity.DeviceUuid, 

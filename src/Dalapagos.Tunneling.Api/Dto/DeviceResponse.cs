@@ -36,12 +36,14 @@ public class DeviceResponse
     ///// The ReST protocol. Http or Https.
     ///// </summary>
     [JsonPropertyName("restProtocol")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? RestProtocol { get; set; }
 
     /// <summary>
     /// The port to use on the controller for the ReST endpoints.
     /// </summary>
     [JsonPropertyName("restPort")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ushort? RestPort { get; set; }
 
     /// <summary>
