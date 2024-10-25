@@ -66,6 +66,8 @@ public class RportTunneling(IRportPairingClient rportPairingClient, ISecrets sec
                 cancellationToken
             ) ?? throw new TunnelingException("Failed to create tunnel.", System.Net.HttpStatusCode.InternalServerError);
 
+            logger.LogInformation(rportTunnel.Data.ToString());
+            
             return TunnelMapper.Map(rportTunnel.Data, baseAddress)
                 ?? throw new TunnelingException("Failed to create tunnel.", System.Net.HttpStatusCode.InternalServerError);
         }

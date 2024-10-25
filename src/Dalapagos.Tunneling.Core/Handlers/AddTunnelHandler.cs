@@ -30,11 +30,27 @@ internal sealed class AddTunnelHandler(ITunnelingRepository tunnelingRepository,
             request.DeviceId,
             deviceGroup.ServerBaseUrl,
             request.Protocol,
-            request.DevicePort ?? (request.Protocol == Protocol.Ssh ? Constants.DefaultSshPort : Constants.DefaultHttpsPort),
+            GetPort(request.DevicePort, request.Protocol),
             request.DeleteAfterMin,
             request.AllowedIp,
             cancellationToken);
 
         return new OperationResult<Tunnel>(tunnel, true, Constants.StatusSuccessCreated, []);
+    }
+
+    private static ushort GetPort(ushort? port, Protocol protocol)
+    {
+        if (port.HasValue)
+        {
+            return port.Value;
+        }
+
+        return protocol switch
+        {
+            Protocol.Http => Constants.DefaultHttpPort,
+            Protocol.Https => Constants.DefaultHttpsPort,
+            Protocol.Ssh => Constants.DefaultSshPort,
+            _ => throw new Exception($"Invalid protocol {protocol}."),
+        };
     }
 }
