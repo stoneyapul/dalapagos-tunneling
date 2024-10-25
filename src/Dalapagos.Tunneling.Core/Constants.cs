@@ -8,6 +8,7 @@ public static class Constants
 
     // Default ports.
     public const ushort DefaultSshPort = 22;
+    public const ushort DefaultHttpPort = 80;
     public const ushort DefaultHttpsPort = 443;
 
     // Suffixes for secret names.

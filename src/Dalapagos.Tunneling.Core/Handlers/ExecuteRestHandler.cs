@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Commands;
 using Exceptions;
+using Extensions;
 using Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Model;
@@ -26,12 +27,15 @@ internal sealed class ExecuteRestHandler(ITunnelingRepository tunnelingRepositor
 
         ArgumentNullException.ThrowIfNull(deviceGroup.ServerBaseUrl, nameof(deviceGroup.ServerBaseUrl));
 
+        var restProtocol = device.RestProtocol ?? RestProtocol.Https;
+        var restPort = GetRestPort(device.RestPort, restProtocol);
+
         var tunnel = await tunnelingProvider.AddTunnelAsync(
             device.HubId.Value,
             request.DeviceId,
             deviceGroup.ServerBaseUrl,
-            Protocol.Https,
-            Constants.DefaultHttpsPort,
+            restProtocol.ToProtocol(),
+            restPort,
             DefaultDeleteAfterMin,
             null,
             cancellationToken);
@@ -60,5 +64,20 @@ internal sealed class ExecuteRestHandler(ITunnelingRepository tunnelingRepositor
         var httpClient = RestService.CreateHttpClient(baseUrl, refitSettings);
 
         return RestService.For<IRest>(httpClient, refitSettings);
+    }
+
+    private static ushort GetRestPort(ushort? port, RestProtocol protocol)
+    {
+        if (port.HasValue)
+        {
+            return port.Value;
+        }
+
+        return protocol switch
+        {
+            RestProtocol.Http => Constants.DefaultHttpPort,
+            RestProtocol.Https => Constants.DefaultHttpsPort,
+            _ => throw new Exception($"Invalid protocol {protocol}."),
+        };
     }
 }
