@@ -7,19 +7,26 @@ using Exceptions;
 using Extensions;
 using Infrastructure;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Model;
 using Refit;
 
-internal sealed class ExecuteRestHandler(ITunnelingRepository tunnelingRepository, IConfiguration config, ITunnelingProvider tunnelingProvider)
+internal sealed class ExecuteRestHandler(
+    ITunnelingRepository tunnelingRepository, 
+    IConfiguration config, 
+    ILogger<ExecuteRestHandler> logger, 
+    ITunnelingProvider tunnelingProvider)
     : HandlerBase<ExecuteRestCommand, OperationResult<string?>>(tunnelingRepository, config)
 {
     private const int DefaultDeleteAfterMin = 60;
+
+    private readonly ILogger<ExecuteRestHandler> _logger = logger;
 
     public override async ValueTask<OperationResult<string?>> Handle(ExecuteRestCommand request, CancellationToken cancellationToken)
     {
         var device = await tunnelingRepository.RetrieveDeviceAsync(request.DeviceId, cancellationToken) 
             ?? throw new DataNotFoundException($"Information not found for device {request.DeviceId}.");
-
+        
         ArgumentNullException.ThrowIfNull(device.HubId, nameof(device.HubId));
 
         var deviceGroup = await tunnelingRepository.RetrieveDeviceGroupAsync(request.OrganizationId, device.HubId.Value, cancellationToken) 
@@ -39,6 +46,9 @@ internal sealed class ExecuteRestHandler(ITunnelingRepository tunnelingRepositor
             DefaultDeleteAfterMin,
             null,
             cancellationToken);
+
+        
+        _logger.LogInformation("Tunnel URL: {URL} for device {DeviceId}.", tunnel.Url, request.DeviceId);
 
         ArgumentNullException.ThrowIfNull(tunnel.Url, nameof(tunnel.Url));
 
