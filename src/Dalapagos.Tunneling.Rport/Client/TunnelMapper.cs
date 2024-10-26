@@ -16,6 +16,9 @@ internal class TunnelMapper
                 case "22":
                     protocol = Protocol.Ssh;
                     break;
+                case "80":
+                    protocol = Protocol.Http;
+                    break;
                 case "443":
                     protocol = Protocol.Https;
                     break;
@@ -31,6 +34,9 @@ internal class TunnelMapper
 
             switch (protocol)
             {
+                case Protocol.Http:
+                    url = $"http://{domain.Host}:{localPort}";
+                    break;
                 case Protocol.Https:
                     url = $"https://{domain.Host}:{localPort}";
                     break;
