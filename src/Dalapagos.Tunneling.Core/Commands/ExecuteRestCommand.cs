@@ -7,6 +7,7 @@ using Model;
 public sealed class ExecuteRestCommand(    
     Guid deviceId, 
     string action,
+    string path,
     Guid organizationId, 
     Guid userId)
     : CommandBase<OperationResult<string?>>(organizationId, userId)
@@ -14,4 +15,6 @@ public sealed class ExecuteRestCommand(
     public Guid DeviceId { get; init; } = deviceId;
 
     public string Action { get; init; } = action;
+
+    public string Path { get; init; } = path;
 }

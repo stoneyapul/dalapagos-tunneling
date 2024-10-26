@@ -19,6 +19,7 @@ public static class Rest
                 new ExecuteRestCommand(
                     deviceId,
                     "GET",
+                    path,
                     organizationId,
                     context.User.GetUserId()),
                 cancellationToken);
@@ -43,6 +44,7 @@ public static class Rest
                 new ExecuteRestCommand(
                     deviceId,
                     "POST",
+                    path,
                     organizationId,
                     context.User.GetUserId()),
                 cancellationToken);
@@ -65,6 +67,7 @@ public static class Rest
                 new ExecuteRestCommand(
                     deviceId,
                     "PUT",
+                    path,
                     organizationId,
                     context.User.GetUserId()),
                 cancellationToken);
@@ -88,6 +91,7 @@ public static class Rest
                 new ExecuteRestCommand(
                     deviceId,
                     "PATCH",
+                    path,
                     organizationId,
                     context.User.GetUserId()),
                 cancellationToken);
@@ -111,6 +115,7 @@ public static class Rest
                 new ExecuteRestCommand(
                     deviceId,
                     "DELETE",
+                    path,
                     organizationId,
                     context.User.GetUserId()),
                 cancellationToken);

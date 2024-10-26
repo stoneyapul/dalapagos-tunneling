@@ -48,7 +48,7 @@ internal sealed class ExecuteRestHandler(
             cancellationToken);
 
         
-        _logger.LogInformation("Tunnel URL: {URL} for device {DeviceId}.", tunnel.Url, request.DeviceId);
+        _logger.LogTrace("Tunnel URL: {URL} for device {DeviceId}.", tunnel.Url, request.DeviceId);
 
         ArgumentNullException.ThrowIfNull(tunnel.Url, nameof(tunnel.Url));
 
@@ -56,13 +56,15 @@ internal sealed class ExecuteRestHandler(
 
         var response = request.Action switch
         {
-            "GET" => await restClient.Get(request.Action, cancellationToken),
-            "POST" => await restClient.Post(request.Action, cancellationToken),
-            "PUT" => await restClient.Put(request.Action, cancellationToken),
-            "PATCH" => await restClient.Patch(request.Action, cancellationToken),
-            "DELETE" => await restClient.Delete(request.Action, cancellationToken),
+            "GET" => await restClient.Get(request.Path, cancellationToken),
+            "POST" => await restClient.Post(request.Path, cancellationToken),
+            "PUT" => await restClient.Put(request.Path, cancellationToken),
+            "PATCH" => await restClient.Patch(request.Path, cancellationToken),
+            "DELETE" => await restClient.Delete(request.Path, cancellationToken),
             _ => throw new Exception($"Invalid action {request.Action}."),
         };
+
+         _logger.LogTrace(response.ToString());
 
         var contentTypeHeader = response.Headers.FirstOrDefault(h => h.Key.Equals("content-type", StringComparison.OrdinalIgnoreCase));
         return new OperationResult<string?>(response.ReasonPhrase, true, (int)response.StatusCode, []); // TODO: Return response content
