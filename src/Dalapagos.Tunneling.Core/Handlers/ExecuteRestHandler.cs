@@ -64,10 +64,12 @@ internal sealed class ExecuteRestHandler(
             _ => throw new Exception($"Invalid action {request.Action}."),
         };
 
-         _logger.LogTrace(response.ToString());
+        var content = await response.Content.ReadAsStringAsync(cancellationToken);
 
+        _logger.LogTrace(content);
+        
         var contentTypeHeader = response.Headers.FirstOrDefault(h => h.Key.Equals("content-type", StringComparison.OrdinalIgnoreCase));
-        return new OperationResult<string?>(response.ReasonPhrase, true, (int)response.StatusCode, []); // TODO: Return response content
+        return new OperationResult<string?>(content, true, (int)response.StatusCode, []);
     }
 
     private static IRest CreateClient(string baseUrl)
