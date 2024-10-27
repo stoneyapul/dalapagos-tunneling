@@ -37,17 +37,23 @@ internal sealed class ExecuteRestHandler(
         var restProtocol = device.RestProtocol ?? RestProtocol.Https;
         var restPort = GetRestPort(device.RestPort, restProtocol);
 
-        var tunnel = await tunnelingProvider.AddTunnelAsync(
-            device.HubId.Value,
-            request.DeviceId,
-            deviceGroup.ServerBaseUrl,
-            restProtocol.ToProtocol(),
-            restPort,
-            DefaultDeleteAfterMin,
-            null,
+        var existingTunnels = await tunnelingProvider.GetTunnelsByDeviceIdAsync(
+            device.HubId.Value, 
+            request.DeviceId, 
+            deviceGroup.ServerBaseUrl, 
             cancellationToken);
 
-        
+        var tunnel = existingTunnels.FirstOrDefault(t => t.Protocol == restProtocol.ToProtocol() && t.TunnelPort == restPort && t.AllowedIps == null) 
+            ?? await tunnelingProvider.AddTunnelAsync(
+                device.HubId.Value,
+                request.DeviceId,
+                deviceGroup.ServerBaseUrl,
+                restProtocol.ToProtocol(),
+                restPort,
+                DefaultDeleteAfterMin,
+                null,
+                cancellationToken);
+
         _logger.LogTrace("Tunnel URL: {URL} for device {DeviceId}.", tunnel.Url, request.DeviceId);
 
         ArgumentNullException.ThrowIfNull(tunnel.Url, nameof(tunnel.Url));
@@ -67,7 +73,7 @@ internal sealed class ExecuteRestHandler(
         var content = await response.Content.ReadAsStringAsync(cancellationToken);
 
         _logger.LogTrace(content);
-        
+
         var contentTypeHeader = response.Headers.FirstOrDefault(h => h.Key.Equals("content-type", StringComparison.OrdinalIgnoreCase));
         return new OperationResult<string?>(content, true, (int)response.StatusCode, []);
     }
