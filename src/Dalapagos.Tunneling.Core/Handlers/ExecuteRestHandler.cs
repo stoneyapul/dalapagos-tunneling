@@ -43,6 +43,8 @@ internal sealed class ExecuteRestHandler(
             deviceGroup.ServerBaseUrl, 
             cancellationToken);
 
+        _logger.LogInformation("Existing tunnels: {Tunnels}", existingTunnels.Select(t => t.Url).ToArray());
+        
         var tunnel = existingTunnels.FirstOrDefault(t => t.Protocol == restProtocol.ToProtocol() && t.TunnelPort == restPort && t.AllowedIps == null) 
             ?? await tunnelingProvider.AddTunnelAsync(
                 device.HubId.Value,
