@@ -54,7 +54,7 @@ internal sealed class ExecuteRestHandler(
                 null,
                 cancellationToken);
 
-        _logger.LogTrace("Tunnel URL: {URL} for device {DeviceId}.", tunnel.Url, request.DeviceId);
+        _logger.LogInformation("Tunnel URL: {URL} for device {DeviceId}.", tunnel.Url, request.DeviceId);
 
         ArgumentNullException.ThrowIfNull(tunnel.Url, nameof(tunnel.Url));
 
