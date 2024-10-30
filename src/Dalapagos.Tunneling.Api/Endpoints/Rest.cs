@@ -1,6 +1,7 @@
 namespace Dalapagos.Tunneling.Api.Endpoints;
 
 using Core.Commands;
+using Core.Model;
 using Extensions;
 using Mappers;
 using Mediator;
@@ -24,9 +25,7 @@ public static class Rest
                     context.User.GetUserId()),
                 cancellationToken);
 
-            var content = await result.Data.Content.ReadAsStringAsync();
-            var contentType = result.Data.Content.Headers.ContentType?.MediaType;
-            return Results.Text(content, contentType: contentType, statusCode: result.StatusCode);
+            return await GetResultAsync(result, cancellationToken);
         })
         .WithName("GET Request")
         .WithTags("ReST")
@@ -42,7 +41,7 @@ public static class Rest
 
         endpoints.MapPost("{*path}", async (Guid organizationId, Guid deviceId, string path, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
         {
-            return await mediator.Send(
+            var result = await mediator.Send(
                 new ExecuteRestCommand(
                     deviceId,
                     "POST",
@@ -50,6 +49,8 @@ public static class Rest
                     organizationId,
                     context.User.GetUserId()),
                 cancellationToken);
+
+            return await GetResultAsync(result, cancellationToken);
         })
         .WithName("POST Request")
         .WithTags("ReST")
@@ -65,7 +66,7 @@ public static class Rest
 
         endpoints.MapPut("{*path}", async (Guid organizationId, Guid deviceId, string path, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
         {
-            return await mediator.Send(
+            var result = await mediator.Send(
                 new ExecuteRestCommand(
                     deviceId,
                     "PUT",
@@ -74,6 +75,7 @@ public static class Rest
                     context.User.GetUserId()),
                 cancellationToken);
 
+            return await GetResultAsync(result, cancellationToken);
         })
         .WithName("PUT Request")
         .WithTags("ReST")
@@ -89,7 +91,7 @@ public static class Rest
 
         endpoints.MapPatch("{*path}", async (Guid organizationId, Guid deviceId, string path, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
         {
-            return await mediator.Send(
+            var result = await mediator.Send(
                 new ExecuteRestCommand(
                     deviceId,
                     "PATCH",
@@ -97,7 +99,9 @@ public static class Rest
                     organizationId,
                     context.User.GetUserId()),
                 cancellationToken);
-        })        
+    
+            return await GetResultAsync(result, cancellationToken);
+    })        
         .WithName("PATCH Request")
         .WithTags("ReST")
         .WithOpenApi(op =>
@@ -110,10 +114,9 @@ public static class Rest
         .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
         .SetResponseStatusCode();
 
-
         endpoints.MapDelete("{*path}", async (Guid organizationId, Guid deviceId, string path, IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
         {
-            return await mediator.Send(
+            var result = await mediator.Send(
                 new ExecuteRestCommand(
                     deviceId,
                     "DELETE",
@@ -122,6 +125,7 @@ public static class Rest
                     context.User.GetUserId()),
                 cancellationToken);
 
+            return await GetResultAsync(result, cancellationToken);
         })
         .WithName("DELETE Request")
         .WithTags("ReST")
@@ -134,5 +138,18 @@ public static class Rest
         })
         .RequireAuthorization(SecurityPolicies.TunnelingAdminPolicy)
         .SetResponseStatusCode(); 
+    }
+
+    private static async Task<IResult> GetResultAsync(OperationResult<HttpResponseMessage?> result, CancellationToken cancellationToken)
+    {
+            if (result.Data == null)
+            {
+                return Results.StatusCode(result.StatusCode);
+            }
+
+            var content = await result.Data.Content.ReadAsStringAsync(cancellationToken);
+            var contentType = result.Data.Content.Headers.ContentType?.MediaType;
+
+            return Results.Text(content, contentType: contentType, statusCode: result.StatusCode);
     }
 }
