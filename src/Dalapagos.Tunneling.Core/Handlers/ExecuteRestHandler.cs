@@ -37,7 +37,7 @@ internal sealed class ExecuteRestHandler(
         var restProtocol = device.RestProtocol ?? RestProtocol.Https;
         var restPort = GetRestPort(device.RestPort, restProtocol);
 
-        _logger.LogInformation("Getting existing tunnels");
+        _logger.LogTrace("Getting existing tunnels");
 
         var existingTunnels = await tunnelingProvider.GetTunnelsByDeviceIdAsync(
             device.HubId.Value, 
@@ -45,8 +45,10 @@ internal sealed class ExecuteRestHandler(
             deviceGroup.ServerBaseUrl, 
             cancellationToken);
 
-        _logger.LogInformation("Existing tunnels: {Tunnels}", existingTunnels.Select(t => t.Url).ToArray());
+        _logger.LogTrace("Existing tunnels: {Tunnels}", existingTunnels.Select(t => t.Url).ToArray());
 
+        // TODO: Should I use an Ip?
+        // TODO: How to manage tunnel deletion?
         var tunnel = existingTunnels.FirstOrDefault(
             t => 
             t.Protocol == restProtocol.ToProtocol() && t.DevicePort == restPort && (t.AllowedIps == null || t.AllowedIps.Length == 0))
