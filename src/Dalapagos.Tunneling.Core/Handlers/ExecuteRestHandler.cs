@@ -49,7 +49,7 @@ internal sealed class ExecuteRestHandler(
 
         var tunnel = existingTunnels.FirstOrDefault(
             t => 
-            t.Protocol == restProtocol.ToProtocol() && t.TunnelPort == restPort) // && (t.AllowedIps == null || t.AllowedIps.Length == 0)
+            t.Protocol == restProtocol.ToProtocol() && t.DevicePort == restPort && (t.AllowedIps == null || t.AllowedIps.Length == 0))
             ?? await tunnelingProvider.AddTunnelAsync(
                 device.HubId.Value,
                 request.DeviceId,
