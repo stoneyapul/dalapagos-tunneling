@@ -24,7 +24,8 @@ public static class Rest
                     context.User.GetUserId()),
                 cancellationToken);
 
-            return Results.Text(result.Data, contentType: "application/json", statusCode: result.StatusCode);
+            return result;
+            //return Results.Text(result.Data, contentType: "application/json", statusCode: result.StatusCode);
         })
         .WithName("GET Request")
         .WithTags("ReST")

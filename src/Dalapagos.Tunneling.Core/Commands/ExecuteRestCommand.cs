@@ -10,7 +10,7 @@ public sealed class ExecuteRestCommand(
     string path,
     Guid organizationId, 
     Guid userId)
-    : CommandBase<OperationResult<string?>>(organizationId, userId)
+    : CommandBase<OperationResult<HttpResponseMessage?>>(organizationId, userId)
 {
     public Guid DeviceId { get; init; } = deviceId;
 

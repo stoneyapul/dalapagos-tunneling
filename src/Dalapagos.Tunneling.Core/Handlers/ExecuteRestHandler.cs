@@ -16,13 +16,13 @@ internal sealed class ExecuteRestHandler(
     IConfiguration config, 
     ILogger<ExecuteRestHandler> logger, 
     ITunnelingProvider tunnelingProvider)
-    : HandlerBase<ExecuteRestCommand, OperationResult<string?>>(tunnelingRepository, config)
+    : HandlerBase<ExecuteRestCommand, OperationResult<HttpResponseMessage?>>(tunnelingRepository, config)
 {
     private const int DefaultDeleteAfterMin = 60;
 
     private readonly ILogger<ExecuteRestHandler> _logger = logger;
 
-    public override async ValueTask<OperationResult<string?>> Handle(ExecuteRestCommand request, CancellationToken cancellationToken)
+    public override async ValueTask<OperationResult<HttpResponseMessage?>> Handle(ExecuteRestCommand request, CancellationToken cancellationToken)
     {
         var device = await tunnelingRepository.RetrieveDeviceAsync(request.DeviceId, cancellationToken) 
             ?? throw new DataNotFoundException($"Information not found for device {request.DeviceId}.");
@@ -76,12 +76,7 @@ internal sealed class ExecuteRestHandler(
             _ => throw new Exception($"Invalid action {request.Action}."),
         };
 
-        var content = await response.Content.ReadAsStringAsync(cancellationToken);
-
-        _logger.LogTrace(content);
-
-        var contentTypeHeader = response.Headers.FirstOrDefault(h => h.Key.Equals("content-type", StringComparison.OrdinalIgnoreCase));
-        return new OperationResult<string?>(content, true, (int)response.StatusCode, []);
+        return new OperationResult<HttpResponseMessage?>(response, true, (int)response.StatusCode, []);
     }
 
     private static IRest CreateClient(string baseUrl)
