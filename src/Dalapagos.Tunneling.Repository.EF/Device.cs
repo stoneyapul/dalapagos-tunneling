@@ -17,6 +17,10 @@ public partial class Device
 
     public int OrganizationId { get; set; }
 
+    public string? RestProtocol { get; set; }
+
+    public int? RestPort { get; set; }
+
     public virtual DeviceGroup? DeviceGroup { get; set; }
 
     public virtual Organization Organization { get; set; } = null!;

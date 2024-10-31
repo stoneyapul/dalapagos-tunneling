@@ -17,6 +17,8 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
         string deviceName, 
         Core.Model.Os os, 
         Guid organizationId,
+        Core.Model.RestProtocol? restProtocol,
+        ushort? restPort,
         CancellationToken cancellationToken)
     {
         if (!deviceId.HasValue)
@@ -28,15 +30,23 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
         var deviceGroupIdParam = new SqlParameter("@DeviceGroupUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = deviceGroupId ?? (object)DBNull.Value, IsNullable = true };
         var deviceNameParam = new SqlParameter("@DeviceName", System.Data.SqlDbType.NVarChar, 64) { Value = deviceName };
         var osParam = new SqlParameter("@Os", System.Data.SqlDbType.Int) { Value = (int)os };
+        var restProtocolParam = new SqlParameter("@RestProtocol", System.Data.SqlDbType.NVarChar, 5) { Value = restProtocol?.ToString() ?? (object)DBNull.Value, IsNullable = true };
+        var restPortParam = new SqlParameter("@RestPort", System.Data.SqlDbType.Int) { Value = restPort ?? (object)DBNull.Value, IsNullable = true };
         var organizationIdParam = new SqlParameter("@OrganizationUuid", System.Data.SqlDbType.UniqueIdentifier) { Value = organizationId };
-        var parms = new List<object> { deviceIdParam, deviceGroupIdParam, deviceNameParam, osParam, organizationIdParam };
+        var parms = new List<object> { deviceIdParam, deviceGroupIdParam, deviceNameParam, osParam, organizationIdParam, restProtocolParam, restPortParam };
 
         await dbContext.Database.ExecuteSqlRawAsync(
-            "EXECUTE UpsertDevice @DeviceUuid, @DeviceGroupUuid, @DeviceName, @Os, @OrganizationUuid", 
+            "EXECUTE UpsertDevice @DeviceUuid, @DeviceGroupUuid, @DeviceName, @Os, @OrganizationUuid, restProtocolParam, restPortParam", 
             parms, 
             cancellationToken);
 
-        return new Core.Model.Device(deviceId.Value, deviceGroupId, deviceName, os);
+        return new Core.Model.Device(
+            deviceId.Value, 
+            deviceGroupId, 
+            deviceName, 
+            os, 
+            restProtocol, 
+            restPort);
     }
 
     public async Task<Core.Model.DeviceGroup> UpsertDeviceGroupAsync(
@@ -178,7 +188,7 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
             .Where(d => d.DeviceUuid == deviceId)
             .FirstOrDefaultAsync(cancellationToken) ?? throw new DataNotFoundException($"Device with id {deviceId} not found");
 
-        return new Core.Model.Device(deviceId, deviceEntity?.DeviceGroup?.DeviceGroupUuid, deviceEntity.DeviceName, (Core.Model.Os)deviceEntity.Os);
+        return MapToDevice(deviceEntity.DeviceGroup?.DeviceGroupUuid, deviceEntity);
     }
 
     public async Task<Core.Model.DeviceGroup> RetrieveDeviceGroupAsync(Guid organizationId, Guid deviceGroupId, CancellationToken cancellationToken)
@@ -252,12 +262,14 @@ public class EfTunnelingRepository(DalapagosTunnelsDbContext dbContext) : Core.I
                 devices);
     }
 
-   private static Core.Model.Device MapToDevice(Guid deviceGroupId, Device deviceEntity)
+   private static Core.Model.Device MapToDevice(Guid? deviceGroupId, Device deviceEntity)
     {
         return new Core.Model.Device(
-                deviceEntity.DeviceUuid, 
-                deviceGroupId, 
-                deviceEntity.DeviceName,
-                (Core.Model.Os)deviceEntity.Os);
+            deviceEntity.DeviceUuid, 
+            deviceGroupId, 
+            deviceEntity.DeviceName,
+            (Core.Model.Os)deviceEntity.Os,
+            !string.IsNullOrWhiteSpace(deviceEntity.RestProtocol) ? Enum.Parse<Core.Model.RestProtocol>(deviceEntity.RestProtocol, true) : null,
+            (ushort?)deviceEntity.RestPort);
     }
 }

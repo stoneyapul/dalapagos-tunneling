@@ -119,7 +119,9 @@ internal sealed  class DeleteHubHandler(
                     null, 
                     device.Name, 
                     device.Os, 
-                    request.OrganizationId, 
+                    request.OrganizationId,
+                    device.RestProtocol,
+                    device.RestPort, 
                     cancellationToken);
             }
         }

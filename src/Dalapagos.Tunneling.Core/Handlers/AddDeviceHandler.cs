@@ -3,7 +3,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Commands;
-using Exceptions;
 using Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -27,6 +26,8 @@ internal sealed class AddDeviceHandler(
             request.Name,
             request.Os, 
             request.OrganizationId,
+            request.RestProtocol,
+            request.RestPort,
             cancellationToken);
 
         logger.LogInformation("Device {DeviceId} information was added to the database.", deviceId);
