@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Secrets
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Api.Tests", "src\Tests\Dalapagos.Tunneling.Api.Tests\Dalapagos.Tunneling.Api.Tests.csproj", "{F5D94A84-EA6A-4C13-A29A-529D03056D6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Lightfoot", "src\Presentation\Dalapagos.Tunneling.Lightfoot\Dalapagos.Tunneling.Lightfoot.csproj", "{34A60E95-8DE5-4F87-AF6C-09C7EFBDF653}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Lightfoot", "src\Dalapagos.Tunneling.Lightfoot\Dalapagos.Tunneling.Lightfoot.csproj", "{34A60E95-8DE5-4F87-AF6C-09C7EFBDF653}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

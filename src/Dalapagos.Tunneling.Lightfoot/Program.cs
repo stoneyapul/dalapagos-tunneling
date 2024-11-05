@@ -1,8 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
+using Dalapagos.Tunneling.Core.DependencyInjection;
+using Dalapagos.Tunneling.Monitor.HF;
+using Dalapagos.Tunneling.Repository.EF;
+using Dalapagos.Tunneling.Rport;
+using Dalapagos.Tunneling.Secrets.KeyVault;
 using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web.UI;
+using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +25,15 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add(new AuthorizeFilter(policy));
 }).AddMicrosoftIdentityUI();
 
+builder.Services.AddMediation();
+builder.Services.AddKeyVaultSecrets();
+builder.Services.AddEfTunnelingRepository(builder.Configuration);
+builder.Services.AddHfMonitor(builder.Configuration);
+builder.Services.AddRportTunneling();
+
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSyncfusionBlazor();
 
 var app = builder.Build();
 
@@ -44,4 +57,5 @@ app.UseAuthorization();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzU1NzYzMUAzMjM3MmUzMDJlMzBTSEJaRUR6QUZNNmx6dm9WRVVQNW80dS8zVWVIdEFGVG90YmZrclo4UDlVPQ==");
 app.Run();

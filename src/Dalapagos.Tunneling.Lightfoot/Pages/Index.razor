@@ -1,0 +1,91 @@
+﻿@page "/"
+@using Dalapagos.Tunneling.Core.Model
+
+<PageTitle>Manage</PageTitle>
+
+<div class="row">
+    <div class="control-section col-lg-9 card-control-section tile_layout">
+        <div class="e-card-layout">
+           @if (this.Organizations.Count == 0)
+            {
+                <div class="e-error">
+                    <div class="e-error-content">No organizations found.</div>
+                </div>
+            }
+            else
+            {
+                @foreach (var organization in Organizations)
+                {
+                   <div class="col-lg-4 col-md-4 col-sm-6" style="padding: 15px;">
+                        <div id="card_sample_1" class="card_sample">
+                            <SfCard>
+                                <CardHeader Title="@organization.Name" />
+                                <CardContent>
+                                    <SfListView Id="HubList" DataSource="@organization.DeviceGroups" CssClass="e-list-template" SortOrder="Syncfusion.Blazor.Lists.SortOrder.Ascending">
+                                        <ListViewFieldSettings TValue="DeviceGroup" Id="Id" Text="Text"></ListViewFieldSettings>
+                                        <ListViewTemplates TValue="DeviceGroup">
+                                            <Template>
+                                                <div class="e-list-wrapper e-list-multi-line">
+                                                    <span class="e-list-item-header">@((context as DeviceGroup).Name)</span>
+                                                    <span class="e-list-content e-card-online">@((context as DeviceGroup).ServerStatus)</span>    
+                                                </div>
+                                            </Template>
+                                        </ListViewTemplates>
+                                    </SfListView>
+                                </CardContent>
+                           </SfCard>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@code{
+    List<Organization> Organizations = new List<Organization>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Organizations.Add(new Organization(Guid.NewGuid(), "Acme Widgets", 
+            new List<DeviceGroup> { new DeviceGroup(Guid.NewGuid(), Guid.NewGuid(), "East Building", ServerLocation.East, ServerStatus.Online, null, null), 
+            new DeviceGroup(Guid.NewGuid(), Guid.NewGuid(), "West Building", ServerLocation.West, ServerStatus.Deploying, null, null) }));
+        Organizations.Add(new Organization(Guid.NewGuid(), "Acme Rockets"));
+    }
+}
+
+<style>
+    .property-panel-section .property-panel-content td {
+        padding: 0 0 15px 0;
+    }
+    .tile_layout.card-control-section .e-error {
+        height: 100px;
+        width: 100%;
+    }
+        .tile_layout.card-control-section .e-error .e-error-content {
+            color: red;
+            line-height: 100px;
+            text-align: center;
+        }
+    .tile_layout.card-control-section .e-card .e-card-image {
+        height: 180px;
+        width: inherit;
+    }
+    .tile_layout.card-control-section .e-card .e-card-header .e-card-header-caption .e-card-header-title {
+        font-size: 20px;
+        font-family: Helvetica, 'Segoe UI';
+        font-weight: bold;
+    }
+    .tile_layout.card-control-section .e-card .e-card-header .e-card-header-caption .e-card-sub-title {
+        padding-top: 5px;
+    }
+    .tile_layout.card-control-section .e-card .e-card-content {
+        padding-top: 0px;
+        height: 110px;
+    }
+    #source_link {
+        float: right;
+        margin-right: 10px;
+    }
+</style>

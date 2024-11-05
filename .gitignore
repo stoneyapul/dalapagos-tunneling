@@ -400,4 +400,5 @@ FodyWeavers.xsd
 *.sh
 src/Dalapagos.Tunneling.Api/Tests/*.http
 src/Dalapagos.Tunneling.Api/appsettings.Development.Json
+src/Dalapagos.Tunneling.Lightfoot/appsettings.Development.Json
 src/Dalapagos.Tunneling.Repository.EF/db-first-scaffold.sh
