@@ -8,7 +8,7 @@ using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web.UI;
-using Syncfusion.Blazor;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +33,7 @@ builder.Services.AddRportTunneling();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSyncfusionBlazor();
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 
@@ -57,5 +57,4 @@ app.UseAuthorization();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzU1NzYzMUAzMjM3MmUzMDJlMzBTSEJaRUR6QUZNNmx6dm9WRVVQNW80dS8zVWVIdEFGVG90YmZrclo4UDlVPQ==");
 app.Run();
