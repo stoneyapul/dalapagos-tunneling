@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web.UI;
 using MudBlazor.Services;
+using Dalapagos.Tunneling.Lightfoot;
+using BlazorComponentBus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,7 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add(new AuthorizeFilter(policy));
 }).AddMicrosoftIdentityUI();
 
+builder.Services.AddScoped<ComponentBus>();
 builder.Services.AddMediation();
 builder.Services.AddKeyVaultSecrets();
 builder.Services.AddEfTunnelingRepository(builder.Configuration);

@@ -1,8 +1,72 @@
 ﻿@page "/"
+@using BlazorComponentBus
+@using Dalapagos.Tunneling.Core.Extensions
 @using Dalapagos.Tunneling.Core.Model
+@using Dalapagos.Tunneling.Core.Queries
+@using Dalapagos.Tunneling.Lightfoot.Events
+@using Mediator
+
+@inject IMediator _mediator
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject BlazorComponentBus.ComponentBus _bus
 
 <PageTitle>Hubs</PageTitle>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="ClickMe">View Devices</MudButton>
 
-@code{
+@if(!this.NoHubs && hubs != null)
+{
+    <MudPaper Class="d-flex flex-wrap gap-3" Elevation="0">
+        @foreach (var hub in hubs)
+        {
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">@hub.Name</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText Typo="Typo.body2">Some description</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">View Devices</MudButton>
+                </MudCardActions>
+            </MudCard>
+        }
+    </MudPaper>
 }
 
+@code{
+    private bool NoHubs {get; set;} = true;
+    private IList<Hub>? hubs = new List<Hub>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _bus.Subscribe<OrganizationChangedEvent>(OrganizationChangedHandlerAsync);
+    }
+
+    private void ClickMe()
+    {
+        NoHubs = false;
+    }
+    
+    private async Task OrganizationChangedHandlerAsync(MessageArgs args, CancellationToken cancellationToken)
+    {
+        var organization = args.GetMessage<OrganizationChangedEvent>();
+        var principal = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var userId = Guid.Parse(principal.User.Claims.First(c => c.Type.Equals("oid")).Value);
+
+        if (!organization.Id.HasValue)
+        {
+            return;
+        }
+
+        var result = await _mediator.Send(
+            new GetHubsByOrganizationIdQuery(
+                organization.Id.Value,
+                userId));
+
+        hubs = result.Data;
+        NoHubs = hubs == null || hubs.Count == 0;
+        
+   }
+}

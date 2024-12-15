@@ -1,10 +1,12 @@
 ﻿@using Dalapagos.Tunneling.Core.Extensions
 @using Dalapagos.Tunneling.Core.Model
 @using Dalapagos.Tunneling.Core.Queries
+@using Dalapagos.Tunneling.Lightfoot.Events
 @using Mediator
 
-@inject IMediator mediator
+@inject IMediator _mediator
 @inject AuthenticationStateProvider _authenticationStateProvider
+@inject BlazorComponentBus.ComponentBus _bus
 
 @inherits LayoutComponentBase
 
@@ -17,10 +19,16 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudText Typo="Typo.h5" Class="ml-3">Dalapagos Lightfoot</MudText>
         <MudSpacer />
-        <MudSelect @bind-Value="_orgId" Placeholder="Select Organization" AdornmentIcon="@Icons.Material.Filled.Business" AdornmentColor="Color.Primary">
+        <MudSelect 
+            @bind-Value="_organization"
+            @bind-Value:after="OnOrganizationChanged"
+            ToStringFunc="@convertFunc"
+            Placeholder="Select Organization" 
+            AdornmentIcon="@Icons.Material.Filled.Business" 
+            AdornmentColor="Color.Primary">
             @foreach (var org in _organizations)
             {
-                <MudSelectItem Value="@org.Id">@org.Name</MudSelectItem>
+                <MudSelectItem Value="@org" />
             }
         </MudSelect> 
         <MudSpacer />
@@ -46,9 +54,9 @@
     private bool _drawerOpen = true;
     private bool _isDarkMode = false;
     private MudTheme? _theme = null;
-    private Guid? _orgId = null;
-
     private IList<Organization> _organizations = new List<Organization>();
+    private Organization _organization { get; set; } = default!;
+    private Func<Organization, string> convertFunc = o => o?.Name ?? string.Empty;
 
     private readonly PaletteLight _lightPalette = new()
     {
@@ -107,16 +115,16 @@
 
         var principal = await _authenticationStateProvider.GetAuthenticationStateAsync();
         var userId = Guid.Parse(principal.User.Claims.First(c => c.Type.Equals("oid")).Value);
-        var result = await mediator.Send(new GetOrganizationsByUserIdQuery(userId));
+        var result = await _mediator.Send(new GetOrganizationsByUserIdQuery(userId));
 
         _organizations = result.Data ?? throw new Exception("No organizations found for the user.");
-
-        if (_organizations.Count > 0)
-        {
-            _orgId = _organizations.First().Id;
-        }
     }
 
+    private void OnOrganizationChanged()
+    {
+        _bus.Publish(new OrganizationChangedEvent(_organization.Id, _organization.Name));
+    }
+    
     private void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BlazorComponentBus" Version="2.2.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="3.1.0" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="3.1.0" />
     <PackageReference Include="MudBlazor" Version="7.15.0" />
