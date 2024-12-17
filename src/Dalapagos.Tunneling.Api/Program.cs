@@ -1,4 +1,6 @@
+using System.Net;
 using System.Reflection;
+using System.Threading.RateLimiting;
 using Dalapagos.Tunneling.Api.Endpoints;
 using Dalapagos.Tunneling.Api.Security;
 using Dalapagos.Tunneling.Core.DependencyInjection;
@@ -7,23 +9,27 @@ using Dalapagos.Tunneling.Repository.EF;
 using Dalapagos.Tunneling.Rport;
 using Dalapagos.Tunneling.Secrets.KeyVault;
 using Hangfire;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add a rate limiter that allows up to 8 requests every 10 seconds.
-builder.Services.AddRateLimiter(limiters =>
-    limiters.AddFixedWindowLimiter(
-        "fixedLimiter",
-        options =>
-        {
-            options.PermitLimit = 8;
-            options.QueueLimit = 4;
-            options.Window = TimeSpan.FromSeconds(10);
-            options.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
-        }
-    ));
+// Add a rate limiter per IP address that allows up to 50 requests every 10 seconds.
+builder.Services.AddRateLimiter(options =>
+{
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, IPAddress>(context =>
+    {
+        var clientIp = context.Connection.RemoteIpAddress 
+            ?? throw new InvalidOperationException("Client IP address is not available.");
+
+        return RateLimitPartition.GetFixedWindowLimiter(clientIp, _ =>
+            new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 50,  
+                Window = TimeSpan.FromSeconds(10),
+                AutoReplenishment = true
+            });
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -50,6 +56,8 @@ builder.Services.AddRportTunneling();
 builder.Services.AddEndpointSecurity(builder.Configuration);
  
 var app = builder.Build();
+
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();

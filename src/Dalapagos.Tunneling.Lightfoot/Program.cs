@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using BlazorComponentBus;
 using Dalapagos.Tunneling.Core.DependencyInjection;
 using Dalapagos.Tunneling.Monitor.HF;
 using Dalapagos.Tunneling.Repository.EF;
@@ -9,8 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web.UI;
 using MudBlazor.Services;
-using Dalapagos.Tunneling.Lightfoot;
-using BlazorComponentBus;
 
 var builder = WebApplication.CreateBuilder(args);
 
