@@ -13,44 +13,51 @@
 <PageTitle>Hubs</PageTitle>
 
 @if(!this.NoHubs && hubs != null)
-{
-    <MudPaper Class="d-flex flex-wrap gap-3" Elevation="0">
-        @foreach (var hub in hubs)
-        {
-            <MudCard Style="min-width: 240px;">
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Typo="Typo.h6">@hub.Name</MudText>
-                    </CardHeaderContent>
-                    <CardHeaderActions>
-                        <MudTooltip Text="@hub.Status.ToString()">
-                            <MudIconButton Icon="@Icons.Material.Filled.Circle" Color="@GetColor(hub.Status)" />
-                        </MudTooltip>
-                    </CardHeaderActions>
-               </MudCardHeader>
-                <MudCardContent>
-                    <MudGrid Spacing="1">
-                        <MudItem>
-                            <MudText Typo="Typo.body1">Location:</MudText>
-                        </MudItem>
-                        <MudItem>
-                            <MudText Typo="Typo.body1">@hub.Location.ToString()</MudText>
-                        </MudItem>
-                        <MudFlexBreak  />
-                        <MudItem>
-                            <MudText Typo="Typo.body1">Devices:</MudText>
-                        </MudItem>
-                        <MudItem>
-                            <MudText Typo="Typo.body1">@hub.TotalDeviceCount</MudText>
-                        </MudItem>
-                    </MudGrid>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary">View Devices</MudButton>
-                </MudCardActions>
-            </MudCard>
-        }
-    </MudPaper>
+{    
+    <MudGrid Spacing="5"> 
+        <MudItem>
+            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small"/>
+        </MudItem>
+        <MudFlexBreak  />
+            @foreach (var hub in hubs)
+            {
+                <MudItem>
+                        <MudCard Style="min-width: 240px;">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText Typo="Typo.h6">@hub.Name</MudText>
+                                </CardHeaderContent>
+                                <CardHeaderActions>
+                                    <MudTooltip Text="@hub.Status.ToString()">
+                                        <MudIconButton Icon="@Icons.Material.Filled.Circle" Color="@GetColor(hub.Status)" />
+                                    </MudTooltip>
+                                </CardHeaderActions>
+                        </MudCardHeader>
+                            <MudCardContent>
+                                <MudGrid Spacing="1">
+                                    <MudItem xs="5">
+                                        <MudText Typo="Typo.body1">Location:</MudText>
+                                    </MudItem>
+                                    <MudItem xs="5">
+                                        <MudText Typo="Typo.body1">@hub.Location.ToString()</MudText>
+                                    </MudItem>
+                                    <MudFlexBreak  />
+                                    <MudItem xs="5">
+                                        <MudText Typo="Typo.body1">Devices:</MudText>
+                                    </MudItem>
+                                    <MudItem xs="5">
+                                        <MudText Typo="Typo.body1">@hub.TotalDeviceCount</MudText>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton Variant="Variant.Text" Color="Color.Primary">View Devices</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+
+                </MudItem>
+            }
+    </MudGrid>
 }
 
 @code{
@@ -82,10 +89,15 @@
         NoHubs = hubs == null || hubs.Count == 0;
         
         await this.InvokeAsync(StateHasChanged);
-   }
+    }
 
-   private static Color GetColor(ServerStatus status)
-   {
+    private void AddHub()
+    {
+        
+    }
+
+    private static Color GetColor(ServerStatus status)
+    {
        return status switch 
        {
             ServerStatus.Unknown => Color.Info,
@@ -95,5 +107,5 @@
             ServerStatus.Online => Color.Success,
            _ => Color.Error
        };
-   }
+    }
 }
