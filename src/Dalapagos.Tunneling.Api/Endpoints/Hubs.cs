@@ -1,10 +1,10 @@
 ﻿namespace Dalapagos.Tunneling.Api.Endpoints;
 
 using Core.Commands;
+using Core.Extensions;
 using Core.Model;
 using Core.Queries;
 using Dto;
-using Extensions;
 using Mappers;
 using Mediator;
 using Security;

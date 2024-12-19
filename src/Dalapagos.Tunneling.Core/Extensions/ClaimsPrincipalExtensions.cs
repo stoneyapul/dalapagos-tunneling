@@ -1,9 +1,9 @@
-﻿namespace Dalapagos.Tunneling.Api.Extensions;
+﻿namespace Dalapagos.Tunneling.Core.Extensions;
 
 using System.Security.Claims;
 using Core.Exceptions;
 
-internal static class ClaimsPrincipalExtensions
+public static class ClaimsPrincipalExtensions
 {
     public static Guid GetUserId(this ClaimsPrincipal user)
     {

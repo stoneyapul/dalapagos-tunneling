@@ -1,0 +1,121 @@
+﻿@page "/"
+@using BlazorComponentBus
+@using Dalapagos.Tunneling.Core.Extensions
+@using Dalapagos.Tunneling.Core.Model
+@using Dalapagos.Tunneling.Core.Queries
+@using Dalapagos.Tunneling.Lightfoot.Events
+@using Mediator
+
+@inject IMediator _mediator
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject BlazorComponentBus.ComponentBus _bus
+
+<PageTitle>Hubs</PageTitle>
+
+@if(!this.NoHubs && hubs != null)
+{    
+    <MudGrid Spacing="5"> 
+        <MudItem>
+            <MudTooltip Text="Add Hub">
+                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small"/>
+            </MudTooltip>
+        </MudItem>
+        <MudFlexBreak />
+        @foreach (var hub in hubs)
+        {
+            <MudItem>
+                <MudCard Style="min-width: 240px;">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">@hub.Name</MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudTooltip Text="@hub.Status.ToString()">
+                                <MudIconButton Icon="@Icons.Material.Filled.Circle" Color="@GetColor(hub.Status)" />
+                            </MudTooltip>
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                        <MudCardContent>
+                            <MudGrid Spacing="1">
+                                <MudItem xs="5">
+                                    <MudText Typo="Typo.body1">Location:</MudText>
+                                </MudItem>
+                                <MudItem xs="5">
+                                    <MudText Typo="Typo.body1">@hub.Location.ToString()</MudText>
+                                </MudItem>
+                                <MudFlexBreak  />
+                                <MudItem xs="5">
+                                    <MudText Typo="Typo.body1">Devices:</MudText>
+                                </MudItem>
+                                <MudItem xs="5">
+                                    <MudText Typo="Typo.body1">@hub.TotalDeviceCount</MudText>
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary">View Devices</MudButton>
+                            <MudSpacer />
+                            <MudTooltip Text="Delete Hub">
+                                <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" Edge="Edge.Start" />
+                            </MudTooltip>
+                        </MudCardActions>
+                    </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+
+@code{
+    private bool NoHubs {get; set;} = true;
+    private IList<Hub>? hubs = new List<Hub>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _bus.Subscribe<OrganizationChangedEvent>(OrganizationChangedHandlerAsync);
+    }
+
+    private async Task OrganizationChangedHandlerAsync(MessageArgs args, CancellationToken cancellationToken)
+    {
+        var organization = args.GetMessage<OrganizationChangedEvent>();
+        var principal = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var userId = Guid.Parse(principal.User.Claims.First(c => c.Type.Equals("oid")).Value);
+
+        if (!organization.Id.HasValue)
+        {
+            return;
+        }
+
+        var result = await _mediator.Send(
+            new GetHubsByOrganizationIdQuery(
+                organization.Id.Value,
+                userId));
+
+        hubs = result.Data;
+        NoHubs = hubs == null || hubs.Count == 0;
+        
+        await this.InvokeAsync(StateHasChanged);
+    }
+
+    private void AddHub()
+    {
+        
+    }
+
+    private void DeleteHub()
+    {
+        
+    }
+
+    private static Color GetColor(ServerStatus status)
+    {
+       return status switch 
+       {
+            ServerStatus.Unknown => Color.Info,
+            ServerStatus.Deploying => Color.Info,
+            ServerStatus.Deployed => Color.Info,
+            ServerStatus.DeployFailed => Color.Error,
+            ServerStatus.Online => Color.Success,
+           _ => Color.Error
+       };
+    }
+}
