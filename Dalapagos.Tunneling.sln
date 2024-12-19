@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Lightfo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{EC0A9DE7-2F6D-4731-B20B-4795F5664C72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Monitors", "src\Dalapagos.Tunneling.Monitors\Dalapagos.Tunneling.Monitors.csproj", "{6F4054C8-082A-4416-8B23-AF4CCE593248}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{34A60E95-8DE5-4F87-AF6C-09C7EFBDF653}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34A60E95-8DE5-4F87-AF6C-09C7EFBDF653}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34A60E95-8DE5-4F87-AF6C-09C7EFBDF653}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F4054C8-082A-4416-8B23-AF4CCE593248}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F4054C8-082A-4416-8B23-AF4CCE593248}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F4054C8-082A-4416-8B23-AF4CCE593248}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F4054C8-082A-4416-8B23-AF4CCE593248}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,5 +93,6 @@ Global
 		{F5D94A84-EA6A-4C13-A29A-529D03056D6E} = {BEE30165-7AAF-414F-919F-2C4E3DF3043F}
 		{34A60E95-8DE5-4F87-AF6C-09C7EFBDF653} = {DF2755DB-9E1A-41E1-B30F-1164B2B50805}
 		{EC0A9DE7-2F6D-4731-B20B-4795F5664C72} = {37234D29-7EC4-4D82-8321-1920EB3F7497}
+		{6F4054C8-082A-4416-8B23-AF4CCE593248} = {EC0A9DE7-2F6D-4731-B20B-4795F5664C72}
 	EndGlobalSection
 EndGlobal

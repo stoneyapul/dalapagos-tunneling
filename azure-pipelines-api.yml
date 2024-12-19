@@ -11,7 +11,7 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '30619128-0e00-4248-9d95-3b6736b9e52e'
-  imageRepository: 'dalapagostunneling'
+  imageRepository: 'dalapagostunneling-api'
   containerRegistry: 'dalapagoscontainerregistry.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/Dockerfile'
   tag: '$(Build.BuildId)'
@@ -45,6 +45,6 @@ stages:
         azureSubscription: 'Dalapagos subscription'
         acrName: 'dalapagosContainerRegistry'
         imageToDeploy: 'dalapagosContainerRegistry.azurecr.io/dalapagostunneling:latest'
-        containerAppName: 'dalapagos-tunneling'
+        containerAppName: 'dalapagos-tunneling-api'
         resourceGroup: 'DalapagosTunneling'
         containerAppEnvironment: 'managedEnvironment-DalapagosTunnel'
