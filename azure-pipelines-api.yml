@@ -41,7 +41,7 @@ stages:
     - task: AzureContainerApps@1
       displayName: Deploy to Container App
       inputs:      
-        azureSubscription: 'Dalapagos subscription'
+        azureSubscription: $(dockerRegistryServiceConnection)
         acrName: 'dalapagosContainerRegistry'
         imageToDeploy: 'dalapagosContainerRegistry.azurecr.io/dlpgs-tunneling-api:latest'
         containerAppName: 'dlpgs-tunneling-api'
