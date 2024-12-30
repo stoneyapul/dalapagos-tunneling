@@ -36,7 +36,6 @@ stages:
         dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
-          $(tag)
           latest
 
     - task: AzureContainerApps@1
@@ -47,4 +46,4 @@ stages:
         imageToDeploy: 'dalapagosContainerRegistry.azurecr.io/dalapagostunneling-api:latest'
         containerAppName: 'dlpgs-tunneling-api'
         resourceGroup: 'DalapagosTunneling'
-        containerAppEnvironment: 'managedEnvironment-DalapagosTunnel'
+        containerAppEnvironment: 'managedEnvironment-Dalapagos'
