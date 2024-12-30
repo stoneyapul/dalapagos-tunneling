@@ -2,8 +2,7 @@
 # Build and push an image to Azure Container Registry
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
-trigger:
-- main
+trigger: none
 
 resources:
 - repo: self
@@ -44,6 +43,6 @@ stages:
         azureSubscription: 'Dalapagos subscription'
         acrName: 'dalapagosContainerRegistry'
         imageToDeploy: 'dalapagosContainerRegistry.azurecr.io/dlpgs-tunneling-api:latest'
-        containerAppName: 'dlpgs-tunneling-api'
+        containerAppName: 'dlpgs-tunneling-api1'
         resourceGroup: 'DalapagosTunneling'
         containerAppEnvironment: 'managedEnvironment-Dalapagos'
