@@ -397,7 +397,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-*.sh
 src/Dalapagos.Tunneling.Api/Tests/*.http
 src/Dalapagos.Tunneling.Api/appsettings.Development.Json
 src/Dalapagos.Tunneling.Lightfoot/appsettings.Development.Json
