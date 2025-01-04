@@ -26,7 +26,7 @@ variables:
   keyVault: ${{ parameters.keyVaultName }}
   vmName: 'dlpg-tnls-vm-${{ lower(parameters.hubId) }}'
   fqdn: 'dalapagos-${{ lower(parameters.hubId) }}.${{ lower(parameters.location) }}.cloudapp.azure.com'
-  templateFile: './create-rportsvr.bicep'
+  templateFile: '../iac/create-rportsvr.bicep'
 
 pool:
   vmImage: $(vmImageName)
@@ -83,8 +83,8 @@ steps:
       echo "Installing sshpass."
       sudo apt-get install sshpass
       sudo apt-get install dos2unix
-      dos2unix ./install-rport.sh
-      sh ./install-rport.sh $(${{ parameters.adminVmPasswordSecretName }}) $(BicepOutput.sshUserIp) $(fqdn)
+      dos2unix ../iac/install-rport.sh
+      sh ../iac/install-rport.sh $(${{ parameters.adminVmPasswordSecretName }}) $(BicepOutput.sshUserIp) $(fqdn)
       sshpass -p $(${{ parameters.adminVmPasswordSecretName }}) scp "$(BicepOutput.sshUserIp)":./rportd-installation.txt ./
       RPORTPWD="$(echo $(grep Password rportd-installation.txt) | cut -d':' -f2 | sed -e 's/^[[:space:]]*//')"
       echo "##vso[task.setvariable variable=ARPortPwd;isOutput=true]$RPORTPWD"

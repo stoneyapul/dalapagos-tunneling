@@ -32,6 +32,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iac", "iac", "{6E1E4625-8339-445F-B43B-2BF3AAA27C5A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{0FE5A282-C3A7-41BD-BA37-48F121931BD6}"
+	ProjectSection(SolutionItems) = preProject
+		pipelines\dalapagos-tunneling-api.yml = pipelines\dalapagos-tunneling-api.yml
+		pipelines\rport-server.yml = pipelines\rport-server.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{636A0CBB-16D2-4203-96D6-6B3E342579E8}"
 	ProjectSection(SolutionItems) = preProject
