@@ -55,7 +55,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rport-server", "rport-serve
 		iac\rport-server\install-rport.sh = iac\rport-server\install-rport.sh
 		iac\rport-server\deploy-vmnetwork.bicep = iac\rport-server\deploy-vmnetwork.bicep
 		iac\rport-server\deploy-vm.bicep = iac\rport-server\deploy-vm.bicep
-		iac\rport-server\deploy-rport-server.yml = iac\rport-server\deploy-rport-server.yml
 		iac\rport-server\create-rportsvr.bicep = iac\rport-server\create-rportsvr.bicep
 	EndProjectSection
 EndProject
