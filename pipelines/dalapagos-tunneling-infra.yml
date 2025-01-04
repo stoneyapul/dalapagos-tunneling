@@ -11,15 +11,15 @@ trigger: none
 name: DeployTunnelingInfra
 
 variables:
-  prefix: 'dlpg-tnls'
+  prefix: 'dlpgs'
   deploymentName: 'DeployTunnelingInfra'
   keyVaultName: $(prefix)-key-vault
   logAnalyticsWorkspaceName: $(prefix)-log-analytics
   appInsightsName: $(prefix)-app-insights
-  containerRegistryName: $(prefix)-container-registry
+  containerRegistryName: $(prefix)ContainerRegistry
   containerAppEnvName: $(prefix)-container-app-env
   azureServiceConnection: 'DalapagosServiceP'
-  templateFile: 'iac/core/main.bicep'
+  templateFile: './iac/core/main.bicep'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -34,6 +34,5 @@ steps:
     scriptLocation: inlineScript
     useGlobalConfig: false
     inlineScript: |
-      az --version
       if [ "true" == $(az group exists --name ${{ parameters.resourceGroupName }}) ]; then :; else az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.location }}; fi;
       az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'location=${{ lower(parameters.location) }}' 'logAnalyticsWorkspaceName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'containerRegistryName=$(containerRegistryName)' 'containerAppEnvName=$(containerAppEnvName)' 'keyVaultName=$(keyVaultName)'
