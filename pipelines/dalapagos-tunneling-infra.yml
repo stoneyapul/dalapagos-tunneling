@@ -19,7 +19,7 @@ variables:
   containerRegistryName: $(prefix)-container-registry
   containerAppEnvName: $(prefix)-container-app-env
   azureServiceConnection: 'DalapagosServiceP'
-  templateFile: '../iac/core/main.bicep'
+  templateFile: 'iac/core/main.bicep'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -35,6 +35,5 @@ steps:
     useGlobalConfig: false
     inlineScript: |
       az --version
-      ls 
       if [ "true" == $(az group exists --name ${{ parameters.resourceGroupName }}) ]; then :; else az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.location }}; fi;
       az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'location=${{ lower(parameters.location) }}' 'logAnalyticsWorkspaceName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'containerRegistryName=$(containerRegistryName)' 'containerAppEnvName=$(containerAppEnvName)' 'keyVaultName=$(keyVaultName)'
