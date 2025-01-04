@@ -35,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{
 	ProjectSection(SolutionItems) = preProject
 		pipelines\dalapagos-tunneling-api.yml = pipelines\dalapagos-tunneling-api.yml
 		pipelines\rport-server.yml = pipelines\rport-server.yml
+		dalapagos-tunneling-infra.yml = dalapagos-tunneling-infra.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{636A0CBB-16D2-4203-96D6-6B3E342579E8}"
