@@ -16,6 +16,15 @@ param containerRegistryName string
 @description('The name of the Key Vault.')
 param keyVaultName string
 
+@description('The name of the Sql Server.')
+param sqlServerName string
+
+@description('The password of the Sql Server.')
+param sqlServerPass string
+
+@description('The name of the Sql DB.')
+param sqlDBName string
+
 var tags = {
   env: 'production'
   own: 'dalapagos'
@@ -57,6 +66,17 @@ module containerRegistry 'container-registry.bicep' = {
     containerRegistryName: containerRegistryName
     location: location
     tags: tags
+  }
+}
+
+module sqlServer 'sql-server.bicep' = {
+  name: 'sql'
+  params: {
+    location: location
+    serverName: sqlServerName
+    sqlDBName: sqlDBName
+    administratorLogin: 'sqladmin'
+    administratorLoginPassword: sqlServerPass  
   }
 }
 

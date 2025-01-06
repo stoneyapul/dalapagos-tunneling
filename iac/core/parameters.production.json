@@ -16,6 +16,9 @@
         },
         "keyVaultName":{
             "value": "kv-tunneling-prod"
+        },
+        "sqlServerName":{
+            "value": "sql-tunneling-prod"
         }
     }
 }

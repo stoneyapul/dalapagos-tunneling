@@ -11,7 +11,7 @@ trigger: none
 name: DeployTunnelingInfra
 
 variables:
-  prefix: 'dlpgs'
+  prefix: 'dlpg'
   deploymentName: 'DeployTunnelingInfra'
   keyVaultName: $(prefix)-key-vault
   logAnalyticsWorkspaceName: $(prefix)-log-analytics
@@ -19,6 +19,10 @@ variables:
   containerRegistryName: $(prefix)ContainerRegistry
   containerAppEnvName: $(prefix)-container-app-env
   azureServiceConnection: 'DalapagosServiceP'
+  sqlServerName: $(prefix)-sql-server
+  sqlPasswordName: 'sql-password'
+  sqlPassword: $(cat /dev/urandom | tr -dc 'A-Za-z0-9_!@#$%^&*()\-+=' | head -c24)
+  sqlDBName: 'DalapagosTunnelingDb'
   templateFile: './iac/core/main.bicep'
 
 pool:
@@ -35,4 +39,14 @@ steps:
     useGlobalConfig: false
     inlineScript: |
       if [ "true" == $(az group exists --name ${{ parameters.resourceGroupName }}) ]; then :; else az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.location }}; fi;
-      az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'location=${{ lower(parameters.location) }}' 'logAnalyticsWorkspaceName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'containerRegistryName=$(containerRegistryName)' 'containerAppEnvName=$(containerAppEnvName)' 'keyVaultName=$(keyVaultName)'
+      az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'location=${{ lower(parameters.location) }}' 'logAnalyticsWorkspaceName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'containerRegistryName=$(containerRegistryName)' 'containerAppEnvName=$(containerAppEnvName)' 'keyVaultName=$(keyVaultName)' 'sqlServerName=$(sqlServerName)' 'sqlPassword=$(sqlPassword)' 'sqlDBName=$(sqlDBName)'
+
+- task: AzureCLI@2
+  displayName: Save Sql Server Password
+  inputs:
+    azureSubscription: $(azureServiceConnection)
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+      echo "Saving Sql Server password to Key Vault."
+      az keyvault secret set --name $(sqlPasswordName) --vault-name $(keyVault) --value $(sqlPassword)

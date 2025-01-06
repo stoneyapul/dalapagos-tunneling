@@ -47,6 +47,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{636A0CBB-1
 		iac\core\container-registry.bicep = iac\core\container-registry.bicep
 		iac\core\container-app-env.bicep = iac\core\container-app-env.bicep
 		iac\core\app-insights.bicep = iac\core\app-insights.bicep
+		iac\core\sql-server.bicep = iac\core\sql-server.bicep
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rport-server", "rport-server", "{3691C125-3C79-4A98-BB6F-021F44D14D9B}"
