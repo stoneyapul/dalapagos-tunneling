@@ -49,5 +49,6 @@ steps:
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
+      az version
       echo "Saving Sql Server password to Key Vault."
       az keyvault secret set --name $(sqlPasswordName) --vault-name $(keyVaultName) --value $(DeployBicep.SQLpassout)
