@@ -48,7 +48,6 @@ steps:
     scriptLocation: inlineScript
     useGlobalConfig: false
     inlineScript: |
-      az --version
       if [ "true" == $(az group exists --name ${{ parameters.resourceGroupName }}) ]; then :; else az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.location }}; fi;
       az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'hubId=${{ lower(parameters.hubId) }}' 'vmName=$(vmName)' 'vmSize=Standard_B1s' 'adminPassword=$(${{ parameters.adminVmPasswordSecretName }})'
 

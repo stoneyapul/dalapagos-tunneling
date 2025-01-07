@@ -21,7 +21,6 @@ variables:
   azureServiceConnection: 'DalapagosServiceP'
   sqlServerName: $(prefix)-sql-server
   sqlPasswordName: 'sql-password'
-  sqlPassword: $(cat /dev/urandom | tr -dc 'A-Za-z0-9_!@#$%^&*()\-+=' | head -c24)
   sqlDBName: 'DalapagosTunnelingDb'
   templateFile: './iac/core/main.bicep'
 
@@ -38,8 +37,10 @@ steps:
     scriptLocation: inlineScript
     useGlobalConfig: false
     inlineScript: |
+      sqlPassword=$(cat /dev/urandom | tr -dc 'A-Za-z0-9_!@#$%^&*()\-+=' | head -c24)
+      ECHO "Sql Password: $sqlPassword"
       if [ "true" == $(az group exists --name ${{ parameters.resourceGroupName }}) ]; then :; else az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.location }}; fi;
-      az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'location=${{ lower(parameters.location) }}' 'logAnalyticsWorkspaceName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'containerRegistryName=$(containerRegistryName)' 'containerAppEnvName=$(containerAppEnvName)' 'keyVaultName=$(keyVaultName)' 'sqlServerName=$(sqlServerName)' 'sqlPassword=$(sqlPassword)' 'sqlDBName=$(sqlDBName)'
+      az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'location=${{ lower(parameters.location) }}' 'logAnalyticsWorkspaceName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'containerRegistryName=$(containerRegistryName)' 'containerAppEnvName=$(containerAppEnvName)' 'keyVaultName=$(keyVaultName)' 'sqlServerName=$(sqlServerName)' 'sqlPassword=$sqlPassword' 'sqlDBName=$(sqlDBName)'
 
 - task: AzureCLI@2
   displayName: Save Sql Server Password
