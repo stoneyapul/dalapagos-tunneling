@@ -49,6 +49,15 @@ module keyVault 'key-vault.bicep' = {
   }
 }
 
+module dbSecret 'db-connect-secret.bicep' = {
+  name: 'kv-secret-dbconnect'
+  params: {
+    keyVaultName: keyVault.outputs.name
+    name: 'db-connect'
+    value: sqlServerPass
+  }
+}
+
 module appInsights 'app-insights.bicep' = {
   name: 'appins'
   params: {
