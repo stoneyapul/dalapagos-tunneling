@@ -37,7 +37,7 @@ steps:
     scriptLocation: inlineScript
     useGlobalConfig: false
     inlineScript: |
-      SQLPASS=$(cat /dev/urandom | tr -dc 'A-Za-z0-9_!@#$%^&*()\-+=' | head -c24)
+      SQLPASS=$(openssl rand -base64 16)
       echo 'SQL Pass: $SQLPASS'
       if [ "true" == $(az group exists --name ${{ parameters.resourceGroupName }}) ]; then :; else az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.location }}; fi;
       az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'location=${{ lower(parameters.location) }}' 'logAnalyticsWorkspaceName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'containerRegistryName=$(containerRegistryName)' 'containerAppEnvName=$(containerAppEnvName)' 'keyVaultName=$(keyVaultName)' 'sqlServerName=$(sqlServerName)' 'sqlServerPass=$SQLPASS' 'sqlDBName=$(sqlDBName)'
