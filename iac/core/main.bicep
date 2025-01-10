@@ -31,6 +31,8 @@ var tags = {
   app: 'tunneling'
 }
 
+var sqlConn = 'Server=tcp:${sqlServerName}.database.windows.net,1433;Initial Catalog=${sqlDBName};Persist Security Info=False;User ID=sqladmin;Password=${sqlServerPass};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+
 module logAnalytics 'log-analytics.bicep' = {
   name: 'law'
   params: {
@@ -54,7 +56,7 @@ module dbSecret 'db-connect-secret.bicep' = {
   params: {
     keyVaultName: keyVault.outputs.name
     name: 'db-connect'
-    value: sqlServerPass
+    value: sqlConn
   }
 }
 
