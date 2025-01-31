@@ -53,7 +53,7 @@ steps:
       az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'location=${{ lower(parameters.location) }}' 'logAnalyticsWorkspaceName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'containerRegistryName=$(containerRegistryName)' 'containerAppEnvName=$(containerAppEnvName)' 'keyVaultName=$(keyVaultName)' 'sqlServerName=$(sqlServerName)' 'sqlServerPass=$(GenDbConnection.SqlPass)' 'sqlDBName=$(sqlDBName)'
 
 - task: SqlAzureDacpacDeployment@1
-  displayName: Execute Azure SQL : DacpacTask
+  displayName: Execute Azure SQL
   inputs:
     azureSubscription: $(azureServiceConnection)
     ServerName: $(sqlServerName)
