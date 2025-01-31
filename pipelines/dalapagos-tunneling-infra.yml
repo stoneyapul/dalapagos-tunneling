@@ -56,7 +56,7 @@ steps:
   displayName: Execute Azure SQL
   inputs:
     azureSubscription: $(azureServiceConnection)
-    ServerName: $(sqlServerName)
+    ServerName: '$(sqlServerName).database.windows.net'
     DatabaseName: $(sqlDBName)
     SqlUsername:  'sqladmin'
     SqlPassword:  $(GenDbConnection.SqlPass)
