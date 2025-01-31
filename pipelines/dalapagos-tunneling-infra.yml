@@ -51,3 +51,13 @@ steps:
     inlineScript: |
       if [ "true" == $(az group exists --name ${{ parameters.resourceGroupName }}) ]; then :; else az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.location }}; fi;
       az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'location=${{ lower(parameters.location) }}' 'logAnalyticsWorkspaceName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'containerRegistryName=$(containerRegistryName)' 'containerAppEnvName=$(containerAppEnvName)' 'keyVaultName=$(keyVaultName)' 'sqlServerName=$(sqlServerName)' 'sqlServerPass=$(GenDbConnection.SqlPass)' 'sqlDBName=$(sqlDBName)'
+
+- task: SqlAzureDacpacDeployment@1
+  displayName: Execute Azure SQL : DacpacTask
+  inputs:
+    azureSubscription: $(azureServiceConnection)
+    ServerName: $(sqlServerName)
+    DatabaseName: $(sqlDBName)
+    SqlUsername:  'sqladmin'
+    SqlPassword:  $(GenDbConnection.SqlPass)
+    DacpacFile: './iac/core/DalapagosTunnelsDb.dacpac'
