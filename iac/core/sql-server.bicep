@@ -39,6 +39,6 @@ resource allowAllWindowsAzureIps 'Microsoft.Sql/servers/firewallRules@2021-02-01
   name: 'AllowAllWindowsAzureIps'
   properties: {
     endIpAddress: '0.0.0.0'
-    startIpAddress: '0.0.0.0'
+    startIpAddress: '255.255.255.255'
   }
 }
