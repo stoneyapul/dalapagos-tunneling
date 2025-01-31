@@ -33,3 +33,12 @@ resource sqlDB 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
     tier: 'Basic'
   }
 }
+
+resource allowAllWindowsAzureIps 'Microsoft.Sql/servers/firewallRules@2021-02-01-preview' = {
+  parent: sqlServer
+  name: 'AllowAllWindowsAzureIps'
+  properties: {
+    endIpAddress: '0.0.0.0'
+    startIpAddress: '0.0.0.0'
+  }
+}
