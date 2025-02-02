@@ -3,7 +3,7 @@
 public static class Constants
 {
     public const string DevOpsBaseUrl = "https://dev.azure.com/dalapagos";
-    public const string PipelineName = "dalapagos-tunneling-server-scripts";
+    public const string PipelineName = "Rport Server";
     public const string FakeBaseUrl = "http://fake.dalapagos.com";
 
     // Default ports.
