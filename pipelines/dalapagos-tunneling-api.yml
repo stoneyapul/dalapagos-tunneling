@@ -39,6 +39,6 @@ stages:
         azureSubscription: 'Dalapagos subscription'
         acrName: 'dalapagosContainerRegistry'
         imageToDeploy: 'dalapagosContainerRegistry.azurecr.io/dlpgs-tunneling-api:latest'
-        containerAppName: 'dlpgs-tunneling-api1'
+        containerAppName: 'dlpgs-tunneling-api'
         resourceGroup: 'DalapagosTunneling'
         containerAppEnvironment: 'managedEnvironment-Dalapagos'
