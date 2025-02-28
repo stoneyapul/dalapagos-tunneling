@@ -1,3 +1,7 @@
+- name: resourceGroupName
+  displayName: Resource Group
+  type: string
+
 trigger: none
 
 resources:
@@ -9,6 +13,7 @@ variables:
   imageRepository: 'dlpgs-tunneling-api'
   containerRegistry: 'dlpgContainerRegistry.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/Dockerfile'
+  resourceGroup: ${{ parameters.resourceGroupName }}
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
@@ -40,5 +45,5 @@ stages:
         acrName: 'dlpgContainerRegistry'
         imageToDeploy: 'dlpgContainerRegistry.azurecr.io/dlpgs-tunneling-api:latest'
         containerAppName: 'dlpgs-tunneling-api'
-        resourceGroup: 'DalapagosTunneling'
+        resourceGroup: '$(resourceGroup)'
         containerAppEnvironment: 'managedEnvironment-Dalapagos'
