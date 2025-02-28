@@ -5,7 +5,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '30619128-0e00-4248-9d95-3b6736b9e52e'
+  dockerRegistryServiceConnection: '4813c71e-a4f8-4b8a-b113-fbcbe86c14a1'
   imageRepository: 'dlpgs-tunneling-api'
   containerRegistry: 'dlpgContainerRegistry.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/Dockerfile'
@@ -29,7 +29,7 @@ stages:
         command: buildAndPush
         repository: $(imageRepository)
         dockerfile: $(dockerfilePath)
-        containerRegistry: $(containerRegistry)
+        containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           latest
 
