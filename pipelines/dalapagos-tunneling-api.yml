@@ -1,3 +1,4 @@
+parameters:
 - name: resourceGroupName
   displayName: Resource Group
   type: string
