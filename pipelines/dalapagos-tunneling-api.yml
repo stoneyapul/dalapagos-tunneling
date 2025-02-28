@@ -5,7 +5,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '4813c71e-a4f8-4b8a-b113-fbcbe86c14a1'
+  dockerRegistryServiceConnection: '895273e7-d371-4658-bedd-1013e29c863b'
   imageRepository: 'dlpgs-tunneling-api'
   containerRegistry: 'dlpgContainerRegistry.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/Dockerfile'
