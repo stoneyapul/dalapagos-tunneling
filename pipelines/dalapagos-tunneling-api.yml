@@ -47,4 +47,4 @@ stages:
         imageToDeploy: 'dlpgContainerRegistry.azurecr.io/dlpgs-tunneling-api:latest'
         containerAppName: 'dlpgs-tunneling-api'
         resourceGroup: '$(resourceGroup)'
-        containerAppEnvironment: 'managedEnvironment-Dalapagos'
+        containerAppEnvironment: 'dlpg-container-app-env'
