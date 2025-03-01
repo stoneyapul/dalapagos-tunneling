@@ -2,6 +2,9 @@ parameters:
 - name: resourceGroupName
   displayName: Resource Group
   type: string
+- name: registryConnId
+  displayName: Container Registry Connection
+  type: string
 
 trigger: none
 
@@ -10,7 +13,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '895273e7-d371-4658-bedd-1013e29c863b'
+  dockerRegistryServiceConnection: '${{ parameters.registryConnId }}'
   imageRepository: 'dlpgs-tunneling-api'
   containerRegistry: 'dlpgContainerRegistry.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/Dockerfile'
