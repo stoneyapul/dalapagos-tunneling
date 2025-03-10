@@ -104,7 +104,7 @@ module env 'container-app-env.bicep' = {
     containerAppEnvironmentName: containerAppEnvName
     containerAppName: containerAppName
     userIdentityName: userIdentityName
-    containerRegistryName: containerRegistryName
+    containerRegistryName: containerRegistry.outputs.name
     location: location
     logAnalyticsName: logAnalytics.outputs.name
     tags: tags
