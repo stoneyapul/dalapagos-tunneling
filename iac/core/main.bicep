@@ -10,6 +10,12 @@ param appInsightsName string
 @description('The name of the Container App Environment.')
 param containerAppEnvName string
 
+@description('The name of the Container App.')
+param containerAppName string
+
+@description('The name of the Container App Managed Identity.')
+param userIdentityName string
+
 @description('The name of the Container Registry.')
 param containerRegistryName string
 
@@ -96,6 +102,9 @@ module env 'container-app-env.bicep' = {
   params: {
     appInsightsName: appInsights.outputs.name
     containerAppEnvironmentName: containerAppEnvName
+    containerAppName: containerAppName
+    userIdentityName: userIdentityName
+    containerRegistryName: containerRegistryName
     location: location
     logAnalyticsName: logAnalytics.outputs.name
     tags: tags
