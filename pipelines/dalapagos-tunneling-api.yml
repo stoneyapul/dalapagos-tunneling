@@ -1,4 +1,7 @@
 parameters:
+- name: location
+  displayName: Location
+  type: string
 - name: resourceGroupName
   displayName: Resource Group
   type: string
