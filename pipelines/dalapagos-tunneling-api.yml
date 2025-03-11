@@ -59,4 +59,4 @@ stages:
         scriptLocation: inlineScript
         useGlobalConfig: false
         inlineScript: |
-          az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'appInsightsName=$(appInsightsName)' 'containerAppEnvironmentName=$(containerAppEnvName)' 'containerAppName=$(containerAppName)' 'userIdentityName=$(userIdentityName)' 'containerRegistryName=$(containerRegistryName)' 'location=${{ lower(parameters.location) }}' 'logAnalyticsName=$(logAnalyticsWorkspaceName)'
+          az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'containerAppEnvironmentName=$(containerAppEnvName)' 'containerAppName=$(containerAppName)' 'userIdentityName=$(userIdentityName)' 'containerRegistryName=$(containerRegistryName)' 'logAnalyticsName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'location=${{ lower(parameters.location) }}'
