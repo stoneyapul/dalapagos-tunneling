@@ -12,12 +12,21 @@ resources:
 - repo: self
 
 variables:
-  # Container registry service connection established during pipeline creation
+  prefix: 'dlpg'
+  appInsightsName: 
+  deploymentName: 'DeployTunnelingApp'
+  appInsightsName: $(prefix)-app-insights
+  containerRegistryName: $(prefix)ContainerRegistry
+  containerAppEnvName: $(prefix)-container-app-env
+  containerAppName: 'dlpgs-tunneling-api'
+  logAnalyticsWorkspaceName: $(prefix)-log-analytics
+  userIdentityName: 'dlpgs-tunneling-api-identity'
   dockerRegistryServiceConnection: '${{ parameters.registryConnId }}'
   imageRepository: 'dlpgs-tunneling-api'
   containerRegistry: 'dlpgContainerRegistry.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/Dockerfile'
   resourceGroup: ${{ parameters.resourceGroupName }}
+  templateFile: './iac/core/container-app-env.bicep'
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
@@ -42,12 +51,13 @@ stages:
         tags: |
           latest
 
-    - task: AzureContainerApps@1
+    - task: AzureCLI@2
+      name: ContainerApp
       displayName: Deploy to Container App
-      inputs:      
-        azureSubscription: 'Dalapagos subscription'
-        acrName: 'dlpgContainerRegistry'
-        imageToDeploy: 'dlpgContainerRegistry.azurecr.io/dlpgs-tunneling-api:latest'
-        containerAppName: 'dlpgs-tunneling-api'
-        resourceGroup: '$(resourceGroup)'
-        containerAppEnvironment: 'dlpg-container-app-env'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: bash
+        scriptLocation: inlineScript
+        useGlobalConfig: false
+        inlineScript: |
+          az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'appInsightsName=$(appInsightsName)' 'containerAppEnvironmentName=$(containerAppEnvName)' 'containerAppName=$(containerAppName)' 'userIdentityName=$(userIdentityName)' 'containerRegistryName=$(containerRegistryName)' 'location=${{ lower(parameters.location) }}' 'logAnalyticsName=$(logAnalyticsWorkspaceName)'

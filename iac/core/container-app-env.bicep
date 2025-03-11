@@ -19,8 +19,11 @@ param appInsightsName string
 @description('The location that the Container App Environment will be deployed.')
 param location string
 
-@description('The tags that will be applied to the Container App Environment.')
-param tags object
+var tags = {
+  env: 'production'
+  own: 'dalapagos'
+  app: 'tunneling'
+}
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = {
   name: logAnalyticsName

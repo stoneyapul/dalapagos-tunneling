@@ -7,15 +7,6 @@ param logAnalyticsWorkspaceName string
 @description('The name of the Application Insights workspace')
 param appInsightsName string
 
-@description('The name of the Container App Environment.')
-param containerAppEnvName string
-
-@description('The name of the Container App.')
-param containerAppName string
-
-@description('The name of the Container App Managed Identity.')
-param userIdentityName string
-
 @description('The name of the Container Registry.')
 param containerRegistryName string
 
@@ -94,19 +85,5 @@ module sqlServer 'sql-server.bicep' = {
     sqlDBName: sqlDBName
     administratorLogin: 'sqladmin'
     administratorLoginPassword: sqlServerPass  
-  }
-}
-
-module env 'container-app-env.bicep' = {
-  name: 'env'
-  params: {
-    appInsightsName: appInsights.outputs.name
-    containerAppEnvironmentName: containerAppEnvName
-    containerAppName: containerAppName
-    userIdentityName: userIdentityName
-    containerRegistryName: containerRegistry.outputs.name
-    location: location
-    logAnalyticsName: logAnalytics.outputs.name
-    tags: tags
   }
 }
