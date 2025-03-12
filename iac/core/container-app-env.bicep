@@ -94,7 +94,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
       }
       registries: [
         {
-          server: containerRegistryName
+          server: '${containerRegistryName}.azurecr.io'
           identity: identity.id
         }
       ]
