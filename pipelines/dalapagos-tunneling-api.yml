@@ -57,7 +57,7 @@ stages:
       name: ContainerApp
       displayName: Deploy to Container App
       inputs:
-        azureSubscription: $(azureServiceConnection)
+        azureSubscription: $(dockerRegistryServiceConnection)
         scriptType: bash
         scriptLocation: inlineScript
         useGlobalConfig: false
