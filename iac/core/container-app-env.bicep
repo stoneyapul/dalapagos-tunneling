@@ -7,6 +7,9 @@ param containerAppName string
 @description('The name of the Container App Managed Identity.')
 param userIdentityName string
 
+@description('The name of the Key Vault.')
+param keyVaultName string
+
 @description('The name of the Registry.')
 param containerRegistryName string
 
@@ -48,7 +51,7 @@ resource roleAssignment1 'Microsoft.Authorization/roleAssignments@2022-04-01' = 
 }
 
 resource roleAssignment2 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(resourceGroup().id, containerRegistryName, 'KeyVaultUserAssigned')
+  name: guid(resourceGroup().id, keyVaultName, 'KeyVaultUserAssigned')
   properties: {
     principalId: identity.properties.principalId  
     principalType: 'ServicePrincipal'
