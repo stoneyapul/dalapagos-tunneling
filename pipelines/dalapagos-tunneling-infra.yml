@@ -16,7 +16,7 @@ variables:
   keyVaultName: $(prefix)-key-vault
   logAnalyticsWorkspaceName: $(prefix)-log-analytics
   appInsightsName: $(prefix)-app-insights
-  containerRegistryName: $(prefix)-container-registry
+  containerRegistryName: $(prefix)containerregistry
   azureServiceConnection: 'DalapagosServiceP'
   sqlServerName: $(prefix)-sql-server
   sqlPasswordName: 'sql-password'
