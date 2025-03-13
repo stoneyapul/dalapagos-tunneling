@@ -36,17 +36,31 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: appInsightsName
 }
 
-resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
-  name: userIdentityName
+resource identityRegistry 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
+  name: '${userIdentityName}-registry'
   location: location 
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+resource roleAssignmentRegistry 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(resourceGroup().id, containerRegistryName, 'AcrPullUserAssigned')
   properties: {
-    principalId: identity.properties.principalId  
+    principalId: identityRegistry.properties.principalId  
     principalType: 'ServicePrincipal'
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d', '00482a5a-887f-4fb3-b363-3b7fe8e74483')
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
+  }
+}
+
+resource identityVault 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
+  name: '${userIdentityName}-vault'
+  location: location 
+}
+
+resource roleAssignmentVault 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(resourceGroup().id, keyVaultName, 'KeyVaultUserAssigned')
+  properties: {
+    principalId: identityVault.properties.principalId  
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '00482a5a-887f-4fb3-b363-3b7fe8e74483')
   }
 }
 
@@ -86,7 +100,8 @@ resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${identity.id}': {}
+      '${identityRegistry.id}': {}
+      '${identityVault.id}': {}
     }
   }
   properties: {
@@ -96,7 +111,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
         {
           keyVaultUrl: 'https://dlpg-key-vault.vault.azure.net/secrets/db-connect'
           name: 'db-connect'
-          identity: identity.id
+          identity: identityVault.id
         }
       ]
       ingress: {
@@ -106,7 +121,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
       registries: [
         {
           server: '${containerRegistryName}.azurecr.io'
-          identity: identity.id
+          identity: identityRegistry.id
         }
       ]
     }
