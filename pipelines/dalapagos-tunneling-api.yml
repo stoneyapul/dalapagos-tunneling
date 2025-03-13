@@ -18,7 +18,7 @@ variables:
   prefix: 'dlpg'
   deploymentName: 'DeployTunnelingApp'
   appInsightsName: $(prefix)-app-insights
-  containerRegistryName: $(prefix)ContainerRegistry
+  containerRegistryName: $(prefix)-container-registry
   containerAppEnvName: $(prefix)-container-app-env
   containerAppName: 'dlpgs-tunneling-api'
   logAnalyticsWorkspaceName: $(prefix)-log-analytics
