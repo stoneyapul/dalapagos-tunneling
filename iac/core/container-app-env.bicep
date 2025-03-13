@@ -86,7 +86,7 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-11-02-p
   }
 }
 
-resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
   name: containerAppName
   location: location
   identity: {
@@ -100,8 +100,9 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
     configuration: {
       secrets: [
         {
-          value: 'https://dlpg-key-vault.vault.azure.net/secrets/db-connect'
+          keyVaultUrl: 'https://dlpg-key-vault.vault.azure.net/secrets/db-connect'
           name: 'db-connect'
+          identity: identity.id
         }
       ]
       ingress: {
