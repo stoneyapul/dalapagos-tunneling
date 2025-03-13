@@ -100,7 +100,6 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
     configuration: {
       secrets: [
         {
-          identity: identity.id
           value: 'https://dlpg-key-vault.vault.azure.net/secrets/db-connect'
           name: 'db-connect'
         }
@@ -124,7 +123,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
            env: [
             {
               name: 'ConnectionStrings__TunnelsDb'
-              value: 'db-connect'
+              secretRef: 'db-connect'
             }
           ]
           resources: {
