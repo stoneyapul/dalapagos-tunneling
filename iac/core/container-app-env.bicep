@@ -41,21 +41,12 @@ resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-p
   location: location 
 }
 
-resource roleAssignment1 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(resourceGroup().id, containerRegistryName, 'AcrPullUserAssigned')
   properties: {
     principalId: identity.properties.principalId  
     principalType: 'ServicePrincipal'
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
-  }
-}
-
-resource roleAssignment2 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(resourceGroup().id, keyVaultName, 'KeyVaultUserAssigned')
-  properties: {
-    principalId: identity.properties.principalId  
-    principalType: 'ServicePrincipal'
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '00482a5a-887f-4fb3-b363-3b7fe8e74483')
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d', '00482a5a-887f-4fb3-b363-3b7fe8e74483')
   }
 }
 
