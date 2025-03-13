@@ -101,7 +101,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
       secrets: [
         {
           identity: identity.id
-          keyVaultUrl: 'https://dlpg-key-vault.vault.azure.net/secrets/db-connect'
+          value: 'https://dlpg-key-vault.vault.azure.net/secrets/db-connect'
           name: 'db-connect'
         }
       ]
