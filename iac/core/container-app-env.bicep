@@ -38,14 +38,24 @@ resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-p
   location: location 
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(resourceGroup().id, containerRegistryName, 'AcrPullTestUserAssigned')
+resource roleAssignment1 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(resourceGroup().id, containerRegistryName, 'AcrPullUserAssigned')
   properties: {
     principalId: identity.properties.principalId  
     principalType: 'ServicePrincipal'
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
   }
 }
+
+resource roleAssignment2 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(resourceGroup().id, containerRegistryName, 'KeyVaultUserAssigned')
+  properties: {
+    principalId: identity.properties.principalId  
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '00482a5a-887f-4fb3-b363-3b7fe8e74483')
+  }
+}
+
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-11-02-preview' = {
   name: containerAppEnvironmentName
   location: location
@@ -88,6 +98,13 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
   properties: {
     environmentId: containerAppEnvironment.id
     configuration: {
+      secrets: [
+        {
+          identity: identity.id
+          keyVaultUrl: 'https://dlpg-key-vault.vault.azure.net/secrets/db-connect'
+          name: 'db-connect'
+        }
+      ]
       ingress: {
         targetPort: 8080
         external: true
@@ -104,6 +121,12 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
         {
           image: '${containerRegistryName}.azurecr.io/${containerAppName}:latest'
           name: containerAppName
+           env: [
+            {
+              name: 'ConnectionStrings__TunnelsDb'
+              value: 'db-connect'
+            }
+          ]
           resources: {
             cpu: 1
             memory: '2Gi'
