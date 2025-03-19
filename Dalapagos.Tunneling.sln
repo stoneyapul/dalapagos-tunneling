@@ -40,7 +40,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{636A0CBB-16D2-4203-96D6-6B3E342579E8}"
 	ProjectSection(SolutionItems) = preProject
-		iac\core\parameters.production.json = iac\core\parameters.production.json
 		iac\core\main.bicep = iac\core\main.bicep
 		iac\core\log-analytics.bicep = iac\core\log-analytics.bicep
 		iac\core\key-vault.bicep = iac\core\key-vault.bicep
