@@ -21,7 +21,7 @@ variables:
   sqlServerName: $(prefix)-sql-server
   sqlPasswordName: 'sql-password'
   sqlDBName: 'DalapagosTunnelingDb'
-  sqlFile: './iac/core/seed.sql'
+  sqlFile: '../iac/core/seed.sql'
   serverFqdn: '$(sqlServerName).database.windows.net'
   templateFile: './iac/core/main.bicep'
 
@@ -54,7 +54,7 @@ steps:
       az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'location=${{ lower(parameters.location) }}' 'logAnalyticsWorkspaceName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'containerRegistryName=$(containerRegistryName)' 'keyVaultName=$(keyVaultName)' 'sqlServerName=$(sqlServerName)' 'sqlServerPass=$(GenDbConnection.SqlPass)' 'sqlDBName=$(sqlDBName)'
 
 - task: SqlAzureDacpacDeployment@1
-  displayName: Execute Azure SQL
+  displayName: Run SQL DacPac
   inputs:
     azureSubscription: $(azureServiceConnection)
     ServerName: $(serverFqdn)
@@ -64,8 +64,8 @@ steps:
     DacpacFile: './iac/core/DalapagosTunnelsDb.dacpac'
 
 - task: PowerShell@2
+  displayName: Run SQL inserts
   inputs:
     targetType: 'inline'
     script: |
       Invoke-Sqlcmd -InputFile $(sqlFile) -ServerInstance $(serverFqdn) -Database $(sqlDBName) -Username 'sqladmin' -Password $(GenDbConnection.SqlPass)
-  displayName: 'Run SQL script'
