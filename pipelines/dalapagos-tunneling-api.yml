@@ -29,7 +29,7 @@ variables:
   containerRegistry: 'dlpgContainerRegistry.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/Dockerfile'
   resourceGroup: ${{ parameters.resourceGroupName }}
-  templateFile: './iac/core/container-app-env.bicep'
+  templateFile: $(Build.SourcesDirectory)/container-app-env.bicep
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
