@@ -13,6 +13,8 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddLogging();
+
 // Add a rate limiter per IP address that allows up to 50 requests every 10 seconds.
 builder.Services.AddRateLimiter(options =>
 {
