@@ -21,7 +21,7 @@ variables:
   sqlServerName: $(prefix)-sql-server
   sqlPasswordName: 'sql-password'
   sqlDBName: 'DalapagosTunnelingDb'
-  sqlFile: '.\iac\core\seed.sql'
+  sqlFile: $(Build.SourcesDirectory)/seed.sql
   serverFqdn: '$(sqlServerName).database.windows.net'
   templateFile: './iac/core/main.bicep'
 
