@@ -23,7 +23,7 @@ variables:
   sqlDBName: 'DalapagosTunnelingDb'
   sqlFile: $(Build.SourcesDirectory)/seed.sql
   serverFqdn: '$(sqlServerName).database.windows.net'
-  templateFile: './iac/core/main.bicep'
+  templateFile: $(Build.SourcesDirectory)/main.bicep
 
 pool:
   vmImage: 'windows-latest'
