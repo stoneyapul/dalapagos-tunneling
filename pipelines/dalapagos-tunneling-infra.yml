@@ -38,7 +38,7 @@ steps:
     scriptLocation: inlineScript
     useGlobalConfig: false
     inlineScript: |
-      SQLPASS="$(cat /dev/urandom | tr -dc 'A-Za-z0-9_!#%^*\-+=' | head -c24)"
+      SQLPASS="a$(cat /dev/urandom | tr -dc 'A-Za-z0-9_!#%^*\-+=' | head -c24)"
       echo "##vso[task.setvariable variable=SqlPass;isOutput=true]$SQLPASS"
   
 - task: AzureCLI@2
