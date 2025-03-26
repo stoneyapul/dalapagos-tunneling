@@ -1,5 +1,5 @@
 DECLARE @userId uniqueidentifier 
-SET @userId = '39ff0520-a19b-4181-a4d5-010e216864eb'
+SET @userId = '645390b0-0b44-45a9-ab31-cad1572a0124'
 
 DECLARE @adminGroupId uniqueidentifier 
 SET @adminGroupId = 'ae122e64-0dce-4e73-b44e-94ef828f9b76'
