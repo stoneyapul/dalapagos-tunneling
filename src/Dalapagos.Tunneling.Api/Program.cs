@@ -2,6 +2,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading.RateLimiting;
 using Dalapagos.Tunneling.Api.Endpoints;
+using Dalapagos.Tunneling.Api.Middleware;
 using Dalapagos.Tunneling.Api.Security;
 using Dalapagos.Tunneling.Core.DependencyInjection;
 using Dalapagos.Tunneling.Monitor.HF;
@@ -18,8 +19,7 @@ builder.Host.UseSerilog((context, configuration) =>
 {
     configuration
         .ReadFrom.Configuration(context.Configuration)
-        .Enrich.FromLogContext()
-        .WriteTo.Console();
+        .Enrich.FromLogContext();
 });
 
 // Add a rate limiter per IP address that allows up to 50 requests every 10 seconds.
@@ -77,6 +77,7 @@ app.RegisterHubEndpoints();
 app.RegisterTunnelEndpoints();
 app.RegisterRestEndpoints();
 
+app.UseMiddleware<RequestLogContextMiddleware>();
 app.UseSerilogRequestLogging();
 
 app.UseSwagger();

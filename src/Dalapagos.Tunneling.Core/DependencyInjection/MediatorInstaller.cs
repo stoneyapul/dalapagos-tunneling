@@ -8,8 +8,9 @@ public static class MediatorInstaller
 {
     public static void AddMediation(this IServiceCollection services)
     {
-        services.AddMediator((MediatorOptions opts) => opts.ServiceLifetime = ServiceLifetime.Transient);
+        services.AddMediator(opts => opts.ServiceLifetime = ServiceLifetime.Transient);
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandAuthorizationBehaviour<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestLoggingPipelineBehaviour<,>));
         services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(GlobalExceptionBehaviour<,>));
     }
 }
