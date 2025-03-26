@@ -48,6 +48,15 @@ module keyVault 'key-vault.bicep' = {
   }
 }
 
+module keyVaultRoles 'key-vault-role-assignment.bicep' = {
+  name: 'kvroles'
+  params: {
+    keyVaultName: keyVaultName
+    principalId: '9a362683-12ec-4061-ab49-00183a3a9d00'
+    roleIds: ['2e2d6524-3c3f-4973-957c-bfeb7ba86a34']
+  }
+}
+
 module dbSecret 'db-connect-secret.bicep' = {
   name: 'kv-secret-dbconnect'
   params: {
