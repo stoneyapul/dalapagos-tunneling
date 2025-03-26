@@ -53,7 +53,7 @@ module keyVaultRoles 'key-vault-role-assignment.bicep' = {
   params: {
     keyVaultName: keyVault.outputs.name
     principalId: '9a362683-12ec-4061-ab49-00183a3a9d00'
-    roleIds: ['2e2d6524-3c3f-4973-957c-bfeb7ba86a34']
+    roleIds: ['b86a8fe4-44ce-4948-aee5-eccb2c155cd7']
   }
 }
 
