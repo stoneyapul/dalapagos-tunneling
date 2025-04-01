@@ -4,9 +4,6 @@ param location string = resourceGroup().location
 @description('The name of the log analytics workspace')
 param logAnalyticsWorkspaceName string
 
-@description('The name of the Application Insights workspace')
-param appInsightsName string
-
 @description('The name of the Container Registry.')
 param containerRegistryName string
 
@@ -63,17 +60,6 @@ module dbSecret 'db-connect-secret.bicep' = {
     keyVaultName: keyVault.outputs.name
     name: 'db-connect'
     value: sqlConn
-  }
-}
-
-module appInsights 'app-insights.bicep' = {
-  name: 'appins'
-  params: {
-    appInsightsName: appInsightsName
-    keyVaultName: keyVault.outputs.name
-    location: location
-    logAnalyticsName: logAnalytics.outputs.name
-    tags: tags
   }
 }
 

@@ -15,7 +15,6 @@ variables:
   deploymentName: 'DeployTunnelingInfra'
   keyVaultName: $(prefix)-key-vault
   logAnalyticsWorkspaceName: $(prefix)-log-analytics
-  appInsightsName: $(prefix)-app-insights
   containerRegistryName: $(prefix)containerregistry
   azureServiceConnection: 'DalapagosServiceP'
   sqlServerName: $(prefix)-sql-server
@@ -51,7 +50,7 @@ steps:
     useGlobalConfig: false
     inlineScript: |
       if [ "true" == $(az group exists --name ${{ parameters.resourceGroupName }}) ]; then :; else az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.location }}; fi;
-      az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'location=${{ lower(parameters.location) }}' 'logAnalyticsWorkspaceName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'containerRegistryName=$(containerRegistryName)' 'keyVaultName=$(keyVaultName)' 'sqlServerName=$(sqlServerName)' 'sqlServerPass=$(GenDbConnection.SqlPass)' 'sqlDBName=$(sqlDBName)'
+      az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'location=${{ lower(parameters.location) }}' 'logAnalyticsWorkspaceName=$(logAnalyticsWorkspaceName)' 'containerRegistryName=$(containerRegistryName)' 'keyVaultName=$(keyVaultName)' 'sqlServerName=$(sqlServerName)' 'sqlServerPass=$(GenDbConnection.SqlPass)' 'sqlDBName=$(sqlDBName)'
 
 - task: SqlAzureDacpacDeployment@1
   displayName: Run SQL DacPac
