@@ -18,7 +18,6 @@ variables:
   prefix: 'dlpg'
   keyVaultName: $(prefix)-key-vault
   deploymentName: 'DeployTunnelingApp'
-  appInsightsName: $(prefix)-app-insights
   containerRegistryName: $(prefix)containerregistry
   containerAppEnvName: $(prefix)-container-app-env
   containerAppName: 'dlpgs-tunneling-api'
@@ -63,4 +62,4 @@ stages:
         scriptLocation: inlineScript
         useGlobalConfig: false
         inlineScript: |
-          az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'containerAppEnvironmentName=$(containerAppEnvName)' 'containerAppName=$(containerAppName)' 'userIdentityName=$(userIdentityName)' 'keyVaultName=$(keyVaultName)' 'containerRegistryName=$(containerRegistryName)' 'logAnalyticsName=$(logAnalyticsWorkspaceName)' 'appInsightsName=$(appInsightsName)' 'location=${{ lower(parameters.location) }}'
+          az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'containerAppEnvironmentName=$(containerAppEnvName)' 'containerAppName=$(containerAppName)' 'userIdentityName=$(userIdentityName)' 'keyVaultName=$(keyVaultName)' 'containerRegistryName=$(containerRegistryName)' 'logAnalyticsName=$(logAnalyticsWorkspaceName)' 'location=${{ lower(parameters.location) }}'
