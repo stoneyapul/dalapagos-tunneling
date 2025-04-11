@@ -27,8 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Secrets
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Api.Tests", "src\Tests\Dalapagos.Tunneling.Api.Tests\Dalapagos.Tunneling.Api.Tests.csproj", "{F5D94A84-EA6A-4C13-A29A-529D03056D6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dalapagos.Tunneling.Lightfoot", "src\Dalapagos.Tunneling.Lightfoot\Dalapagos.Tunneling.Lightfoot.csproj", "{34A60E95-8DE5-4F87-AF6C-09C7EFBDF653}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iac", "iac", "{6E1E4625-8339-445F-B43B-2BF3AAA27C5A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{0FE5A282-C3A7-41BD-BA37-48F121931BD6}"
@@ -49,7 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{636A0CBB-1
 		iac\core\sql-server.bicep = iac\core\sql-server.bicep
 		iac\core\key-vault-role-assignment.bicep = iac\core\key-vault-role-assignment.bicep
 		iac\core\db-connect-secret.bicep = iac\core\db-connect-secret.bicep
-		iac\core\DalapagosTunnelsDb.dacpac = iac\core\DalapagosTunnelsDb.dacpac
+		iac\core\DalapagosTunnelsDb.dacpac = iac\core\Dalapa
+		acpac
 		seed.sql = seed.sql
 	EndProjectSection
 EndProject
@@ -96,10 +95,6 @@ Global
 		{F5D94A84-EA6A-4C13-A29A-529D03056D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5D94A84-EA6A-4C13-A29A-529D03056D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5D94A84-EA6A-4C13-A29A-529D03056D6E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34A60E95-8DE5-4F87-AF6C-09C7EFBDF653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34A60E95-8DE5-4F87-AF6C-09C7EFBDF653}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34A60E95-8DE5-4F87-AF6C-09C7EFBDF653}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34A60E95-8DE5-4F87-AF6C-09C7EFBDF653}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,7 +111,6 @@ Global
 		{755CD2BF-7015-48B2-93F0-E4E6BBD6FEC9} = {84B5101B-040B-4171-AA19-B54EA6E4474B}
 		{E26B94FC-4B44-4300-9FCA-E15191ACEEFA} = {84B5101B-040B-4171-AA19-B54EA6E4474B}
 		{F5D94A84-EA6A-4C13-A29A-529D03056D6E} = {BEE30165-7AAF-414F-919F-2C4E3DF3043F}
-		{34A60E95-8DE5-4F87-AF6C-09C7EFBDF653} = {DF2755DB-9E1A-41E1-B30F-1164B2B50805}
 		{636A0CBB-16D2-4203-96D6-6B3E342579E8} = {6E1E4625-8339-445F-B43B-2BF3AAA27C5A}
 		{3691C125-3C79-4A98-BB6F-021F44D14D9B} = {6E1E4625-8339-445F-B43B-2BF3AAA27C5A}
 	EndGlobalSection

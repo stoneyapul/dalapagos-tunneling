@@ -45,7 +45,7 @@ internal sealed class ExecuteRestHandler(
             deviceGroup.ServerBaseUrl, 
             cancellationToken);
 
-        _logger.LogTrace("Existing tunnels: {Tunnels}", existingTunnels.Select(t => t.Url).ToArray());
+        _logger.LogTrace("Existing tunnels: {Tunnels}", [.. existingTunnels.Select(t => t.Url)]);
 
         // TODO: Should I use an Ip?
         // TODO: How to manage tunnel deletion?
