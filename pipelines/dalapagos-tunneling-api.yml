@@ -52,14 +52,3 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           latest
-
-    - task: AzureCLI@2
-      name: ContainerApp
-      displayName: Deploy to Container App
-      inputs:
-        azureSubscription: 'e52dd840-075f-4406-a841-42aae80ad44e'
-        scriptType: bash
-        scriptLocation: inlineScript
-        useGlobalConfig: false
-        inlineScript: |
-          az deployment group create --name $(deploymentName) --resource-group ${{ parameters.resourceGroupName }} --template-file $(templateFile) --parameters 'containerAppEnvironmentName=$(containerAppEnvName)' 'containerAppName=$(containerAppName)' 'userIdentityName=$(userIdentityName)' 'keyVaultName=$(keyVaultName)' 'containerRegistryName=$(containerRegistryName)' 'logAnalyticsName=$(logAnalyticsWorkspaceName)' 'location=${{ lower(parameters.location) }}'

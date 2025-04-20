@@ -47,9 +47,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{636A0CBB-1
 		iac\core\sql-server.bicep = iac\core\sql-server.bicep
 		iac\core\key-vault-role-assignment.bicep = iac\core\key-vault-role-assignment.bicep
 		iac\core\db-connect-secret.bicep = iac\core\db-connect-secret.bicep
-		iac\core\DalapagosTunnelsDb.dacpac = iac\core\Dalapa
-		acpac
+		iac\core\DalapagosTunnelsDb.dacpac = iac\core\DalapagosTunnelsDb.dacpac
+		acpac = acpac
 		seed.sql = seed.sql
+		app-service.bicep = app-service.bicep
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rport-server", "rport-server", "{3691C125-3C79-4A98-BB6F-021F44D14D9B}"
